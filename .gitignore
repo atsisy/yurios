@@ -1,0 +1,8 @@
+dst/
+yuli.img
+*~
+*.yl
+.directory
+*.yx
+*.kdev4
+.kdev4

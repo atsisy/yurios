@@ -1,0 +1,303 @@
+; naskfunc
+; TAB=4
+
+[BITS 32]
+
+
+;自由に使っていい32bitレジスタeax, ecx, edx	 32ビットモード用の機械語を作らせる
+; オブジェクトファイルのための情報
+
+		; このプログラムに含まれる関数名
+global	io_hlt, io_cli, io_sti, io_stihlt
+global	io_in8, io_in16, io_in32
+global	io_out8, io_out16, io_out32
+global	io_load_eflags, io_store_eflags
+global	load_gdtr, load_idtr
+global	load_cr0, store_cr0
+global	asm_inthandler21, asm_inthandler2c
+global	asm_inthandler20, asm_inthandler0d
+global	asm_inthandler0c
+global	memtest_sub
+global	farjmp, run_app
+global	farcall, start_app
+global	load_tr
+global	asm_put_char
+global	asm_sys_call
+extern	inthandler21, inthandler2c
+extern	inthandler20
+extern	inthandler0d, sys_call
+extern	inthandler0c
+
+; 以下は実際の関数
+
+[SECTION .text]		; オブジェクトファイルではこれを書いてからプログラムを書くらしい
+
+io_hlt:	; void io_hlt(void);
+	hlt
+	ret
+
+io_cli:	; void io_cli(void);で使う
+	cli
+	ret
+
+io_sti:
+	sti
+	ret
+
+io_stihlt:
+	sti
+	hlt
+	ret
+
+io_in8:	; int io_in8(int port);で使う
+	mov	edx, [esp+4]	;引数portをedxレジスタに代入
+	mov	eax, 0
+	in	al, dx
+	ret
+
+io_in16:	; int io_in16(int port);で使う
+	mov	edx, [esp+4]	;引数portをedxレジスタに代入
+	mov	eax, 0
+	in	ax, dx
+	ret
+
+io_in32:	; int io_in32(int port);で使う
+	mov	edx, [esp+4]	;引数portをedxレジスタに代入
+	in	eax, dx
+	ret
+
+io_out8:	; void io_out8(int port, int data);で使う
+	mov	edx, [esp+4]	;引数portをedxレジスタに代入
+	mov	al, [esp+8]		;引数dataをalレジスタに代入
+	out	dx, al
+	ret
+
+io_out16:	; void io_out16(int port, int data);で使う
+	mov	edx, [esp+4]	;引数portをedxレジスタに代入
+	mov	eax, [esp+8]		;引数dataをalレジスタに代入
+	out	dx, ax
+	ret
+
+io_out32:	; void io_out32(int port, int data);で使う
+	mov	edx, [esp+4]	;引数portをedxレジスタに代入
+	mov	eax, [esp+8]		;引数dataをalレジスタに代入
+	out	dx, eax
+	ret
+
+io_load_eflags:	;void io_load_eflags(void);で使う
+	pushfd	;push eflagsという意味らしい。スタック_asm_hrb_api:
+	pop	eax	;スタックからpopして、eaxに代入
+	ret
+
+io_store_eflags:	;void io_store_eflags(int eflags);で使う
+	mov	eax, [esp+4]	;引数eflagsをeaxレジスタに代入
+	push	eax	;スタックにeaxの値を積む
+	popfd	;スタックからpopして、eflagsに代入
+	ret
+
+load_gdtr:
+	mov	ax, [esp+4]
+	mov [esp+6], ax
+	lgdt	[esp+6]
+	ret
+
+load_idtr:
+	mov ax, [esp+4]
+	mov [esp+6], ax
+	lidt	[esp+6]
+	ret
+
+
+load_cr0:		; int load_cr0(void);
+		mov		EAX,CR0
+		ret
+
+store_cr0:
+	mov	eax, [esp+4]
+	mov	CR0, eax
+	ret
+
+;スタック例外のハンドラ
+asm_inthandler0c:
+	sti
+	push es
+	push ds
+	pushad
+	mov  eax, esp
+	push eax
+	mov  ax, ss
+	mov  ds, ax
+	mov  es, ax
+	call inthandler0c
+	cmp  eax, 0
+	jne  end_app
+	pop  eax
+	popad
+	pop	 ds
+	pop  es
+	add  esp, 4
+	iretd
+
+;一般保護例外のハンドラ
+asm_inthandler0d:
+	sti
+	push	es
+	push	ds
+	pushad
+	mov		eax, esp
+	push	eax
+	mov		ax, ss
+	mov		ds, ax
+	mov		es, ax
+	call	inthandler0d
+	cmp		eax, 0		; ここだけ違う
+	jne		end_app		; ここだけ違う
+	pop		eax
+	popad
+	pop		ds
+	pop		es
+	add		esp, 4			; INT 0x0d では、これが必要
+	iretd
+
+
+;タイマ割り込みハンドラ
+asm_inthandler20:
+	push	es
+	push	ds
+	pushad
+	mov	eax, esp
+	push	eax
+	mov	ax, ss
+	mov	ds, ax
+	mov	es, ax
+	call	inthandler20
+	pop	eax
+	popad
+	pop	ds
+	pop	es
+	iretd
+
+asm_inthandler21:	;キーボード割り込みハンドラ
+	push	es
+	push	ds
+	pushad
+	mov	eax, esp
+	push	eax
+	mov	ax, ss
+	mov	ds, ax
+	mov	es, ax
+	call	inthandler21
+	pop	eax
+	popad
+	pop	ds
+	pop	es
+	iretd
+
+asm_inthandler2c:	;マウス割り込みハンドラ(今は使わない)
+	push	es
+	push	ds
+	pushad
+	mov	eax, esp
+	push	eax
+	mov	ax, ss
+	mov	ds, ax
+	mov	es, ax
+	call	inthandler2c
+	pop	eax
+	popad
+	pop	ds
+	pop	es
+	iretd
+
+
+memtest_sub:	; unsigned int memtest_sub(unsigned int start, unsigned int end)
+	push	edi						; �iEBX, ESI, EDI ���g�������̂Łj
+	push	esi
+	push	ebx
+	mov		esi, 0xaa55aa55			; pat0 = 0xaa55aa55;
+	mov		edi, 0x55aa55aa			; pat1 = 0x55aa55aa;
+	mov		eax, [esp+12+4]			; i = start;
+mts_loop:
+	mov		ebx, eax
+	add		ebx, 0xffc				; p = i + 0xffc;
+	mov		edx, [ebx]				; old = *p;
+	mov		[ebx], esi				; *p = pat0;
+	xor		dword [ebx], 0xffffffff	; *p ^= 0xffffffff;
+	cmp		edi, [ebx]				; if (*p != pat1) goto fin;
+	jne		mts_fin
+	xor		dword [ebx], 0xffffffff	; *p ^= 0xffffffff;
+	cmp		esi, [ebx]				; if (*p != pat0) goto fin;
+	jne		mts_fin
+	mov		[ebx], edx				; *p = old;
+	add		eax, 0x1000				; i += 0x1000;
+	cmp		eax, [esp+12+8]			; if (i <= end) goto mts_loop;
+	jbe		mts_loop
+	pop		ebx
+	pop		esi
+	pop		edi
+	ret
+mts_fin:
+	mov		[ebx], edx				; *p = old;
+	pop		ebx
+	pop		esi
+	pop		edi
+	ret
+
+load_tr:	;void load_tr(int tr);
+	ltr	[esp+4]	;trに第一引数を代入
+	ret
+
+farjmp:	;void farjmp(int eip, int cs);
+	jmp	far	[esp+4]
+	ret
+
+farcall:		; void farcall(int eip, int cs);
+		call	far	[esp+4]				; eip, cs
+		ret
+
+
+asm_sys_call:
+		sti
+		push	ds
+		push	es
+		pushad					;保存のためのPUSH
+		pushad					;sys_callにわたすためのPUSH
+		mov		ax, ss
+		mov		ds, ax		; OS用のセグメントをDSとESにも入れる
+		mov		es, ax
+		call	sys_call
+		cmp		eax, 0		; EAXが0でなければアプリ終了処理
+		jne		end_app
+		add		esp, 32
+		popad
+		pop		es
+		pop		ds
+		iretd
+end_app:
+;	EAXはtss.esp0の番地
+		mov		esp, [eax]
+		popad
+		ret					; cmd_appへ帰る
+
+start_app:		; void start_app(int eip, int cs, int esp, int ds, int *tss_esp0);
+		pushad		; 32ビットレジスタを全部保存しておく
+		mov		eax, [esp+36]	; アプリ用のEIP
+		mov		ecx, [esp+40]	; アプリ用のCS
+		mov		edx, [esp+44]	; アプリ用のESP
+		mov		ebx, [esp+48]	; アプリ用のDS/SS
+		mov		ebp, [esp+52]	; tss.esp0の番地
+		mov		[ebp], esp		; OS用のESPを保存
+		mov		[ebp+4], ss		; OS用のSSを保存
+		mov		es, bx
+		mov		ds, bx
+		mov		fs, bx
+		mov		gs, bx
+;	以下はRETFでアプリに行かせるためのスタック調整
+		or		ecx, 3			; アプリ用のセグメント番号に3をORする
+		or		ebx, 3			; アプリ用のセグメント番号に3をORする
+		push	ebx				; アプリのSS
+		push	edx				; アプリのESP
+		push	ecx				; アプリのCS
+		push	eax				; アプリのEIP
+		retf
+		;	アプリが終了してもここには来ない
