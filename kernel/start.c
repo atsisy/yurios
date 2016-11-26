@@ -107,6 +107,12 @@ void Main(void) {
 
 	shell_init();
 	INITIALIZE_ATA_DEVICE();
+	/*
+	 *最初のメッセージを描画
+	 */
+	puts("Welcome to Yuri.");
+	puts("Enjoy hacking on Yuri!!");
+	put_char('%');
 	//history_init();
 
 	ylsh          = task_alloc("shell");

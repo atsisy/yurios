@@ -2,7 +2,6 @@
 #include "../include/types.h"
 #include "../include/sh.h"
 #include "../include/string.h"
-#include "../include/yuri.h"
 
 /*
  *=======================================================================================
@@ -93,7 +92,7 @@ size_t do_write(int fd, char *buf, int count){
 	 */
 	int size;
 
-	if(fd == stdout){
+	if(fd == __stdout__){
 		/*
 		 *標準出力に書き込む
 		 */
@@ -135,11 +134,11 @@ size_t do_write(int fd, char *buf, int count){
  */
 size_t do_read(int fd, char *buf, int count){
 
-	if(fd == stdin){
+	if(fd == __stdin__){
 		/*
 		 *標準入力から読み取る
 		 */
-		type_prompt(buf);
+		type_prompt(buf, count);
 	}else{
 		/*
 		 *何もできなかったのでfailureを返す

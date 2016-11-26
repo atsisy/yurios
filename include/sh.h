@@ -1,15 +1,19 @@
 #ifndef YULLIB_H
 #define YULLIB_H
+
 #include "bootpack.h"
+
+#define __stdin__  0
+#define __stdout__ 1
+#define __stderr__ 2
 
 
 void print(char *str);
 void puts(char *str);
 void print_value(int value, int x, int y);
-void print_yuli(void);
-//void put_char(char ch);
+void put_char(char ch);
 
-void type_prompt(char *dst);
+void type_prompt(char *dst, int buffer_limit);
 
 void increase_indent(void);
 void increase_length(void);

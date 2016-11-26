@@ -115,10 +115,10 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font){
  *ビデオメモリ
  *=======================================================================================
  */
-void putfonts8_asc(char *vram, int xsize, int x, int y, char c, unsigned char *s){
+void putfonts8_asc(char *vram, int xsize, int x, int y, char c, char *s){
 
 	extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
-	for (; *s != 0x00; s++) {
+	for (;*s != 0x00;s++){
 		putfont8(vram, xsize, x, y, c, dfont + *s * 16);
 		x += 8;
 	}

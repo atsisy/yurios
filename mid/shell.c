@@ -50,15 +50,6 @@ void shell_init(void){
 	shell_mode = SINGLE;
 
 	/*
-	 *最初のメッセージを描画
-	 */
-	putfonts8_asc(binfo->vram, binfo->scrnx,
-		 0, 0, COL8_FFFFFF, "Welcome to Yuri.");
-	putfonts8_asc(binfo->vram, binfo->scrnx,
-		 0, 16, COL8_FFFFFF, "Enjoy hacking on Yuri!!");
-	put_char('%');
-
-	/*
 	 *カーソルのスレッドの準備を行う
 	 */
 	ylsh_cursor_timer = task_alloc("shell cursor");
@@ -81,7 +72,7 @@ void shell_init(void){
 /*
  *ユーザからの入力を受ける関数
  */
-void type_prompt(char *dst){
+void type_prompt(char *dst, int buffer_limit){
 
 	struct Process *proc = task_now();
 	int i;
@@ -112,7 +103,7 @@ void type_prompt(char *dst){
 			 */
 			i = queue_pop(&(proc->irq));   //なんの割り込みか確認
 			io_sti();
-			if(i >= 256 && i <= 511){ //キーボードからの割り込みだったー！！
+			if(buffer_limit > length-1 && i >= 256 && i <= 511){ //キーボードからの割り込みだったー！！
 
 				if(i == 256+0x2e && key_ctrl == 1){	//Ctrl+Cなので強制終了処理
 					io_cli();	//強制終了中にプロセスが変わると面倒なことになるので、割り込み禁止にする
@@ -142,13 +133,13 @@ void type_prompt(char *dst){
 					}
 					if ('A' <= s[0] && s[0] <= 'Z'){	/* 入力文字がアルファベット */
 						if (((key_leds & 4) == 0 && key_shift == 0) ||
-						    ((key_leds & 4) != 0 && key_shift != 0)) {
+						                ((key_leds & 4) != 0 && key_shift != 0)) {
 							s[0] += 0x20;	/* 大文字を小文字に変換 */
 						}
 						s[1] = '\0';
 						print(s);
-						dst[length-1]					= s[0];
-						sent_command[length]	= '\0';
+						dst[length-1] = s[0];
+						sent_command[length] = '\0';
 						length++;
 					}else if(i == 256 + 0x39){	//スペースキーをおした時の処理
             				s[0] = ' ';
@@ -228,15 +219,13 @@ void type_prompt(char *dst){
 }
 
 void shell_master(void){
-	
+
 	char command[1024];
 
 	struct Process *me = task_now();	//自分自身を指すプロセス構造体
 	struct Process *child_proc;				//シェルから生成されるプロセスを指すためのプロセス構造体
 
 	int shell_buf[128];								//シェルに来るシグナルや割り込み情報をためておくバッファ
-
-	int sent_info;										//シェルに送られてきた情報を保持する変数
 
 	queue_init(&(me->irq), 128, shell_buf, me);	//シェル用FIFOを初期化
 
@@ -256,7 +245,7 @@ void shell_master(void){
 		/*
 		 *ユーザの入力待ち
 		 */
-		type_prompt(command);
+		type_prompt(command, 1024);
 
 		/*
 		 *処理を実行する際にカーソルが点滅するのはおかしいので一旦寝てもらう
@@ -270,8 +259,6 @@ void shell_master(void){
 			length = 1;
     			continue;
 		}
-
-		add_history(command);
 
 		strcpy(copied_str, command, strlen(command)+1);
 
