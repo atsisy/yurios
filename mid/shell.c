@@ -460,9 +460,10 @@ void scroll(struct BOOTINFO *binfo, int height){
  *複数モードのとき
  */
 void multi_shellscroll(struct BOOTINFO *binfo, int height, int top, int under){
-	int i, textzone_x = binfo->scrnx-151, scrnx = binfo->scrnx, scrny = binfo->scrny;
+	int i, textzone_x = binfo->scrnx-151, scrnx = binfo->scrnx;
 	int under_addr = under*scrnx;
 	int copy_from = scrnx * height;
+	
 	for(i = top*scrnx;i < under_addr;i++){
 		if((i % scrnx) > textzone_x){
 			i += 149;

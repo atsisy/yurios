@@ -1,3 +1,4 @@
+#include "../../include/types.h"
 
 int strcmp(char *s, char *t){
 	int i;
@@ -15,11 +16,12 @@ int strcmp(char *s, char *t){
 }
 
 int strlen(char *str){
-	int count = 0;
+	u32_t count = 0;
 	while(1){
-		if(str[count] == '\0'){
+		if(*str == '\0'){
 			break;
 		}
+		str++;
 		count++;
 	}
 	return count;
@@ -35,12 +37,11 @@ void string_getNext(char *str, char *dst){
 }
 
 void cut_string(char *str, char *dst, int start_point){
-	char cut_string[1024];
 	int i;
 	for(i = 0;i < 1024 && str[i] != '\0';i++){
-		cut_string[i] = str[i+start_point];
+		dst[i] = str[i+start_point];
 	}
-	cut_string[i] = 0;
+	dst[i] = 0;
 	return;
 }
 

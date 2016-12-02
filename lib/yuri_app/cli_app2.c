@@ -13,5 +13,12 @@ int main(void){
 	read(fd, str, 5);
 	write(stdout, str, 5);
 
+	unsigned int fd2 = 0;
+	char wr2[5] = "ANNE";
+	fd2 = open("b.dat", O_CREAT);
+	write(fd2, wr2, 5);
+	read(fd2, str, 5);
+	write(stdout, str, 5);
+
 	exit();
 }
