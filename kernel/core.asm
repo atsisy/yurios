@@ -1,5 +1,3 @@
-; naskfunc
-; TAB=4
 
 [BITS 32]
 
@@ -32,68 +30,85 @@ extern	inthandler0c
 
 [SECTION .text]		; オブジェクトファイルではこれを書いてからプログラムを書くらしい
 
+  ;; hlt命令
+  ;; 割り込みが来るまで待機
 io_hlt:	; void io_hlt(void);
 	hlt
 	ret
 
+  ;; cli命令
+  ;; 割り込み禁止にする
 io_cli:	; void io_cli(void);で使う
 	cli
 	ret
 
+  ;; sti命令
+  ;; 割り込みを許可する
 io_sti:
 	sti
 	ret
 
+  ;; sti命令とhlt命令を同時にするアセンブリ関数
+  ;; つまり、割り込み許可してから、黙り込む
 io_stihlt:
 	sti
 	hlt
 	ret
 
+  ;; 8bit インプット命令
 io_in8:	; int io_in8(int port);で使う
 	mov	edx, [esp+4]	;引数portをedxレジスタに代入
 	mov	eax, 0
 	in	al, dx
 	ret
 
+  ;; 16bit インプット命令
 io_in16:	; int io_in16(int port);で使う
 	mov	edx, [esp+4]	;引数portをedxレジスタに代入
 	mov	eax, 0
 	in	ax, dx
 	ret
 
+  ;; 32bit インプット命令
 io_in32:	; int io_in32(int port);で使う
 	mov	edx, [esp+4]	;引数portをedxレジスタに代入
 	in	eax, dx
 	ret
 
+  ;; 8bit アウトプット命令
 io_out8:	; void io_out8(int port, int data);で使う
 	mov	edx, [esp+4]	;引数portをedxレジスタに代入
 	mov	al, [esp+8]		;引数dataをalレジスタに代入
 	out	dx, al
 	ret
 
+  ;; 16bit アウトプット命令
 io_out16:	; void io_out16(int port, int data);で使う
 	mov	edx, [esp+4]	;引数portをedxレジスタに代入
 	mov	eax, [esp+8]		;引数dataをalレジスタに代入
 	out	dx, ax
 	ret
 
+  ;; 32bit アウトプット命令
 io_out32:	; void io_out32(int port, int data);で使う
 	mov	edx, [esp+4]	;引数portをedxレジスタに代入
 	mov	eax, [esp+8]		;引数dataをalレジスタに代入
 	out	dx, eax
 	ret
 
-io_load_eflags:	;void io_load_eflags(void);で使う
+  ;; eflagsレジスタを見る関数
+io_load_eflags:	;int io_load_eflags(void);で使う
 	pushfd	;push eflagsという意味らしい。スタック_asm_hrb_api:
 	pop	eax	;スタックからpopして、eaxに代入
 	ret
 
+  ;; eflagsレジスタにぶち込む
 io_store_eflags:	;void io_store_eflags(int eflags);で使う
 	mov	eax, [esp+4]	;引数eflagsをeaxレジスタに代入
 	push	eax	;スタックにeaxの値を積む
 	popfd	;スタックからpopして、eflagsに代入
 	ret
+
 
 load_gdtr:
 	mov	ax, [esp+4]
@@ -107,17 +122,18 @@ load_idtr:
 	lidt	[esp+6]
 	ret
 
-
+  ;; cr0を見るアセンブリ関数
 load_cr0:		; int load_cr0(void);
-		mov		EAX,CR0
+		mov		eax, cr0
 		ret
 
+  ;; cr0に値をぶち込むアセンブリ関数
 store_cr0:
 	mov	eax, [esp+4]
-	mov	CR0, eax
+	mov	cr0, eax
 	ret
 
-;スタック例外のハンドラ
+  ;; スタック例外のイベントハンドラ
 asm_inthandler0c:
 	sti
 	push es
@@ -138,7 +154,7 @@ asm_inthandler0c:
 	add  esp, 4
 	iretd
 
-;一般保護例外のハンドラ
+  ;; 一般保護例外のイベントハンドラ
 asm_inthandler0d:
 	sti
 	push	es
@@ -160,7 +176,7 @@ asm_inthandler0d:
 	iretd
 
 
-;タイマ割り込みハンドラ
+  ;; タイマ割り込みイベントハンドラ
 asm_inthandler20:
 	push	es
 	push	ds
@@ -177,7 +193,8 @@ asm_inthandler20:
 	pop	es
 	iretd
 
-asm_inthandler21:	;キーボード割り込みハンドラ
+  ;; キーボード割り込みイベントハンドラ
+asm_inthandler21:
 	push	es
 	push	ds
 	pushad
@@ -193,7 +210,8 @@ asm_inthandler21:	;キーボード割り込みハンドラ
 	pop	es
 	iretd
 
-asm_inthandler2c:	;マウス割り込みハンドラ(今は使わない)
+  ;; マウス割り込みハンドラ(今は使わない)
+asm_inthandler2c:
 	push	es
 	push	ds
 	pushad
@@ -211,7 +229,7 @@ asm_inthandler2c:	;マウス割り込みハンドラ(今は使わない)
 
 
 memtest_sub:	; unsigned int memtest_sub(unsigned int start, unsigned int end)
-	push	edi						; �iEBX, ESI, EDI ���g�������̂Łj
+	push	edi
 	push	esi
 	push	ebx
 	mov		esi, 0xaa55aa55			; pat0 = 0xaa55aa55;
@@ -255,7 +273,7 @@ farcall:		; void farcall(int eip, int cs);
 		call	far	[esp+4]				; eip, cs
 		ret
 
-
+  ;; システムコール受付のアセンブリ関数
 asm_sys_call:
 		sti
 		push	ds
@@ -274,11 +292,12 @@ asm_sys_call:
 		pop		ds
 		iretd
 end_app:
-;	EAXはtss.esp0の番地
+;	eaxはtss.esp0の番地
 		mov		esp, [eax]
 		popad
 		ret					; cmd_appへ帰る
 
+  ;; アプリケーションを開始する
 start_app:		; void start_app(int eip, int cs, int esp, int ds, int *tss_esp0);
 		pushad		; 32ビットレジスタを全部保存しておく
 		mov		eax, [esp+36]	; アプリ用のEIP

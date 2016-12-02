@@ -72,6 +72,8 @@ open:
   pop ebx
   ret
 
+  ;; mallocの準備用システムコール
+  ;; あんまりつかわない
 malloc_init:
   push  ebx
   mov   edx, 6
@@ -109,6 +111,9 @@ get_key:
   int   0x68
   ret
 
+  ;; exitシステムコール
+  ;; プログラム終了のコール
+  ;; 引数無し
 exit:
   mov		edx, 4
   int		0x68
