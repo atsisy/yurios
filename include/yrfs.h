@@ -41,6 +41,8 @@ struct fs_address {
  *=======================================================================================
  */
 struct i_node {
+	//inodeID
+	u32_t id;
 	//ファイルのアドレス
 	struct fs_address address;
 	//ファイルのサイズ
@@ -90,6 +92,8 @@ void delete_wrdata(struct writable_data *data);
  *=======================================================================================
  */
 void iwrite(struct i_node *inode);
+void iread(struct i_node *inode, u32_t index);
 
+extern u32_t inode_id;
 
 #endif

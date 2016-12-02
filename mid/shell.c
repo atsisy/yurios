@@ -311,6 +311,9 @@ void shell_master(void){
 			ylsh_clear();
 		}else if(strcmp(command, "open")){
 			do_open("SampleFile", __O_CREAT__);
+			struct i_node inode;
+			iread(&inode, 0);
+			puts(inode.file_name);
 		}else if(strcmp(command, "atainit")){
 			char write_buf[256] = "YURI";
 			write_buf[255] = '\0';

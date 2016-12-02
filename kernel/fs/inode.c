@@ -6,6 +6,8 @@ static void writable_inode(struct i_node *inode, struct writable_data *data);
 //writable_dataからinode情報を解釈する関数
 static void translate_wrdata2inode(struct i_node *inode, struct writable_data *data);
 
+//inode ID付与の際に用いる変数
+u32_t inode_id;
 /*
  *=======================================================================================
  *icreat関数
@@ -39,6 +41,9 @@ struct i_node icreat(char *file_name) {
 	inode.address.offset = 0;
 	inode.address.sector = i;
 
+	inode.id = inode_id;
+	inode_id++;
+
 	return inode;
 }
 
@@ -59,12 +64,15 @@ void iwrite(struct i_node *inode) {
 	writable_inode(inode, data);
 
 	//空きを探す
-	while(!blocks_info[i].empty);
+	while(!blocks_info[i].empty) i++;
 
       /*
 	 *書き込む
 	 */
 	write_ata_sector(&ATA_DEVICE0, i, data->data, __WRITABLE_INODE_SIZE__);
+
+	//使用済みフラグ
+	blocks_info[i].empty = 0;
 
 	/*
 	 *ちゃんと開放
@@ -95,6 +103,11 @@ void iread(struct i_node *inode, u32_t index) {
 	 *inodeに変換
 	 */
 	translate_wrdata2inode(inode, data);
+
+	/*
+	 *ちゃんと開放
+	 */
+	delete_wrdata(data);
 }
 
 /*
@@ -106,17 +119,18 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	u32_t i;
 
 	/*
-	 *アドレスとサイズをコピー
+	 *ID、アドレス、サイズをコピー
 	 */
-	data->data[0] = inode->address.sector;
-	data->data[1] = inode->address.offset;
-	data->data[2] = inode->size;
+	data->data[0] = inode->id;
+	data->data[1] = inode->address.sector;
+	data->data[2] = inode->address.offset;
+	data->data[3] = inode->size;
 
 	/*
 	 *ファイル名を圧縮して代入
 	 */
 	for(i = 0;i < 64;i++){
-		data->data[i+3] =
+		data->data[i+4] =
 			(u32_t)inode->file_name[i<<2]           |
 			((u32_t)inode->file_name[(i<<2)+1]) <<  8 |
 			((u32_t)inode->file_name[(i<<2)+2]) << 16 |
@@ -136,17 +150,18 @@ static void translate_wrdata2inode(struct i_node *inode, struct writable_data *d
 	/*
 	 *アドレスとサイズをコピー
 	 */
-	inode->address.sector = data->data[0];
-	inode->address.offset = data->data[1];
-	inode->size = data->data[2];
+	inode->id = data->data[0];
+	inode->address.sector = data->data[1];
+	inode->address.offset = data->data[2];
+	inode->size = data->data[3];
 
 	/*
 	 *圧縮を展開
 	 */
 	for(i = 0;i < 64;i++){
-		inode->file_name[i]   = (char)(data->data[i+3] >> 24);
-		inode->file_name[i+1] = (char)(data->data[i+3] >> 16);
-		inode->file_name[i+2] = (char)(data->data[i+3] >>  8);
-		inode->file_name[i+3] = (char)data->data[i+3];
+		inode->file_name[(i<<2)]   = (char)data->data[i+4];
+		inode->file_name[(i<<2)+1] = (char)(data->data[i+4] >>  8);
+		inode->file_name[(i<<2)+2] = (char)(data->data[i+4] >> 16);
+		inode->file_name[(i<<2)+3] = (char)(data->data[i+4] >> 24);
 	}
 }
