@@ -1,6 +1,7 @@
 BINOPT	= -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../dst
-OBJS = $(DST)/history.s $(DST)/history.o $(DST)/shell.s $(DST)/shell.o
+OBJS = $(DST)/history.s $(DST)/history.o $(DST)/shell.s $(DST)/shell.o \
+	$(DST)/shfunc.s $(DST)/shfunc.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD MID DIRECTORY'
