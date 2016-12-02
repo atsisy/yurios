@@ -339,8 +339,6 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *openシステムコール
 		 *=======================================================================================
 		 */
-		u32_t n = do_open((char *)(eax + cs_base), ebx);
-		print_value((int)(n >> 24), 300, 300);
 		registers[7] = do_open((char *)(eax + cs_base), ebx);
 	}else if(edx == 4){
 
@@ -352,7 +350,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *=======================================================================================
 		 */
 
-		registers[7] = do_read(eax, (char *)(ebx+cs_base+1), ecx);
+		registers[7] = do_read(eax, (char *)(ebx+cs_base), ecx);
 		increase_indent();
 	}else if(edx == 6){
 		/*

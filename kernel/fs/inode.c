@@ -35,6 +35,8 @@ struct i_node icreat(char *file_name) {
 	i = __FILE_OBJECT_ZONE__;
 	while(!blocks_info[i].empty)
 		i++;
+	blocks_info[i].empty = 0;
+	
 	/*
 	 *今の所、隙間に割り当てるようなスキルは無いのでからのセクタにそのまま
 	 */

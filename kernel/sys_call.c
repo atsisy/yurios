@@ -2,6 +2,7 @@
 #include "../include/types.h"
 #include "../include/sh.h"
 #include "../include/string.h"
+#include "../include/ata.h"
 
 /*
  *=======================================================================================
@@ -18,7 +19,7 @@ void do_sleep(unsigned int timeout){
 	 */
 	return;
 	//自分自身のプロセスへのポインタを変数に格納
-	
+
 	struct Process *me = task_now();
 	/*
 	 *自分を起こしてくれるタイマを作る
@@ -112,15 +113,21 @@ size_t do_write(int fd, char *buf, int count){
 		}
 		break;
 	default:
-		return FAILURE;
+		/*
+		 *ファイルに書き込む
+		 */
+		/*
+		 *書き込むセクタはfdの上位8bit
+		 */
+		write_ata_sector(&ATA_DEVICE0, (fd >> 24), buf, count);
 	}
-	
+
 	return size;
 }
 
 /*
  *=======================================================================================
- *do_write関数
+ *do_read関数
  *指定されたストリームから文字列を読み取る関数
  *簡単に言うとreadシステムコールのOS側の処理
  *引数
@@ -145,9 +152,12 @@ size_t do_read(int fd, char *buf, int count){
 		break;
 	default:
 		/*
-		 *何もできなかった
+		 *ファイルを読み込む
 		 */
-		return FAILURE;
+		/*
+		 *読み込むセクタはfdの上位8bit
+		 */
+	      read_ata_sector(&ATA_DEVICE0, (fd >> 24), buf, count);
 	}
 
 	/*
