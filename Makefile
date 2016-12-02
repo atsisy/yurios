@@ -7,7 +7,7 @@ OBJS = dst/start.o dst/core.o	\
 	dst/basis.o dst/sys_call.o \
 	dst/ata_init.o dst/ata_write.o dst/ata_read.o \
 	dst/ata_back.o dst/prepare_wr.o dst/display.o \
-	dst/open.s dst/fs.o dst/inode.o
+	dst/open.o dst/fs.o dst/inode.o dst/wdata.o
 
 all:
 	cd drivers && make all
@@ -27,4 +27,9 @@ clean :
 	rm ./dst/*.s
 	rm ./dst/*.o
 	rm ./dst/yuli.sys
+	rm ./application/*.yx
+
+cb:
+	make clean
+	make all
 

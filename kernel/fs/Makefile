@@ -1,6 +1,7 @@
 BINOPT  = -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../../dst
-OBJS = $(DST)/fs.s $(DST)/fs.o $(DST)/open.s $(DST)/open.o $(DST)/inode.s $(DST)/inode.o
+OBJS = $(DST)/fs.s $(DST)/fs.o $(DST)/open.s $(DST)/open.o \
+$(DST)/wdata.s $(DST)/wdata.o $(DST)/inode.s $(DST)/inode.o \
 
 all: $(OBJS) Makefile
 	echo "BUILD FS DIRECTORY"
