@@ -8,7 +8,8 @@ OBJS = $(DST)/start.s $(DST)/start.o $(DST)/graphic.s $(DST)/graphic.o \
 	$(DST)/default_font.s $(DST)/default_font.o $(DST)/core.o
 
 all: $(OBJS) Makefile
-		echo "BUILD KERNEL DIRECTORY"
+	cd fs && make all
+	echo "BUILD KERNEL DIRECTORY"
 
 $(DST)/%.s: %.c
 	gcc -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s

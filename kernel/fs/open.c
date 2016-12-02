@@ -5,5 +5,5 @@ int do_open(char *pathname, u32_t flags){
 		struct i_node inode = icreat(pathname);
 		iwrite(&inode);
 	}
-
+	return 0;
 }
