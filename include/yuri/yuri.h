@@ -1,7 +1,7 @@
 #ifndef YURI_H
 #define YURI_H
 
-#include "types.h"
+#include "../types.h"
 
 #define stdin  0
 #define stdout 1
