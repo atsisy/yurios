@@ -23,7 +23,7 @@ struct i_node icreat(char *file_name) {
 	 *まずファイル名をコピー
 	 */
 	while(*file_name != '\0'){
-		inode.file_name[i] = *file_name;
+		inode.file_name[i] = *file_name++;
 		i++;
 	}
 
@@ -49,7 +49,7 @@ struct i_node icreat(char *file_name) {
  *=======================================================================================
  */
 void iwrite(struct i_node *inode) {
-	u32_t i= 0;
+	u32_t i = 0;
 	struct writable_data *data = NULL;
 
 	/*
@@ -117,10 +117,10 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	 */
 	for(i = 0;i < 64;i++){
 		data->data[i+3] =
-			((u32_t)inode->file_name[i])   << 24 |
-			((u32_t)inode->file_name[i+1]) << 16 |
-			((u32_t)inode->file_name[i+2]) <<  8 |
-			(u32_t)inode->file_name[i+3];
+			(u32_t)inode->file_name[i<<2]           |
+			((u32_t)inode->file_name[(i<<2)+1]) <<  8 |
+			((u32_t)inode->file_name[(i<<2)+2]) << 16 |
+			((u32_t)inode->file_name[(i<<2)+3]) << 24;
 	}
 }
 

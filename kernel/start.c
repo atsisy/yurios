@@ -4,6 +4,8 @@
 #include "../include/string.h"
 #include "../include/ata.h"
 
+void init_yrfs();
+
 /*
  *カウンタのスレッド
  */
@@ -107,7 +109,9 @@ void Main(void) {
 
 	shell_init();
 	INITIALIZE_ATA_DEVICE();
-	/*
+	init_yrfs();
+
+      /*
 	 *最初のメッセージを描画
 	 */
 	puts("Welcome to Yuri.");

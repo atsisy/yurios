@@ -3,7 +3,9 @@
 #include "../include/string.h"
 #include "../include/value.h"
 #include "../include/ata.h"
+#include "../include/yrfs.h"
 
+int do_open(char *pathname, u32_t flags);
 void put_char(char ch);
 
 int length, indent, MAX_SCROLL;
@@ -307,6 +309,8 @@ void shell_master(void){
 			 *UNIXのclearと同じく
 			 */
 			ylsh_clear();
+		}else if(strcmp(command, "open")){
+			do_open("SampleFile", __O_CREAT__);
 		}else if(strcmp(command, "atainit")){
 			char write_buf[256] = "YURI";
 			write_buf[255] = '\0';
