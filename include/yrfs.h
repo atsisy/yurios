@@ -3,6 +3,26 @@
 
 #include "types.h"
 
+#define __O_RDONLY__ 0x01
+#define __O_WRONLY__ 0x02
+#define __O_RDWR__   0x04
+#define __O_CREAT__  0x08
+
+#define __INODE_ZONE__        0
+#define __FILE_OBJECT_ZONE__ 20
+
+/*
+ *=======================================================================================
+ *ブロックの情報を保持しておく構造体
+ *=======================================================================================
+ */
+struct block_info {
+	/*
+	 *このブロックは空か？
+	 */
+	u32_t empty : 1;
+};
+
 /*
  *=======================================================================================
  *ファイルがファイルシステムのどこに位置するかを保持する構造体
@@ -23,5 +43,13 @@ struct i_node {
 	u32_t size;
 	char file_name[256];
 };
+
+/*
+ *ブロックの情報を保持しておく
+ */
+extern struct block_info blocks_info[100];
+
+//inodeを作る関数
+struct i_node icreat(char *file_name);
 
 #endif
