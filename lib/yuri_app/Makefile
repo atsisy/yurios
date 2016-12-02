@@ -19,4 +19,4 @@ all: $(YURIEXE) Makefile
 	nasm -f elf $*.asm -o $*.o
 
 %.yx: %.o
-	ld -melf_i386 -o $(APP)/$*.yx --script=$(LINKPATH)/app.ls asm_cli.o $*.o
+	ld -melf_i386 -o $(APP)/$*.yx --script=$(LINKPATH)/app.ls asm_cli.o $(DST)/print.o $*.o

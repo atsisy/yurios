@@ -3,7 +3,7 @@ DST = ../dst
 OBJS = $(DST)/history.s $(DST)/history.o $(DST)/shell.s $(DST)/shell.o
 
 all: $(OBJS) Makefile
-	echo 'BUILD MID DIRECTORY'
+	@echo 'BUILD MID DIRECTORY'
 
 $(DST)/%.s: %.c
 	gcc -m32 -S -Wall $*.c $(BINOPT) -o $(DST)/$*.s

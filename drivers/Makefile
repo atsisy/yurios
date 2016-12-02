@@ -3,8 +3,8 @@ DST = ../dst
 OBJS = $(DST)/keyboard.s $(DST)/keyboard.o
 
 all: $(OBJS) Makefile
+	@echo "BUILD DRIVERS DIRECTORY"
 	cd ata && make all
-	echo "BUILD DRIVER DIRECTORY"
 
 $(DST)/%.s: %.c
 	gcc -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s

@@ -1,9 +1,9 @@
 BINOPT  = -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../../dst
-OBJS = $(DST)/string.s $(DST)/string.o
+OBJS = $(DST)/print.s $(DST)/print.o
 
 all: $(OBJS) Makefile
-	@echo "BUILD STRING DIRECTORY"
+	@echo "BUILD YURIC DIRECTORY"
 
 $(DST)/%.s: %.c
 	gcc -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s
