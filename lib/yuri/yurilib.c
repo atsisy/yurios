@@ -292,7 +292,7 @@ void int2str(char *str, int value) {
 	strcpy(str, p, strlen(p));
 }
 
-int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax){
+int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax) {
 
 	struct Process *me = task_now();
 
@@ -317,6 +317,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	*/
 
 	if (edx == 1){
+		
 		put_char(eax & 0xff);
 	}else if(edx == 2){
 		//eaxに返り値を格納
@@ -327,11 +328,18 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 		//draw_rect(ebx, esi, edi, eax, ecx);
 	}else if(edx == 4){
+		
 		return &(me->tss.esp0);
 	}else if(edx == 5){
-		registers[7] = do_read(eax, (char *)ebx+cs_base+1, ecx);
+		/*
+		 *=======================================================================================
+		 *readシステムコール
+		 *=======================================================================================
+		 */
+		
+		/*registers[7] = */
+		do_read(eax, (char *)(ebx+cs_base+1), ecx);
 		increase_indent();
-		//print((char *)(ebx+cs_base));
 	}else if(edx == 6){
 		/*
 		  メモリマネージャ初期化のシステムコール
@@ -397,5 +405,6 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 		do_sleep((unsigned int)eax);
 	}
+
 	return 0;
 }

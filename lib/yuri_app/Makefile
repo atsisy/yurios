@@ -10,7 +10,7 @@ all: $(YURIEXE) Makefile
 	mv *.o ..
 
 %.s: %.c
-	gcc -m32 -Wall -Os -S $*.c $(BINOPT) -o $*.s
+	gcc -m32 -Wall -S $*.c $(BINOPT) -o $*.s
 
 %.o: %.s
 	as --32 $*.s -o $*.o

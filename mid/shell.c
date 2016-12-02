@@ -103,7 +103,7 @@ void type_prompt(char *dst, int buffer_limit){
 			 */
 			i = queue_pop(&(proc->irq));   //なんの割り込みか確認
 			io_sti();
-			if(buffer_limit > length-1 && i >= 256 && i <= 511){ //キーボードからの割り込みだったー！！
+			if(i >= 256 && i <= 511) { //キーボードからの割り込みだったー！！
 
 				if(i == 256+0x2e && key_ctrl == 1){	//Ctrl+Cなので強制終了処理
 					io_cli();	//強制終了中にプロセスが変わると面倒なことになるので、割り込み禁止にする
@@ -112,8 +112,9 @@ void type_prompt(char *dst, int buffer_limit){
 					*/
 					io_sti();	//割り込み許可
 				}
+				io_cli();
 
-				if(i  == 0x1c+256){ //Enterキーの処理
+				if(i  == 0x1c + 256){ //Enterキーの処理
 					increase_length();
 					erase_a_alphabet();
 					dst[length-1] = '\0';
@@ -133,7 +134,7 @@ void type_prompt(char *dst, int buffer_limit){
 					}
 					if ('A' <= s[0] && s[0] <= 'Z'){	/* 入力文字がアルファベット */
 						if (((key_leds & 4) == 0 && key_shift == 0) ||
-						                ((key_leds & 4) != 0 && key_shift != 0)) {
+						    ((key_leds & 4) != 0 && key_shift != 0)) {
 							s[0] += 0x20;	/* 大文字を小文字に変換 */
 						}
 						s[1] = '\0';
@@ -196,7 +197,7 @@ void type_prompt(char *dst, int buffer_limit){
 					queue_push(&keycmd, KEYCMD_LED);
 					queue_push(&keycmd, key_leds);
 				}
-				if(i == 256 + 0x3b){	//F1キーの処理	YULIOSではマルチCUIモード
+				if(i == 256 + 0x3b){	//F1キーの処理	YURIOSではマルチCUIモード
 					shell_mode = DUAL;
 					ylsh_clear();
 					put_char('%');
@@ -214,6 +215,7 @@ void type_prompt(char *dst, int buffer_limit){
 					io_out8(PORT_KEYDAT, keycmd_wait);
 				}
 			}
+			io_sti();
 		}
 	}
 }

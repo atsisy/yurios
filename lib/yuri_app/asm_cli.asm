@@ -7,7 +7,7 @@ global read
 global malloc_init, malloc
 global free, get_key
 
-  ;; 一文字シェルに表示するシステムコール
+ ;;一文字シェルに表示するシステムコール
 put_char:
   mov edx, 1
   mov al, [esp+4]

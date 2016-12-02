@@ -14,6 +14,7 @@
  */
 void do_sleep(unsigned int timeout){
 	//自分自身のプロセスへのポインタを変数に格納
+	
 	struct Process *me = task_now();
 	/*
 	 *自分を起こしてくれるタイマを作る
@@ -90,29 +91,26 @@ size_t do_write(int fd, char *buf, int count){
 	/*
 	 *サイズを保持しておく変数
 	 */
-	int size;
+	int size = 0;
 
-	if(fd == __stdout__){
+	switch(fd){
 		/*
 		 *標準出力に書き込む
 		 */
-		for(size = 0; size < count && buf[size] != '\0'; size++){
+	case __stdout__:
+		while(*buf != 0){
 			/*
 			 *標準出力に書き込む
 			 */
-			put_char(buf[size]);
+			put_char(*buf);
+			buf++;
+			size++;
 		}
-	}
-	else{
-		/*
-		 *何もできなかったのでFAILUREを返す1
-		 */
+		break;
+	default:
 		return FAILURE;
 	}
-
-	/*
-	 *書き込んだ長さを返す
-	 */
+	
 	return size;
 }
 
@@ -134,14 +132,16 @@ size_t do_write(int fd, char *buf, int count){
  */
 size_t do_read(int fd, char *buf, int count){
 
-	if(fd == __stdin__){
+	switch(fd){
+	case __stdin__:
 		/*
-		 *標準入力から読み取る
+		 *標準入力から読み込む
 		 */
 		type_prompt(buf, count);
-	}else{
+		break;
+	default:
 		/*
-		 *何もできなかったのでfailureを返す
+		 *何もできなかった
 		 */
 		return FAILURE;
 	}
@@ -149,7 +149,7 @@ size_t do_read(int fd, char *buf, int count){
 	/*
 	 *読み取った文字列長
 	 */
-	return strlen(buf);
+	return 0;
 }
 
 
