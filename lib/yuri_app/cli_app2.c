@@ -1,8 +1,9 @@
 #include "../../include/yuri.h"
 
 int main(void){
-	char str[10];
-	read(stdin, str, 10);
-	write(stdout, str, 10);
+      unsigned int fd = -1;
+	fd = open("a.txt", O_CREAT);
+	if((fd >> 24) == 20)
+		write(stdout, "opened", 6);
 	exit();
 }

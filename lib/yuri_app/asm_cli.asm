@@ -1,19 +1,32 @@
 [BITS 32]
 
 global write, exit
-global put_char, draw_rect
+global put_char
+global open
 global sleep
 global read
 global malloc_init, malloc
 global free, get_key
 
- ;;一文字シェルに表示するシステムコール
+  ;; put_charシステムコール
+  ;; 一文字シェルに表示する
+  ;; 引数
+  ;; int ch...alレジスタ
+  ;; =>表示したい文字
 put_char:
   mov edx, 1
   mov al, [esp+4]
   int 0x68
 
-  ;; 指定したストリームに文字列を書き込むシステムコール
+  ;; writeシステムコール
+  ;; 書き込み系をすべて担当する（させたいなと）システムコール
+  ;; 引数
+  ;; int fd...eaxレジスタ
+  ;; =>ファイルディスクリプタ（ただ言いたかっただけ。）
+  ;; char *buf...ebxレジスタ
+  ;; =>書き込みデータバッファへのポインタ
+  ;; int count...ecxレジスタ
+  ;; =>書き込むサイズ
 write:
   push  ebx
   mov   edx, 2
@@ -24,7 +37,15 @@ write:
   pop   ebx
   ret
 
-  ;; 指定したストリームから読み取るシステムコール
+  ;; readシステムコール
+  ;; 読み込み系をすべて担当する（させたいなと）システムコール
+  ;; 引数
+  ;; int fd...eaxレジスタ
+  ;; =>ファイルディスクリプタ（ただ言いたかっただけ。）
+  ;; char *buf...ebxレジスタ
+  ;; =>読み込みデータバッファへのポインタ
+  ;; int count...ecxレジスタ
+  ;; =>読み込むサイズ
 read:
   push  ebx
   mov   edx, 5
@@ -35,21 +56,20 @@ read:
   pop   ebx
   ret
 
-  ;;
-draw_rect:
-  push edi
-  push esi
+  ;; openシステムコール
+  ;; ファイルを開いたり、作成したりするシステムコール
+  ;; 引数
+  ;; char *pathname...eaxレジスタ
+  ;; =>開いたり、作成するファイル名
+  ;; int flags...ebxレジスタ
+  ;; =>いろいろなフラグ
+open:
   push ebx
-  mov  edx, 3
-  mov  ebx, [esp+16]
-  mov  esi, [esp+20]
-  mov  edi, [esp+24]
-  mov  eax, [esp+28]
-  mov  ecx, [esp+32]
+  mov edx, 3
+  mov eax, [esp+8]
+  mov ebx, [esp+12]
   int 0x68
   pop ebx
-  pop esi
-  pop edi
   ret
 
 malloc_init:

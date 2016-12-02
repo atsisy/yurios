@@ -2,6 +2,7 @@
 #include "../../include/sh.h"
 #include "../../include/string.h"
 #include "../../include/value.h"
+#include "../../include/yrfs.h"
 
 void readfat(int *fat, unsigned char *img);
 void loadfat(int clustno, int size, char *buf, int *fat, char *img);
@@ -317,18 +318,32 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 	*/
 
 	if (edx == 1){
-		
+		/*
+		 *=======================================================================================
+		 *put_charシステムコール
+		 *=======================================================================================
+		 */
 		put_char(eax & 0xff);
 	}else if(edx == 2){
-		//eaxに返り値を格納
-		registers[7] = do_write(eax, (char *) (ebx + cs_base), ecx);
-	}else if(edx == 3){
 		/*
-		 *廃止予定
+		 *=======================================================================================
+		 *writeシステムコール
+		 *=======================================================================================
 		 */
-		//draw_rect(ebx, esi, edi, eax, ecx);
+
+		//eaxに返り値を格納
+		registers[7] = do_write(eax, (char *)(ebx + cs_base), ecx);
+	}else if(edx == 3){
+	      /*
+		 *=======================================================================================
+		 *openシステムコール
+		 *=======================================================================================
+		 */
+		u32_t n = do_open((char *)(eax + cs_base), ebx);
+		print_value((int)(n >> 24), 300, 300);
+		registers[7] = do_open((char *)(eax + cs_base), ebx);
 	}else if(edx == 4){
-		
+
 		return &(me->tss.esp0);
 	}else if(edx == 5){
 		/*
@@ -336,9 +351,8 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *readシステムコール
 		 *=======================================================================================
 		 */
-		
-		/*registers[7] = */
-		do_read(eax, (char *)(ebx+cs_base+1), ecx);
+
+		registers[7] = do_read(eax, (char *)(ebx+cs_base+1), ecx);
 		increase_indent();
 	}else if(edx == 6){
 		/*

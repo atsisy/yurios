@@ -94,6 +94,8 @@ void delete_wrdata(struct writable_data *data);
 void iwrite(struct i_node *inode);
 void iread(struct i_node *inode, u32_t index);
 
+int do_open(char *pathname, u32_t flags);
+
 extern u32_t inode_id;
 
 #endif

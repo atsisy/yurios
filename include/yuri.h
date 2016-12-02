@@ -7,6 +7,11 @@
 #define stdout 1
 #define stderr 2
 
+#define O_RDONLY 0x01
+#define O_WRONLY 0x02
+#define O_RDWR   0x04
+#define O_CREAT  0x08
+
 #define BLACK		     0
 #define RED		       1
 #define GREEN		     2
@@ -26,6 +31,7 @@
 
 size_t write(int fd, char *buf, int count);
 size_t read(int fd, char *buf, int count);
+int open(char *pathname, u32_t flags);
 void malloc_init();
 void *malloc(size_t size);
 void free(void *ptr);
