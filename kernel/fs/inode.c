@@ -6,8 +6,6 @@ static void writable_inode(struct i_node *inode, struct writable_data *data);
 //writable_dataからinode情報を解釈する関数
 static void translate_wrdata2inode(struct i_node *inode, struct writable_data *data);
 
-//inode ID付与の際に用いる変数
-u32_t inode_id;
 /*
  *=======================================================================================
  *icreat関数
@@ -29,22 +27,24 @@ struct i_node icreat(char *file_name) {
 		i++;
 	}
 
+	i = 0;
+	//inode領域の空きを探す
+	while(blocks_info[i].empty == __USED_BLOCK__) i++;
+	inode.id = i;
+
 	/*
 	 *次にファイル割り当て
 	 */
 	i = __FILE_OBJECT_ZONE__;
-	while(!blocks_info[i].empty)
-		i++;
-	blocks_info[i].empty = 0;
-	
+	while(blocks_info[i].empty == __USED_BLOCK__) i++;
+
+	blocks_info[i].empty = __USED_BLOCK__;
+
 	/*
 	 *今の所、隙間に割り当てるようなスキルは無いのでからのセクタにそのまま
 	 */
 	inode.address.offset = 0;
 	inode.address.sector = i;
-
-	inode.id = inode_id;
-	inode_id++;
 
 	return inode;
 }
@@ -56,32 +56,26 @@ struct i_node icreat(char *file_name) {
  *=======================================================================================
  */
 u32_t iwrite(struct i_node *inode) {
-	u32_t i = 0;
+
 	struct writable_data *data = NULL;
-	
+
 	/*
 	 *inodeを書き込み可能形式にする
 	 */
 	new_wrdata(data, __WRITABLE_INODE_SIZE__);
 	writable_inode(inode, data);
 
-	//空きを探す
-	while(!blocks_info[i].empty) i++;
-
       /*
 	 *書き込む
 	 */
-	write_ata_sector(&ATA_DEVICE0, i, data->data, __WRITABLE_INODE_SIZE__);
-
-	//使用済みフラグ
-	blocks_info[i].empty = 0;
+	write_ata_sector(&ATA_DEVICE0, inode->id, data->data, __WRITABLE_INODE_SIZE__);
 
 	/*
 	 *ちゃんと開放
 	 */
 	delete_wrdata(data);
 
-	return i;
+	return inode->id;
 }
 
 /*

@@ -11,7 +11,10 @@
 #define __INODE_ZONE__        0
 #define __FILE_OBJECT_ZONE__ 20
 
-#define __WRITABLE_INODE_SIZE__ 67
+#define __WRITABLE_INODE_SIZE__ 68
+
+#define __UNUSED_BLOCK__ 0x01
+#define __USED_BLOCK__   0x00
 
 /*
  *=======================================================================================
@@ -96,6 +99,5 @@ void iread(struct i_node *inode, u32_t index);
 
 int do_open(char *pathname, u32_t flags);
 
-extern u32_t inode_id;
 
 #endif

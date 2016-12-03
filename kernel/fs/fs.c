@@ -13,5 +13,4 @@ void init_yrfs() {
 	for(;i < 100;i++){
 		blocks_info[i].empty = 1;
 	}
-	inode_id = 1;
 }
