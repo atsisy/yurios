@@ -13,7 +13,7 @@ i32_t ata_select_device_ext(struct ATA_DEVICE *device, u8_t ext_flags);
  *=>デバイス選択
  *u32_t lba
  *=>LBA方式での読み書き位置
- *u16_t count
+ *u32_t count
  *=>読み書きするセクタ数
  *返り値
  *終了状況
@@ -37,15 +37,14 @@ i32_t prepare_wr(struct ATA_DEVICE *device, u32_t lba, i32_t count){
 
         sector_num   = (lba % s) + 1;
         u16_t cyl = lba / (s * h);
-        cyl_lo   = cyl & 0xFF;
-        cyl_hi   = (cyl >> 8) & 0xFF;
+        cyl_lo   = cyl & 0xff;
+        cyl_hi   = (cyl >> 8) & 0xff;
         dev_head = (lba / s) % h;
     }
 
-    if (ata_select_device_ext(device, dev_head) < 0) {
+    if(ata_select_device_ext(device, dev_head) < 0)
         return -1;
-    }
-    
+
     io_out8(__ATA_PORT_SECTOR_CNT(device), count);
     io_out8(__ATA_PORT_SECTOR_NO(device),  sector_num);
     io_out8(__ATA_PORT_CYL_LO(device),     cyl_lo);

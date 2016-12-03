@@ -302,18 +302,25 @@ void shell_master(void){
 			 */
 			ylsh_clear();
 		}else if(strcmp(command, "open")){
+
 			do_open("SampleFile", __O_CREAT__);
 			struct i_node inode;
 			iread(&inode, 0);
 			puts(inode.file_name);
+
+			
 		}else if(strcmp(command, "atainit")){
-			char write_buf[256] = "YURI";
+
+			
+			char write_buf[256] = "WICH";
 			write_buf[255] = '\0';
 			char read_buf[256];
 			read_buf[0] = 'N';
-			write_ata_sector(&ATA_DEVICE0, 1, write_buf, 256);
-			read_ata_sector(&ATA_DEVICE0, 1, read_buf, 256);
-			print(read_buf);
+			write_ata_sector(&ATA_DEVICE0, 1, write_buf, 1);
+			read_ata_sector(&ATA_DEVICE0, 1, read_buf, 1);
+			puts(read_buf);
+
+			
 		}else if(strcmp(command, "lscpu")){
 			command_lscpu();
 		}else if(do_shell_app(fat, copied_str) == 0){

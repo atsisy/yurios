@@ -1,6 +1,7 @@
 BINOPT  = -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../../dst
-OBJS = $(DST)/print.s $(DST)/print.o $(DST)/strlib.s $(DST)/strlib.o
+OBJS = $(DST)/print.s $(DST)/print.o $(DST)/strlib.s $(DST)/strlib.o \
+	$(DST)/file.s $(DST)/file.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YURIC DIRECTORY'

@@ -5,6 +5,8 @@
 i32_t ata_select_device_ext(struct ATA_DEVICE *device, u8_t ext_flags);
 i32_t prepare_wr(struct ATA_DEVICE *device, u32_t lba, i32_t count);
 
+static u16_t dst;
+
 /*
  *=======================================================================================
  *core_read_data関数
@@ -24,17 +26,15 @@ void core_read_ata(struct ATA_DEVICE *device, u16_t *buffer, i32_t length) {
 
 	i32_t i;
 
-	if (buffer != NULL) {
-		for (i = 0; i < length; i++) {
+	if(buffer != NULL){
+		for(i = 0;i <= __ONCE_RW_LIMIT__;i++)
 			*buffer++ = io_in16(__ATA_PORT_DATA(device));
-		}
-	} else {
+	}else{
 		/*
 		 *なんもデータを読まない
 		 */
-		for (i = 0; i < length; i++) {
+		for (i = 0; i < __ONCE_RW_LIMIT__; i++)
 			io_in16(__ATA_PORT_DATA(device));
-		}
 	}
 }
 
@@ -84,15 +84,15 @@ i32_t din_pio(u8_t command, struct ATA_DEVICE *device, void *buffer, i32_t count
 		if ((status & __ATA_STATUS_DRQ__) == 0)
 			return -3;  // なぜかデータが用意されていない
 
-		core_read_ata(device, p, 256);
-		p += 256;
+		core_read_ata(device, p, __ONCE_RW_LIMIT__);
+		p += __ONCE_RW_LIMIT__;
 	}
 
 	io_in8(__ATA_PORT_ALT_STATUS(device));  // 空読み
-   
+
 	status = io_in8(__ATA_PORT_STATUS(device));
 
-	if (status & __ATA_STATUS_ERROR__) {
+	if(status & __ATA_STATUS_ERROR__){
 		return -1;
 	}
 

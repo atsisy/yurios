@@ -20,13 +20,11 @@ i32_t prepare_wr(struct ATA_DEVICE *device, u32_t lba, i32_t count);
  *無し
  *=======================================================================================
  */
-void core_write_ata(struct ATA_DEVICE *device, u16_t *buffer, i32_t length) {
+void core_write_ata(struct ATA_DEVICE *device, u16_t *buffer) {
 	u16_t i;
 	if(buffer != NULL){  //bufferは利用可能
-		for(i = 0;i < length;i++){      //データバッファから一つずつ読み出しなが書き込んで行く
-			io_out16(__ATA_PORT_DATA(device), *buffer);
-			buffer++;            //前にすすめる
-		}
+		for(i = 0;i <= __ONCE_RW_LIMIT__;i++)      //データバッファから一つずつ読み出しなが書き込んで行く
+			io_out16(__ATA_PORT_DATA(device), *buffer++); //前にすすめる
 	}
 }
 
@@ -62,9 +60,8 @@ i32_t dout_pio(u8_t command, struct ATA_DEVICE *device, void *buffer, i32_t coun
 	io_in8(__ATA_PORT_ALT_STATUS(device));  // 空読み
 
 	for (i = 0; i < count; i++) {
-		if (wait_bsy_clear(device) < 0) {
+		if(wait_bsy_clear(device) < 0)
 			return -2;
-		}
 
 		status = io_in8(__ATA_PORT_ALT_STATUS(device));
 
@@ -74,8 +71,8 @@ i32_t dout_pio(u8_t command, struct ATA_DEVICE *device, void *buffer, i32_t coun
 		if ((status & __ATA_STATUS_DRQ__) == 0)
 			return -3;  // なぜかデータが用意されていない
 
-		core_write_ata(device, buffer, 256);
-		buffer += 256;
+		core_write_ata(device, buffer);
+		buffer += __ONCE_RW_LIMIT__;
 	}
 
 	io_in8(__ATA_PORT_ALT_STATUS(device));  // 空読み
