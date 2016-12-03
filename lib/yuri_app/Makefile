@@ -1,12 +1,14 @@
 LINKPATH  = ../../ls
 BINOPT	  = -nostdlib -Wl,--oformat=binary -fno-builtin
-YURIEXE = asm_cli.o cli.s cli.o cli.yx cli_app2.s \
-	cli_app2.o cli_app2.yx
+YURIEXE = asm_cli.o cli.s cli.o cli_app2.s \
+	cli_app2.o
 APP = ../../application
 DST = ../../dst
 
 all: $(YURIEXE) Makefile
 	@echo 'BUILD YURI_APP DIRECTORY'
+	@ld -melf_i386 -o $(APP)/cli.yx --script=$(LINKPATH)/app.ls asm_cli.o $(DST)/print.o cli.o
+	@ld -melf_i386 -o $(APP)/cli_app2.yx --script=$(LINKPATH)/app.ls asm_cli.o $(DST)/print.o $(DST)/file.o cli_app2.o
 	rm *.s
 	mv *.o ..
 
@@ -18,6 +20,3 @@ all: $(YURIEXE) Makefile
 
 %.o: %.asm
 	@nasm -f elf $*.asm -o $*.o
-
-%.yx: %.o
-	@ld -melf_i386 -o $(APP)/$*.yx --script=$(LINKPATH)/app.ls asm_cli.o $(DST)/print.o $(DST)/file.o $*.o

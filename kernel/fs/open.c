@@ -12,11 +12,7 @@ int do_open(char *pathname, u32_t flags) {
 		/*
 		 *inodeを補助記憶装置に書き出し
 		 */
-		iwrite(&inode);
-		/*
-		 *ファイルディスクリプタを計算
-		 */
-		fd = (inode.address.sector << 24) | (inode.address.offset & 0x00ffffff);
+		fd = iwrite(&inode);
 	}
 
 	return fd;

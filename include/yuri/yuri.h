@@ -3,9 +3,9 @@
 
 #include "../types.h"
 
-#define stdin  0
-#define stdout 1
-#define stderr 2
+#define stdin  0xffffffff
+#define stdout 0xfffffffe
+#define stderr 0xfffffffd
 
 #define O_RDONLY 0x01
 #define O_WRONLY 0x02

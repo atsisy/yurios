@@ -3,6 +3,7 @@
 
 int main(void){
 
-
+	puts("aaaaa");
+	
       exit();
 }

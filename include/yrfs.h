@@ -91,7 +91,7 @@ void delete_wrdata(struct writable_data *data);
  *inode情報を補助記憶装置に書き込む
  *=======================================================================================
  */
-void iwrite(struct i_node *inode);
+u32_t iwrite(struct i_node *inode);
 void iread(struct i_node *inode, u32_t index);
 
 int do_open(char *pathname, u32_t flags);

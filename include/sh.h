@@ -3,9 +3,9 @@
 
 #include "bootpack.h"
 
-#define __stdin__  0
-#define __stdout__ 1
-#define __stderr__ 2
+#define __stdin__  0xffffffff
+#define __stdout__ 0xfffffffe
+#define __stderr__  0xfffffffd
 
 
 void print(char *str);

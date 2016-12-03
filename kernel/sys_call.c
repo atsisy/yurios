@@ -3,6 +3,7 @@
 #include "../include/sh.h"
 #include "../include/string.h"
 #include "../include/ata.h"
+#include "../include/yrfs.h"
 
 /*
  *=======================================================================================
@@ -97,6 +98,7 @@ size_t do_write(int fd, char *buf, int count){
 	 *サイズを保持しておく変数
 	 */
 	int size = 0;
+	struct i_node inode;
 
 	switch(fd){
 		/*
@@ -116,10 +118,15 @@ size_t do_write(int fd, char *buf, int count){
 		/*
 		 *ファイルに書き込む
 		 */
+
 		/*
-		 *書き込むセクタはfdの上位8bit
+		 *inode情報を取得
 		 */
-		write_ata_sector(&ATA_DEVICE0, (fd >> 24), buf, count);
+		iread(&inode, fd);
+		/*
+		 *書き込むセクタを取得し書き込む
+		 */
+		write_ata_sector(&ATA_DEVICE0, inode.address.sector, buf, count);
 	}
 
 	return size;
@@ -143,6 +150,8 @@ size_t do_write(int fd, char *buf, int count){
  */
 size_t do_read(int fd, char *buf, int count){
 
+	struct i_node inode;
+	
 	switch(fd){
 	case __stdin__:
 		/*
@@ -150,14 +159,20 @@ size_t do_read(int fd, char *buf, int count){
 		 */
 		type_prompt(buf, count);
 		break;
+
 	default:
 		/*
 		 *ファイルを読み込む
 		 */
+
 		/*
-		 *読み込むセクタはfdの上位8bit
+		 *inode情報を取得
 		 */
-	      read_ata_sector(&ATA_DEVICE0, (fd >> 24), buf, count);
+		iread(&inode, fd);
+		/*
+		 *読み込むセクタを取得し読み込む
+		 */
+	      read_ata_sector(&ATA_DEVICE0, inode.address.sector, buf, count);
 	}
 
 	/*

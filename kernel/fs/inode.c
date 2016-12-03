@@ -55,10 +55,10 @@ struct i_node icreat(char *file_name) {
  *inode情報を補助記憶装置に書き込む
  *=======================================================================================
  */
-void iwrite(struct i_node *inode) {
+u32_t iwrite(struct i_node *inode) {
 	u32_t i = 0;
 	struct writable_data *data = NULL;
-
+	
 	/*
 	 *inodeを書き込み可能形式にする
 	 */
@@ -80,6 +80,8 @@ void iwrite(struct i_node *inode) {
 	 *ちゃんと開放
 	 */
 	delete_wrdata(data);
+
+	return i;
 }
 
 /*
