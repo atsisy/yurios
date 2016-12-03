@@ -6,17 +6,18 @@ APP = ../../application
 DST = ../../dst
 
 all: $(YURIEXE) Makefile
+	@echo 'BUILD YURI_APP DIRECTORY'
 	rm *.s
 	mv *.o ..
 
 %.s: %.c
-	gcc -m32 -Wall -S $*.c $(BINOPT) -o $*.s
+	@gcc -m32 -Wall -S $*.c $(BINOPT) -o $*.s
 
 %.o: %.s
-	as --32 $*.s -o $*.o
+	@as --32 $*.s -o $*.o
 
 %.o: %.asm
-	nasm -f elf $*.asm -o $*.o
+	@nasm -f elf $*.asm -o $*.o
 
 %.yx: %.o
-	ld -melf_i386 -o $(APP)/$*.yx --script=$(LINKPATH)/app.ls asm_cli.o $(DST)/print.o $*.o
+	@ld -melf_i386 -o $(APP)/$*.yx --script=$(LINKPATH)/app.ls asm_cli.o $(DST)/print.o $*.o

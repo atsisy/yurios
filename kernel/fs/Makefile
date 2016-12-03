@@ -4,10 +4,10 @@ OBJS = $(DST)/fs.s $(DST)/fs.o $(DST)/open.s $(DST)/open.o \
 $(DST)/wdata.s $(DST)/wdata.o $(DST)/inode.s $(DST)/inode.o \
 
 all: $(OBJS) Makefile
-	echo "BUILD FS DIRECTORY"
+	@echo 'BUILD FS DIRECTORY'
 
 $(DST)/%.s: %.c
-	gcc -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s
+	@gcc -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s
 
 $(DST)/%.o: $(DST)/%.s
-	as --32 $(DST)/$*.s -o $(DST)/$*.o
+	@as --32 $(DST)/$*.s -o $(DST)/$*.o

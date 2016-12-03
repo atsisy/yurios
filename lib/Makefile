@@ -2,7 +2,7 @@ BINOPT  = -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../dst
 
 all: $(OBJS) Makefile
-	@echo "\nBUILD LIB DIRECTORY\n"
+	@echo 'BUILD LIB DIRECTORY'
 	cd yuric && make all
 	cd math && make all
 	cd yuri && make all
