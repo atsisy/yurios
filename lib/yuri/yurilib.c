@@ -37,8 +37,6 @@ void loadfile(int clustno, int size, char *buf, int *fat, char *img){
 	return;
 }
 
-
-
 int sprintf(char *str, const char *format, ...){
 	int *argv = (int *)(&str+2);	//可変個引数の配列
 	int count, i, argc = 0;			//生成した文字数

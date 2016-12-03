@@ -7,7 +7,6 @@
  *=======================================================================================
  */
 void puts(char *string){
-	
 	while(*string) {
 		write(stdout, string, 1);
 		string++;
