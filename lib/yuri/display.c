@@ -49,7 +49,7 @@ void puts(char *str){
 	 */
 	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, (unsigned char *)str);
 
-	increase_indent();
+	indent_shell();
 
 	return;
 }

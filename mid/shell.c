@@ -257,7 +257,7 @@ void shell_master(void){
 		task_sleep(ylsh_cursor_timer);
 
   		if(command[0] ==  '\0'){   //なにも入力されずEnterキーを押した場合
-    			increase_indent();
+    			indent_shell();
     			put_char('%');
 			enter_flag = 0;
 			length = 1;
@@ -266,13 +266,12 @@ void shell_master(void){
 
 		strcpy(copied_str, command, strlen(command)+1);
 
-		increase_indent();
+		/*
+		 *コマンド打ったあと一個下の行を渡す
+		 */
+		indent_shell();
 
 		string_getNext(command, part);	//受け取ったコマンドを分割して先頭の文字列のみを取り出す
-
-		if(indent > (binfo->scrny-16*5) >> 4){
-			print_value(123, 900, 200);
-		}
 
 		/*
 		 *コマンドに合わせて処理を実行する
@@ -333,13 +332,12 @@ void shell_master(void){
 			print(copied_str);
 			length += strlen(copied_str);
 			print("'.");
+			indent_shell();
 		}
 		/*
 		 *次のコマンドを受け付けるための準備
 		 */
-		increase_indent();
 		put_char('%');
-		length = 1;
 
 		/*
 		 *何らかの処理中にコンソールのカーソルが動いてるのはおかしいのでストップしていたカーソル点滅スレッドを再開

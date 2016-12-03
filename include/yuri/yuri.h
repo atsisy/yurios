@@ -40,5 +40,6 @@ void put_char(int ch);
 void exit(void);
 void draw_rect(int start_x, int start_y, int end_x, int end_y, char color);
 void sleep(unsigned int timeout);
+void newline(void);
 
 #endif

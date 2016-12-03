@@ -7,11 +7,10 @@
  *=======================================================================================
  */
 void puts(char *string){
-	while(*string)
-		put_char(*string);
-	put_char('\n');
-}
-
-void NewLine(){
 	
+	while(*string) {
+		write(stdout, string, 1);
+		string++;
+	}
+	newline();
 }

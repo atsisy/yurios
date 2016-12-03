@@ -7,6 +7,7 @@ global sleep
 global read
 global malloc_init, malloc
 global free, get_key
+global newline
 
   ;; put_charシステムコール
   ;; 一文字シェルに表示する
@@ -122,4 +123,12 @@ sleep:
   mov   edx, 10                 ;10を代入してdo_sleepを呼び出す
   mov   eax, [esp+4]            ;何ミリ秒待つか
   int   0x68
+  ret
+
+  ;; newlineシステムコール
+  ;; シェルのインデントとかに使う
+  ;; 引数なし
+newline:
+  mov edx, 11
+  int 0x68
   ret

@@ -28,6 +28,8 @@ void command_echo(char *inputed_command){
 	 */
 	print(str);
 
+	indent_shell();
+
 	return;
 }
 
@@ -43,12 +45,16 @@ void command_memory(void){
 	char s[20];
 	sprintf(s, "total:%dMB", memtotal / (1024 * 1024));
 	print(s);
-	if(indent > MAX_SCROLL){
+
+	if(indent > MAX_SCROLL)
 		scroll(binfo, 16);
-	}
-	increase_indent();
+
+	indent_shell();
 	sprintf(s, "free:%dKB", memory_total(memman) / 1024);
 	print(s);
+
+	indent_shell();
+
 	return;
 }
 
@@ -63,7 +69,7 @@ void command_history(void){
 		if(indent > MAX_SCROLL){
 			scroll((struct BOOTINFO *)ADR_BOOTINFO, 16);
 		}
-		increase_indent();
+		indent_shell();
 	}
 
 	indent--;
@@ -95,11 +101,11 @@ void command_ls(void){
 				a[11] = finfo[x].ext[2];
 				a[12] = '\0';
 				print(a);
-				increase_indent();
+				indent_shell();
 			}
 		}
 	}
-	indent--;
+	
 	return;
 }
 
@@ -165,7 +171,7 @@ type_next_file:
 					continue;
 				}
 			}else if(s[0] == 0x0a){	//改行がだった場合
-				increase_indent();
+				indent_shell();
 				continue;
 			}else if(s[0] == 0x0d){
 				length = 0;
@@ -179,4 +185,6 @@ type_next_file:
 		//ファイルが見つからなかった場合
 		print("File not found.");
 	}
+
+	indent_shell();
 }

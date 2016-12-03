@@ -278,7 +278,6 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 
 		registers[7] = do_read(eax, (char *)(ebx+cs_base), ecx);
-		increase_indent();
 		break;
 	case 6:
 	      /*
@@ -358,6 +357,14 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *=======================================================================================
 		 */
 		do_sleep((unsigned int)eax);
+		break;
+	case 11:
+		/*
+		 *=======================================================================================
+		 *newlineシステムコール
+		 *=======================================================================================
+		 */
+		indent_shell();
 		break;
 	default:
 		break;

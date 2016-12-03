@@ -4,6 +4,6 @@
 int main(void){
 
 	puts("stdio");
-	
+
       exit();
 }

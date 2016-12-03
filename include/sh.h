@@ -15,7 +15,7 @@ void put_char(char ch);
 
 void type_prompt(char *dst, int buffer_limit);
 
-void increase_indent(void);
+void indent_shell(void);
 void increase_length(void);
 void erase_a_alphabet(void);
 

@@ -8,7 +8,7 @@
  *引数返り値なし
  *=======================================================================================
  */
-void increase_indent(void){
+void indent_shell(void){
 
 	struct BOOTINFO *binfo = (struct BOOTINFO *) ADR_BOOTINFO;
 

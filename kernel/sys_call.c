@@ -103,7 +103,7 @@ size_t do_write(int fd, char *buf, int count){
 		 *標準出力に書き込む
 		 */
 	case __stdout__:
-		while(*buf != 0){
+		while(*buf != 0 && count > size){
 			/*
 			 *標準出力に書き込む
 			 */
