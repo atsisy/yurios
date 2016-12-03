@@ -17,10 +17,7 @@ int strcmp(char *s, char *t){
 
 int strlen(char *str){
 	u32_t count = 0;
-	while(1){
-		if(*str == '\0'){
-			break;
-		}
+      while(*str){
 		str++;
 		count++;
 	}
@@ -52,4 +49,20 @@ void strcpy(char *copied_str, char *str, int length){
 	}
 	copied_str[i] = '\0';
 	return;
+}
+
+char *strcat(char *s1, const char *s2) {
+	u32_t i = 0;
+
+	while(*s1 != '\0')
+		s1++;
+
+	while(s2[i] != '\0'){
+		s1[i] = s2[i];
+		i++;
+	}
+
+	s1[i] = '\0';
+
+	return s1;
 }

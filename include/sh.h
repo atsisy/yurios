@@ -25,6 +25,7 @@ void command_history(void);
 void command_ls(void);
 void command_cat(char *inputed_command);
 void ylsh_clear(void);
+void command_lscpu(void);
 
 
 void readfat(int *fat, unsigned char *img);

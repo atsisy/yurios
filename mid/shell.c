@@ -85,7 +85,7 @@ void type_prompt(char *dst, int buffer_limit){
 	/*
 	 *直前に受け取った1文字だけを保持しておく変数
 	 */
-	char s[2];
+	char input_char;
 
 	struct QUEUE keycmd;
 	int keycmd_buf[32];
@@ -130,39 +130,32 @@ void type_prompt(char *dst, int buffer_limit){
 					}
 				}else if (i < 256 + 0x80){
 					if(key_shift == 0){
-						s[0] = keys0[i - 256];
+						input_char = keys0[i - 256];
 					}else{
-						s[0] = keys1[i - 256];
+						input_char = keys1[i - 256];
 					}
-					if ('A' <= s[0] && s[0] <= 'Z'){	/* 入力文字がアルファベット */
+					if ('A' <= input_char && input_char <= 'Z'){	/* 入力文字がアルファベット */
 						if (((key_leds & 4) == 0 && key_shift == 0) ||
 						    ((key_leds & 4) != 0 && key_shift != 0)) {
-							s[0] += 0x20;	/* 大文字を小文字に変換 */
+							input_char += 0x20;	/* 大文字を小文字に変換 */
 						}
-						s[1] = '\0';
-						print(s);
-						dst[length-1] = s[0];
+						dst[length-1] = input_char;
 						sent_command[length] = '\0';
-						length++;
+						put_char(input_char);
 					}else if(i == 256 + 0x39){	//スペースキーをおした時の処理
-            				s[0] = ' ';
-						s[1] = '\0';
-						print(s);
-						dst[length-1] = s[0];
+						dst[length-1] = ' ';
 						dst[length]   = '\0';
-						length++;
-					}else if('!' <= s[0] && s[0] <= '~'){
-            				s[1] = '\0';
-						print(s);
-						dst[length-1] = s[0];
+						put_char(' ');
+					}else if('!' <= input_char && input_char <= '~'){
+						dst[length-1] = input_char;
 						dst[length]   = '\0';
-						length++;
+						put_char(input_char);
 					}
 				}
 
 				if(i == 256 + 0x0f){	//Tabキーの処理
           				putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + ((indent)*16), COL8_FFFFFF, " ");
-          				sent_command[length-1] = s[0];
+          				sent_command[length-1] = input_char;
           				sent_command[length] = 0;
           				length++;
 				}
@@ -321,6 +314,8 @@ void shell_master(void){
 			write_ata_sector(&ATA_DEVICE0, 1, write_buf, 256);
 			read_ata_sector(&ATA_DEVICE0, 1, read_buf, 256);
 			print(read_buf);
+		}else if(strcmp(command, "lscpu")){
+			command_lscpu();
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*

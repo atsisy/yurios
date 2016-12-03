@@ -8,7 +8,7 @@ OBJS = dst/start.o dst/core.o	\
 	dst/ata_init.o dst/ata_write.o dst/ata_read.o \
 	dst/ata_back.o dst/prepare_wr.o dst/display.o \
 	dst/open.o dst/fs.o dst/inode.o dst/wdata.o \
-	dst/shfunc.o
+	dst/shfunc.o dst/cpuinfo.o
 
 all:
 	cd drivers && make all

@@ -5,7 +5,7 @@ OBJS = $(DST)/start.s $(DST)/start.o $(DST)/graphic.s $(DST)/graphic.o \
 	$(DST)/int.s $(DST)/int.o $(DST)/fifo.s $(DST)/fifo.o \
 	$(DST)/memory.s $(DST)/memory.o $(DST)/mtask.s $(DST)/mtask.o \
 	$(DST)/timer.s $(DST)/timer.o $(DST)/sys_call.s $(DST)/sys_call.o \
-	$(DST)/default_font.s $(DST)/default_font.o $(DST)/core.o
+	$(DST)/default_font.s $(DST)/default_font.o $(DST)/core.o $(DST)/cpuinfo.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD KERNEL DIRECTORY'

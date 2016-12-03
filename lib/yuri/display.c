@@ -24,6 +24,8 @@ void print(char *str){
 	 */
 	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, (unsigned char *)str);
 
+	length += strlen(str);
+	
 	return;
 }
 
@@ -65,6 +67,9 @@ void puts(char *str){
 void put_char(char ch){
 
 	extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
+
+	boxfill8(binfo->vram, binfo->scrnx, BLACK,
+		   length << 3, input_y + (indent << 4), (length << 3)+8, (input_y + (indent << 4)+16));
 
 	/*
 	 *一文字だけ表示

@@ -148,4 +148,6 @@ void create_process(int (*function)(char *), int level, int priority);
  */
 void do_sleep(unsigned int timeout);
 
+void cpu_vendor(u32_t *ebx, u32_t *ecx, u32_t *edx);
+
 #endif
