@@ -3,10 +3,24 @@
 
 #include "types.h"
 
+/*
+ *=======================================================================================
+ *openシステムコールのフラグ
+ *=======================================================================================
+ */
 #define __O_RDONLY__ 0x01
 #define __O_WRONLY__ 0x02
 #define __O_RDWR__   0x04
 #define __O_CREAT__  0x08
+
+/*
+ *=======================================================================================
+ *seekシステムコールのフラグ
+ *=======================================================================================
+ */
+#define __SEEK_SET__ 0x00
+#define __SEEK_CUR__ 0x01
+#define __SEEK_END__ 0x02
 
 #define __INODE_ZONE__        0
 #define __FILE_OBJECT_ZONE__ 20
@@ -15,6 +29,8 @@
 
 #define __UNUSED_BLOCK__ 0x01
 #define __USED_BLOCK__   0x00
+
+typedef unsigned int off_t;
 
 /*
  *=======================================================================================
@@ -98,6 +114,6 @@ u32_t iwrite(struct i_node *inode);
 void iread(struct i_node *inode, u32_t index);
 
 int do_open(char *pathname, u32_t flags);
-
+off_t do_seek(int fd, off_t offset, int whence);
 
 #endif

@@ -312,7 +312,7 @@ void shell_master(void){
 		}else if(strcmp(command, "atainit")){
 
 			
-			char write_buf[256] = "WICH";
+			char write_buf[256] = "YURI";
 			write_buf[255] = '\0';
 			char read_buf[256];
 			read_buf[0] = 'N';

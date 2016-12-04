@@ -87,6 +87,8 @@ malloc_init:
   pop   ebx
   ret
 
+  ;; mallocシステムコール
+  ;; メモリの動的確保システムコール
 malloc:
   push  ebx
   mov   edx, 7
@@ -113,7 +115,7 @@ get_key:
   ret
 
   ;; exitシステムコール
-  ;; プログラム終了のコール
+  ;; プログラム終了のシステム
   ;; 引数無し
 exit:
   mov		edx, 4
@@ -132,3 +134,22 @@ newline:
   mov edx, 11
   int 0x68
   ret
+
+  ;; seekシステムコール
+  ;; ファイルのシーク担当のシステムコール
+  ;; 引数
+  ;; int fd...eaxレジスタ
+  ;; =>ファイルディスクリプタ
+  ;; off_t offset...ebxレジスタ
+  ;; =>オフセット
+  ;; int whence...ecxレジスタ
+  ;; =>シーク方法
+seek:
+  push  ebx
+	mov   edx, 12
+	mov   eax, [esp+8]
+	mov   ebx, [esp+12]
+	mov   ecx, [esp+16]
+	int   0x68
+	pop   ebx
+	ret

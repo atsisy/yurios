@@ -364,7 +364,13 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 		indent_shell();
 		break;
-	default:
+      case 12:
+		/*
+		 *=======================================================================================
+		 *seekシステムコール
+		 *=======================================================================================
+		 */
+		registers[7] = do_seek(eax, ebx, ecx);
 		break;
 	}
 
