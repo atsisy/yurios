@@ -169,6 +169,7 @@ size_t do_read(int fd, char *buf, int count){
 		 *inode情報を取得
 		 */
 		iread(&inode, fd);
+		puts(inode.file_name);
 		/*
 		 *読み込むセクタを取得し読み込む
 		 */

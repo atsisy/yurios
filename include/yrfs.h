@@ -113,6 +113,22 @@ void delete_wrdata(struct writable_data *data);
 u32_t iwrite(struct i_node *inode);
 void iread(struct i_node *inode, u32_t index);
 
+/*
+ *=======================================================================================
+ *u32to4char関数
+ *unsigned intの中に入った4つの文字列を取り出す関数
+ *=======================================================================================
+ */
+void u32to4char(u32_t data, char *buffer);
+
+/*
+ *=======================================================================================
+ *char4tou32関数
+ *unsigned intの中に入った4つの文字列を取り出す関数
+ *=======================================================================================
+ */
+void char4tou32(char *data, u32_t *u32);
+
 int do_open(char *pathname, u32_t flags);
 off_t do_seek(int fd, off_t offset, int whence);
 

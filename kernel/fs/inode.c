@@ -114,26 +114,23 @@ void iread(struct i_node *inode, u32_t index) {
  *=======================================================================================
  */
 static void writable_inode(struct i_node *inode, struct writable_data *data) {
-	u32_t i;
-
+	u32_t i, *data_p = data->data;
+	char *fnp = inode->file_name;
 	/*
 	 *ID、アドレス、サイズをコピー
 	 */
-	data->data[0] = inode->id;
-	data->data[1] = inode->address.sector;
-	data->data[2] = inode->address.offset;
-	data->data[3] = inode->size;
+	*data_p = inode->id;
+	data_p++;
+	*data_p = inode->address.sector;
+	data_p++;
+	*data_p = inode->address.offset;
+	data_p++;
+	*data_p = inode->size;
+	data_p++;
 
-	/*
-	 *ファイル名を圧縮して代入
-	 */
-	for(i = 0;i < 64;i++){
-		data->data[i+4] =
-			(u32_t)inode->file_name[i<<2]           |
-			((u32_t)inode->file_name[(i<<2)+1]) <<  8 |
-			((u32_t)inode->file_name[(i<<2)+2]) << 16 |
-			((u32_t)inode->file_name[(i<<2)+3]) << 24;
-	}
+	for(i = 0;i < 64; i++, data_p++, fnp+=4)
+	      char4tou32(fnp, data_p);
+
 }
 
 /*
@@ -145,6 +142,9 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 static void translate_wrdata2inode(struct i_node *inode, struct writable_data *data) {
 	u32_t i;
 
+	//ファイル名へのポインタを先に入れておく
+	char *fnp = inode->file_name;
+
 	/*
 	 *アドレスとサイズをコピー
 	 */
@@ -153,13 +153,7 @@ static void translate_wrdata2inode(struct i_node *inode, struct writable_data *d
 	inode->address.offset = data->data[2];
 	inode->size = data->data[3];
 
-	/*
-	 *圧縮を展開
-	 */
-	for(i = 0;i < 64;i++){
-		inode->file_name[(i<<2)]   = (char)data->data[i+4];
-		inode->file_name[(i<<2)+1] = (char)(data->data[i+4] >>  8);
-		inode->file_name[(i<<2)+2] = (char)(data->data[i+4] >> 16);
-		inode->file_name[(i<<2)+3] = (char)(data->data[i+4] >> 24);
-	}
+	for(i = 0;i < 64; i++, fnp+=4)
+		u32to4char(data->data[i+4], fnp);
+
 }
