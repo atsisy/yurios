@@ -1,4 +1,4 @@
-#include "../../include/yuri.h"
+#include "../../include/yuri/yuri.h"
 
 int main(void){
 	char command[256];

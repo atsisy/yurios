@@ -6,7 +6,7 @@
  *statシステムコールの中身
  *=======================================================================================
  */
-i32_t do_stat(int fd, u32_t *box) {
+u32_t do_stat(int fd, u32_t *box) {
 	u32_t i;
 	char *fnp;
 	struct i_node inode;

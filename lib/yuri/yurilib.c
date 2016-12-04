@@ -372,6 +372,14 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 		registers[7] = do_seek(eax, ebx, ecx);
 		break;
+	case 13:
+		/*
+		 *=======================================================================================
+		 *statシステムコール
+		 *=======================================================================================
+		 */
+		registers[7] = do_stat(eax, (u32_t *)ebx);
+		break;
 	}
 
 	return 0;

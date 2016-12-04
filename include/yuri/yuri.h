@@ -1,7 +1,7 @@
 #ifndef YURI_H
 #define YURI_H
 
-#include "../types.h"
+#include "types.h"
 
 /*
  *=======================================================================================
@@ -70,5 +70,7 @@ void exit(void);
 void draw_rect(int start_x, int start_y, int end_x, int end_y, char color);
 void sleep(unsigned int timeout);
 void newline(void);
+u32_t stat(int fd, u32_t *box);
+u32_t seek(int fd, off_t offset, int whence);
 
 #endif

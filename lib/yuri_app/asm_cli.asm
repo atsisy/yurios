@@ -8,6 +8,8 @@ global read
 global malloc_init, malloc
 global free, get_key
 global newline
+global seek
+global stat 
 
   ;; put_charシステムコール
   ;; 一文字シェルに表示する
@@ -153,3 +155,19 @@ seek:
 	int   0x68
 	pop   ebx
 	ret
+
+  ;; statシステムコール
+  ;; ファイルの情報を取得するシステムコール
+  ;; 引数
+  ;; int fd...eaxレジスタ
+  ;; =>ファイルディスクリプタ
+  ;; u32_t *box...ebxレジスタ
+  ;; =>データを受け取る箱
+stat:
+  push ebx
+  mov edx, 13
+  mov eax, [esp+8]
+  mov ebx, [esp+12]
+  int 0x68
+  pop ebx
+  ret
