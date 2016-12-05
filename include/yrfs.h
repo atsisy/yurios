@@ -130,6 +130,14 @@ void u32to4char(u32_t data, char *buffer);
  */
 void char4tou32(char *data, u32_t *u32);
 
+/*
+ *=======================================================================================
+ *ffind関数
+ *ファイルを検索する関数
+ *=======================================================================================
+ */
+i32_t ffind(char *pathname);
+
 int do_open(char *pathname, u32_t flags);
 off_t do_seek(int fd, off_t offset, int whence);
 u32_t do_stat(int fd, u32_t *box);

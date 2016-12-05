@@ -16,7 +16,10 @@ int do_open(char *pathname, u32_t flags) {
 		 */
 		fd = iwrite(&inode);
 	}else if(flags & __O_RDONLY__){
-		
+		/*
+		 *ffind関数をつかってinode idを求めて返す
+		 */
+		return ffind(pathname);
 	}
 
 	return fd;
