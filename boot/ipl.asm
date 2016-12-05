@@ -1,4 +1,4 @@
-; haribote-ipl
+; yuri-ipl
 ; TAB=4
 
 CYLS	EQU		10				; どこまで読み込むか
