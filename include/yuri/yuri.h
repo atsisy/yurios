@@ -72,5 +72,6 @@ void sleep(unsigned int timeout);
 void newline(void);
 u32_t stat(int fd, u32_t *box);
 u32_t seek(int fd, off_t offset, int whence);
+i32_t close(i32_t fd);
 
 #endif

@@ -9,7 +9,8 @@ global malloc_init, malloc
 global free, get_key
 global newline
 global seek
-global stat 
+global stat
+global close
 
   ;; put_charシステムコール
   ;; 一文字シェルに表示する
@@ -170,4 +171,16 @@ stat:
   mov ebx, [esp+12]
   int 0x68
   pop ebx
+  ret
+
+  ;; closeシステムコール
+  ;; ファイルを閉じる関数
+  ;; ファイルの状態を初期化したりする
+  ;; 引数
+  ;; int fd...eaxレジスタ
+  ;; =>ファイルディスクリプタ
+close:
+  mov edx, 14
+  mov eax, [esp+4]
+  int 0x68
   ret

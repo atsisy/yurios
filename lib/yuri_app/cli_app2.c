@@ -11,13 +11,13 @@ int main(void){
 
 	fd = open("b.txt", O_CREAT);
 	write(fd, wr, 1);
-	//read(fd, str, 1);
 	getline(fd, str);
 	puts(str);
 	getline(fd, str);
 	puts(str);
 	getline(fd, str);
 	puts(str);
+	close(fd);
 
 	exit();
 }

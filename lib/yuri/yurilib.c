@@ -380,6 +380,14 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 		registers[7] = do_stat(eax, ((int *)((char *)ebx + cs_base)));
 		break;
+	case 14:
+		/*
+		 *=======================================================================================
+		 *closeシステムコール
+		 *=======================================================================================
+		 */
+		registers[7] = do_close(eax);
+		break;
 	}
 
 	return 0;
