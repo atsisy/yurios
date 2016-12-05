@@ -12,8 +12,14 @@ u32_t do_stat(int fd, u32_t *box) {
 	char *fnp;
 	struct i_node inode;
 
+	/*
+	 *inode情報を取得
+	 */
 	iread(&inode, fd);
 
+	/*
+	 *ファイル内容へのポインタをコピー
+	 */
 	fnp = inode.file_name;
 
 	*box = inode.id;

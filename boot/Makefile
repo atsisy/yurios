@@ -1,8 +1,8 @@
-BIN = ipl10.bin asmhead.bin
+BIN = ipl.bin asmhead.bin
 DST = ../dst
 
 all: $(BIN) Makefile
-	mv *.bin $(DST)
+	@mv *.bin $(DST)
 
 %.bin: %.asm
 	nasm $*.asm -o $*.bin
