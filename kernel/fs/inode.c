@@ -68,7 +68,7 @@ u32_t iwrite(struct i_node *inode) {
       /*
 	 *書き込む
 	 */
-	write_ata_sector(&ATA_DEVICE0, inode->id, data->data, __WRITABLE_INODE_SIZE__);
+	write_ata_sector(&ATA_DEVICE0, inode->id, data->data, __WRITABLE_INODE_SECTORS__);
 
 	/*
 	 *ちゃんと開放
@@ -95,7 +95,7 @@ void iread(struct i_node *inode, u32_t index) {
 	/*
 	 *読み込む
 	 */
-	read_ata_sector(&ATA_DEVICE0, index, data->data, __WRITABLE_INODE_SIZE__);
+	read_ata_sector(&ATA_DEVICE0, index, data->data, __WRITABLE_INODE_SECTORS__);
 
 	/*
 	 *inodeに変換

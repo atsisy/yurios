@@ -9,8 +9,8 @@
  */
 void getline(int fd, char *line) {
 	u32_t  i, p = 0;
-	u32_t box[78];
-	
+	u32_t box[78] = { 0 };
+
 	malloc_init();
 	char *buffer = malloc(256*sizeof(char));
 
@@ -22,18 +22,15 @@ void getline(int fd, char *line) {
 			switch(buffer[i]){
 			//改行
 			case 0x0a:
+			case '\0':
 				line[p] = '\0';
 				free(buffer);
-				return;
-			case '\0':
-				free(buffer);
+				seek(fd, i+1, SEEK_CUR);
 				return;
 			default:
 				line[p] = buffer[i];
 			}
 		}
-
-		seek(fd, i, SEEK_CUR);
 	}
 
 }
