@@ -1,5 +1,5 @@
 LINKPATH  = ../../ls
-BINOPT	  = -nostdlib -Wl,--oformat=binary -fno-builtin
+BINOPT	  = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding
 YURIEXE = asm_cli.o cli.s cli.o cli_app2.s \
 	cli_app2.o
 APP = ../../application

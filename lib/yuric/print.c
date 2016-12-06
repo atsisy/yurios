@@ -27,7 +27,7 @@ void getline(int fd, char *line) {
 
 	malloc_init();
 
-	char *buffer = malloc(256*sizeof(char));
+	char *buffer = (char *)malloc(256*sizeof(char));
 
 	stat(fd, box);
 
@@ -47,6 +47,4 @@ void getline(int fd, char *line) {
 			}
 		}
 	}
-	
-	return;
 }

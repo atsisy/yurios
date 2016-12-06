@@ -508,7 +508,7 @@ int do_shell_app(int *fat, char *command){
 		/* ファイルが見つかった場合 */
 		p = (char *) memory_alloc_4k(memman, finfo->size);
 		loadfile(finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
-		if (finfo->size >= 36 && strcmp(p + 4, "ylex") == 1 && *p == 0x00){
+		if (finfo->size >= 36 && strcmp(p + 4, "yrex") == 1 && *p == 0x00){
 			seg_size 	= *((int *) (p + 0x0000));
 			esp    		= *((int *) (p + 0x000c));
 			data_size = *((int *) (p + 0x0010));
@@ -523,7 +523,7 @@ int do_shell_app(int *fat, char *command){
 			start_app(0x1b, 1003 * 8, esp, 1004 * 8, &(me->tss.esp0));
 			memory_free_4k(memman, (int)q, seg_size);
 		}else{
-			print("yx file format error.");
+			print("yuri executable file format error.");
 		}
 		memory_free_4k(memman, (int) p, finfo->size);
 
