@@ -10,6 +10,7 @@ OBJS = $(DST)/start.s $(DST)/start.o $(DST)/graphic.s $(DST)/graphic.o \
 all: $(OBJS) Makefile
 	@echo 'BUILD KERNEL DIRECTORY'
 	cd fs && make all
+	cd sysc && make all
 
 $(DST)/%.s: %.c
 	@gcc -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s
