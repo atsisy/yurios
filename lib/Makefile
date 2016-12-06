@@ -1,4 +1,3 @@
-BINOPT  = -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../dst
 
 all: $(OBJS) Makefile

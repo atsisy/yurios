@@ -11,6 +11,9 @@ OBJS = dst/start.o dst/core.o	\
 	dst/shfunc.o dst/cpuinfo.o dst/seek.o dst/stat.o \
 	dst/close.o dst/find.o dst/read.o dst/write.o dst/sleep.o
 
+BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding
+export BINOPT
+
 all:
 	cd drivers && make all
 	cd boot && make all

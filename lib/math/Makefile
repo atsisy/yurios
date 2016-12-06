@@ -1,4 +1,3 @@
-BINOPT	= -nostdlib -Wl,--oformat=binary -fno-builtin
 OBJS = basis.s basis.o
 
 all: $(OBJS) Makefile

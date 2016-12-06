@@ -1,4 +1,3 @@
-BINOPT	= -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../dst
 OBJS = $(DST)/start.s $(DST)/start.o $(DST)/graphic.s $(DST)/graphic.o \
 	$(DST)/dsctbl.s $(DST)/dsctbl.o \
