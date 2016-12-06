@@ -21,13 +21,28 @@ int strcmp(const char *s, const char *t){
 	return 1;
 }
 
+void string_getNext(char *str, char *dst){
+	int i;
+	for(i = 0;str[i] != ' ' && str[i] != '\0';i++){
+		dst[i] = str[i];
+	}
+	dst[i] = '\0';
+	return;
+}
+
 int main(void) {
 	char code[1024];
+	char identifier[24];
 
 	while(1){
 		read(stdin, code, 1024);
-		if(strcmp(code, "quit"))
+		string_getNext(code, identifier);
+		if(strcmp(identifier, "quit"))
 			break;
+		if(strcmp(identifier, "print")){
+			puts(identifier);
+		}else
+			puts("Unknown identifier.");
 	}
 
 	exit();

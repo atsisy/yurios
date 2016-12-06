@@ -6,6 +6,8 @@ YURIEXE = main.s main.o
 all: $(YURIEXE) Makefile
 	@echo 'BUILD YURISCRIPT DIRECTORY'
 	@ld -melf_i386 -o $(APP)/yrs.yx --script=$(LINKPATH)/app.ls $(DST)/yrsysc.o $(DST)/print.o main.o
+	@mv *.s $(DST)
+	@mv *.o $(DST)
 
 %.s: %.c
 	@gcc -m32 -Wall -S $*.c $(BINOPT) -o $*.s
