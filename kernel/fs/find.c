@@ -1,4 +1,5 @@
 #include "../../include/yrfs.h"
+#include "../../include/string.h"
 
 /*
  *=======================================================================================
@@ -29,10 +30,9 @@ i32_t ffind(char *pathname) {
 			/*
 			 *確かめる
 			 */
-			for(j = 0, w_flag = 0 ;pathname[j] != '\0';j++){
-				if(pathname[j] != inode.file_name[j])  //違った
-					w_flag = 1;
-			}
+			w_flag = 0;
+			if(!strcmp(pathname, inode.file_name))   //違ったら
+				w_flag = 1;   //違ったフラグを立てる
 			/*
 			 *あった
 			 */
