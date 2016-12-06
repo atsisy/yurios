@@ -15,6 +15,7 @@ BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding
 export BINOPT
 
 all:
+	make clean
 	cd drivers && make all
 	cd boot && make all
 	cd kernel && make all
@@ -34,9 +35,5 @@ clean :
 	rm -f ./dst/yuli.sys
 	rm -f ./application/*.yx
 
-cb:
-	make clean
-	make all
-
 time:
-	time make cb
+	time make all

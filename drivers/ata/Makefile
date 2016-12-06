@@ -1,4 +1,3 @@
-BINOPT	= -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../../dst
 OBJS = $(DST)/ata_init.s $(DST)/ata_init.o $(DST)/ata_write.s $(DST)/ata_write.o \
 $(DST)/ata_read.s $(DST)/ata_read.o $(DST)/ata_back.s $(DST)/ata_back.o $(DST)/prepare_wr.s $(DST)/prepare_wr.o

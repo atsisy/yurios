@@ -1,4 +1,3 @@
-BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin
 DST = ../dst
 OBJS = $(DST)/keyboard.s $(DST)/keyboard.o
 
