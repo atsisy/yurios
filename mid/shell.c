@@ -510,7 +510,7 @@ int do_shell_app(int *fat, char *command){
 		loadfile(finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
 		if (finfo->size >= 36 && strcmp(p + 4, "yrex") == 1 && *p == 0x00){
 			seg_size 	= *((int *) (p + 0x0000));
-			esp    		= *((int *) (p + 0x000c));
+			esp        	= *((int *) (p + 0x000c));
 			data_size = *((int *) (p + 0x0010));
 			dathrb 		= *((int *) (p + 0x0014));
 			q = (char *) memory_alloc_4k(memman, seg_size);
