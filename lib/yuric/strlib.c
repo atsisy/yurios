@@ -1,6 +1,6 @@
 #include "../../include/types.h"
 
-int strcmp(char *s, char *t){
+int strcmp(const char *s, const char *t){
 	int i;
 	for(i = 0;s[i] != '\0';i++){
 		if(s[i] != t[i]){
@@ -15,7 +15,7 @@ int strcmp(char *s, char *t){
 	return 1;
 }
 
-int strlen(char *str){
+unsigned long int strlen(const char *str){
 	u32_t count = 0;
       while(*str){
 		str++;
@@ -42,14 +42,14 @@ void cut_string(char *str, char *dst, int start_point){
 	return;
 }
 
-void strcpy(char *s1, char *s2){
+char *strcpy(char *s1, const char *s2){
 	while(*s2){
 		*s1 = *s2;
 		s1++;
 		s2++;
 	}
 	*s1 = '\0';
-	return;
+	return s1;
 }
 
 char *strcat(char *s1, const char *s2) {

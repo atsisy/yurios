@@ -60,7 +60,7 @@ void Main(void) {
 	keys0 = keytable0;
 	keys1 = keytable1;
 
-	struct Process *yuli_kernel, *task_b, *ylsh;
+	struct Process *yuli_kernel, *ylsh;
 
 	init_gdtidt();
 	init_pic();
@@ -130,8 +130,10 @@ void Main(void) {
 	ylsh->tss.gs  = 1 * 8;
 	//*((int *) (ylsh->tss.esp + 4)) = 0;
 
-	task_run(ylsh, 2, 2);
+	//task_run(ylsh, 2, 2);
 
+	shell_master();
+	
 	for(;;){
 		task_sleep(task_now());
 	}

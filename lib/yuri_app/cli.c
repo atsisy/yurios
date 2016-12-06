@@ -3,8 +3,11 @@
 
 int main(void){
 
-	puts("aaaaa");
-	
+	char a[10];
+
+	read(stdin, a, 5);
+
+	puts(a);
       exit();
 }
 

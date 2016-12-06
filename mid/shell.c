@@ -120,6 +120,10 @@ void type_prompt(char *dst, int buffer_limit){
 					increase_length();
 					erase_a_alphabet();
 					dst[length-1] = '\0';
+					/*
+					 *Enterキー押したらコマンドに行くからね
+					 */
+					indent_shell();
 					return;
 				}else if(i == 256 + 0x0e){	//BackSpaceキーの処理
 					if(length >= 2){	//">"これを消さないようにする
@@ -213,6 +217,7 @@ void type_prompt(char *dst, int buffer_limit){
 			io_sti();
 		}
 	}
+	indent_shell();
 }
 
 void shell_master(void){
@@ -262,7 +267,7 @@ void shell_master(void){
 		/*
 		 *コマンド打ったあと一個下の行を渡す
 		 */
-		indent_shell();
+		//indent_shell();
 
 		string_getNext(command, part);	//受け取ったコマンドを分割して先頭の文字列のみを取り出す
 
