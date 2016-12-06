@@ -9,5 +9,7 @@
  */
 void puts(char *string);
 
+void getline(int fd, char *line);
+
 #endif
 

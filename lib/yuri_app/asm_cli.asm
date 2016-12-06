@@ -1,12 +1,15 @@
 [BITS 32]
 
-global write, exit
+global write
+global exit
 global put_char
 global open
 global sleep
 global read
-global malloc_init, malloc
-global free, get_key
+global malloc_init
+global malloc
+global free
+global get_key
 global newline
 global seek
 global stat
