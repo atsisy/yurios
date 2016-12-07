@@ -314,16 +314,7 @@ void shell_master(void){
 			puts(inode.file_name);
 
 			
-		}else if(strcmp(command, "atainit")){
-
-			
-			char write_buf[256] = "YURI";
-			write_buf[255] = '\0';
-			char read_buf[256];
-			read_buf[0] = 'N';
-			write_ata_sector(&ATA_DEVICE0, 1, write_buf, 1);
-			read_ata_sector(&ATA_DEVICE0, 1, read_buf, 1);
-			puts(read_buf);
+		}else if(strcmp(command, "install")){
 
 			
 		}else if(strcmp(command, "lscpu")){

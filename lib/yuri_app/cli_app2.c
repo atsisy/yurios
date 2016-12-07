@@ -9,6 +9,7 @@ int main(void){
 	
 	//fd = open("b.txt", O_CREAT);
 	fd = open("b.txt", O_RDONLY);
+	if(fd == 1) puts("ssssssss");
 	
 	//write(fd, wr, 1);
 
