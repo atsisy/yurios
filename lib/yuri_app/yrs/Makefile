@@ -10,10 +10,10 @@ all: $(YURIEXE) Makefile
 	@mv *.o $(DST)
 
 %.s: %.c
-	@$(CC) -m32 -Wall -S $*.c $(BINOPT) -o $*.s
+	@$(CC) -S $*.c $(BINOPT) -o $*.s
 
 %.o: %.s
-	@as --32 $*.s -o $*.o
+	@$(AS) $*.s -o $*.o
 
 %.o: %.asm
 	@nasm -f elf $*.asm -o $*.o

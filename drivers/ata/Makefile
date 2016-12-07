@@ -6,7 +6,7 @@ all: $(OBJS) Makefile
 	@echo 'BUILD ATA DIRECTORY'
 
 $(DST)/%.s: %.c
-	@$(CC) -m32 -Wall -S $*.c $(BINOPT) -o $(DST)/$*.s
+	@$(CC) -S $*.c $(BINOPT) -o $(DST)/$*.s
 
 $(DST)/%.o: $(DST)/%.s
-	@as --32 $(DST)/$*.s -o $(DST)/$*.o
+	@$(AS) $(DST)/$*.s -o $(DST)/$*.o

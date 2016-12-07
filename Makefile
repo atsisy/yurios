@@ -11,10 +11,12 @@ OBJS = dst/start.o dst/core.o	\
 	dst/shfunc.o dst/cpuinfo.o dst/seek.o dst/stat.o \
 	dst/close.o dst/find.o dst/read.o dst/write.o dst/sleep.o
 
-BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding
+BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall
 export BINOPT
-CC = gcc
+CC = gcc -m32
+AS = gcc -c -Wa,--32
 export CC
+export AS
 
 all:
 	make clean
