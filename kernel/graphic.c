@@ -77,7 +77,7 @@ void set_palette(int start, int end, unsigned char *rgb){
  *長方形を描画する関数
  *=======================================================================================
  */
-void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1){
+void boxfill8(u8_t *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1){
 	int x, y;
 
 	for (y = y0; y <= y1; y++) {
@@ -87,12 +87,12 @@ void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, i
 	return;
 }
 
-void putfont8(char *vram, int xsize, int x, int y, char c, char *font){
+void putfont8(u8_t *vram, int xsize, int x, int y, char c, char *font){
 
 	int i;
 	char *p, d /* data */;
 	for (i = 0; i < 16; i++) {
-		p = vram + (y + i) * xsize + x;
+		p = (char *)vram + (y + i) * xsize + x;
 		d = font[i];
 		if ((d & 0x80) != 0) { p[0] = c; }
 		if ((d & 0x40) != 0) { p[1] = c; }
@@ -115,7 +115,7 @@ void putfont8(char *vram, int xsize, int x, int y, char c, char *font){
  *ビデオメモリ
  *=======================================================================================
  */
-void putfonts8_asc(char *vram, int xsize, int x, int y, char c, char *s){
+void putfonts8_asc(u8_t *vram, int xsize, int x, int y, char c, char *s){
 
 	extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
 	for (;*s != 0x00;s++){

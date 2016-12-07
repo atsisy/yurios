@@ -22,7 +22,7 @@ void print(char *str){
 	/*
 	 *実際に表示する
 	 */
-	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, (unsigned char *)str);
+	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, str);
 
 	length += strlen(str);
 	
@@ -49,7 +49,7 @@ void puts(char *str){
 	/*
 	 *実際に表示する
 	 */
-	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, (unsigned char *)str);
+	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, str);
 
 	indent_shell();
 

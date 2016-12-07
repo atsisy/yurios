@@ -19,8 +19,14 @@ typedef char  i8_t;
 typedef short i16_t;
 typedef int   i32_t;
 
+typedef _Bool bool;
+
 #define TRUE  1
+#define true  1
 #define FALSE 0
+#define false 0
+
+
 /*
   ====================================================================
   構造体定義
@@ -35,7 +41,7 @@ struct BOOTINFO { /* 0x0ff0-0x0fff */
 	char vmode; /* ビデオモード  何ビットカラーか */
 	char reserve;
 	short scrnx, scrny; /* 画面解像度 */
-	char *vram;
+	u8_t *vram;
 };
 
 struct FileInfo{

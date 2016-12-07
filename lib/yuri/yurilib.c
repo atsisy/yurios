@@ -378,7 +378,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *statシステムコール
 		 *=======================================================================================
 		 */
-		registers[7] = do_stat(eax, ((int *)((char *)ebx + cs_base)));
+		registers[7] = do_stat(eax, ((u32_t *)((char *)ebx + cs_base)));
 		break;
 	case 14:
 		/*

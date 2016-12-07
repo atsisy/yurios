@@ -1,6 +1,6 @@
 #include "../../include/types.h"
 
-int strcmp(char *s, char *t){
+int strcmp(const char *s, const char *t){
 	int i;
 	for(i = 0;s[i] != '\0';i++){
 		if(s[i] != t[i]){

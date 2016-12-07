@@ -157,7 +157,6 @@ void task_b_main(void){
 			boxfill8(binfo->vram, binfo->scrnx, BLACK, 950, 600, 1024, 800);
 			sprintf(s, "%01d", count/100);
 			putfonts8_asc(binfo->vram, binfo->scrnx, 950, 600, COL8_FFFFFF, s);
-			//void boxfill8(unsigned char *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
 		}
 		io_cli();
 		if(queue_size(&fifo) == 0){

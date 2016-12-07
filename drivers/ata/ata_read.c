@@ -5,8 +5,6 @@
 i32_t ata_select_device_ext(struct ATA_DEVICE *device, u8_t ext_flags);
 i32_t prepare_wr(struct ATA_DEVICE *device, u32_t lba, i32_t count);
 
-static u16_t dst;
-
 /*
  *=======================================================================================
  *core_read_data関数
