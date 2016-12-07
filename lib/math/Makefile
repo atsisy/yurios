@@ -6,7 +6,7 @@ all: $(OBJS) Makefile
 	mv *.o ..
 
 %.s: %.c
-	@gcc -Wall -Os -m32 -S $*.c $(BINOPT) -o $*.s
+	@$(CC) -Wall -Os -m32 -S $*.c $(BINOPT) -o $*.s
 
 %.o: %.s
 	@as --32 $*.s -o $*.o

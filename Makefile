@@ -13,6 +13,8 @@ OBJS = dst/start.o dst/core.o	\
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding
 export BINOPT
+CC = gcc
+export CC
 
 all:
 	make clean

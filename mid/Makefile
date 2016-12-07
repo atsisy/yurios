@@ -7,7 +7,7 @@ all: $(OBJS) Makefile
 	@echo 'BUILD MID DIRECTORY'
 
 $(DST)/%.s: %.c
-	@gcc -m32 -S -Wall $*.c $(BINOPT) -o $(DST)/$*.s
+	@$(CC) -m32 -S -Wall $*.c $(BINOPT) -o $(DST)/$*.s
 
 $(DST)/%.o: $(DST)/%.s
 	@as --32 $(DST)/$*.s -o $(DST)/$*.o
