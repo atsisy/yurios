@@ -4,13 +4,15 @@
  *=======================================================================================
  */
 #include "../../include/yrfs.h"
+#include "../../include/sh.h"
 
 struct block_info blocks_info[100];
 
 void init_yrfs() {
 	u32_t i = 0;
 	struct i_node inode;
-	
+
+	puts("Start Initializing yurifs...");
 	for(;i < 100;i++){
 		iread(&inode, i);
 		/*
@@ -18,4 +20,5 @@ void init_yrfs() {
 		 */
 		blocks_info[i].empty = inode.file_name[0] == '\0';
 	}
+	puts("Complete Initializing yurifs.");
 }

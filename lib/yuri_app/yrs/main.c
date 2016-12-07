@@ -36,13 +36,17 @@ int main(void) {
 
 	while(1){
 		read(stdin, code, 1024);
+
 		string_getNext(code, identifier);
-		if(strcmp(identifier, "quit"))
+
+		if(strcmp(identifier, "quit")){
 			break;
-		if(strcmp(identifier, "print")){
+		}else if(strcmp(identifier, "print")){
 			puts(identifier);
-		}else
+		}else{
 			puts("Unknown identifier.");
+		}
+		
 	}
 
 	exit();

@@ -60,7 +60,7 @@ void Main(void) {
 	keys0 = keytable0;
 	keys1 = keytable1;
 
-	struct Process *yuli_kernel, *ylsh;
+	struct Process *yuri_kernel, *ylsh;
 
 	init_gdtidt();
 	init_pic();
@@ -103,9 +103,9 @@ void Main(void) {
 
 	//print_value(memman->frees, 300, 300);
 
-	yuli_kernel = task_init(memman, "init_process");
-	fifo.task = yuli_kernel;
-	task_run(yuli_kernel, 1, 2);
+	yuri_kernel = task_init(memman, "init_process");
+	fifo.task = yuri_kernel;
+	task_run(yuri_kernel, 1, 2);
 
 	shell_init();
 	INITIALIZE_ATA_DEVICE();
@@ -129,8 +129,6 @@ void Main(void) {
 	ylsh->tss.fs  = 1 * 8;
 	ylsh->tss.gs  = 1 * 8;
 	//*((int *) (ylsh->tss.esp + 4)) = 0;
-
-	//task_run(ylsh, 2, 2);
 
 	shell_master();
 	
