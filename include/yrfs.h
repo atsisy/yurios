@@ -63,10 +63,18 @@ struct fs_address {
 struct i_node {
 	//inodeID
 	u32_t id;
-	//ファイルのアドレス
-	struct fs_address address;
+	//ファイルの開始アドレス
+	struct fs_address begin_address;
+	//ファイルの終了アドレス
+	struct fs_address end_address;
 	//ファイルのサイズ
 	u32_t size;
+	//このファイルのパーミッション
+	u32_t permission;
+	//このファイルの作成日時
+	u32_t cr_time;
+	//このファイルの作成者
+	char cr_user[16];
 	//ファイル名
 	char file_name[256];
 };
