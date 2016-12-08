@@ -25,8 +25,8 @@
 #define __INODE_ZONE__        0
 #define __FILE_OBJECT_ZONE__ 20
 
-#define __WRITABLE_INODE_SIZE__ 68
-#define __WRITABLE_INODE_SECTORS__ 2
+#define __WRITABLE_INODE_SIZE__ 116
+#define __WRITABLE_INODE_SECTORS__ 3
 
 #define __UNUSED_BLOCK__ 0x01
 #define __USED_BLOCK__   0x00
@@ -73,6 +73,8 @@ struct i_node {
 	u32_t permission;
 	//このファイルの作成日時
 	u32_t cr_time;
+	//このファイルに立っているフラグ
+	u32_t flags;
 	//このファイルの作成者
 	char cr_user[64];
 	//ファイル名

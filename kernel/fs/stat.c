@@ -43,6 +43,9 @@ u32_t do_stat(int fd, u32_t *box) {
 	//作成日時
 	*box = inode.cr_time;
 	box++;
+	//フラグ
+	*box = inode.flags;
+	box++;
 
 	//ファイルの作成者名
 	for(i = 0, unp = inode.cr_user;i < 16; i++, box++, unp+=4)

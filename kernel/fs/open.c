@@ -10,7 +10,7 @@ int do_open(char *pathname, u32_t flags) {
 		/*
 		*同名のファイルが存在しない
 		*/
-		if(ffind(pathname) != -1){
+		if(ffind(pathname) == -1){
 			/*
 		 	*inode作成
 		 	*/
@@ -19,6 +19,7 @@ int do_open(char *pathname, u32_t flags) {
 			 *inodeを補助記憶装置に書き出し
 			 */
 			fd = iwrite(&inode);
+			
 		}
 	}
 	if(flags & __O_RDONLY__){

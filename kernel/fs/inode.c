@@ -155,7 +155,10 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	//作成日時
 	*data_p = inode->cr_time;
 	data_p++;
-
+	//フラグ
+	*data_p = inode->flags;
+	data_p++;
+	
 	//ファイルの作成者名
 	for(i = 0;i < 16; i++, data_p++, unp+=4)
 		char4tou32(unp, data_p);
@@ -197,13 +200,15 @@ static void translate_wrdata2inode(struct i_node *inode, struct writable_data *d
 	inode->permission = data->data[6];
 	//作成日時
 	inode->cr_time = data->data[7];
+	//フラグ
+	inode->flags = data->data[8];
 
 	//このファイルの作成者名
 	for(i = 0;i < 16; i++, unp+=4)
-		u32to4char(data->data[i+8], unp);
+		u32to4char(data->data[i+9], unp);
 
 	//ファイル名
 	for(i = 0;i < 64; i++, fnp+=4)
-		u32to4char(data->data[i+24], fnp);
+		u32to4char(data->data[i+25], fnp);
 
 }
