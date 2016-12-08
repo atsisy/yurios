@@ -10,6 +10,7 @@
 int main(void) {
 	char code[1024];
 	char identifier[24];
+	char arg[256];
 
 	while(1){
 		read(stdin, code, 1024);
@@ -19,7 +20,7 @@ int main(void) {
 		if(strcmp(identifier, "quit")){
 			break;
 		}else if(strcmp(identifier, "print")){
-			puts(identifier);
+			puts(cut_string(code, arg, 6));
 		}else{
 			puts("Unknown identifier.");
 		}

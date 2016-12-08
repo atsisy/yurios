@@ -56,12 +56,14 @@ void inthandler2c(int *esp){
  *=======================================================================================
  *inthandler0c関数
  *プログラムが変なことをしたら飛んでくる割り込みを受け付ける関数
+ *一般保護例外
  *=======================================================================================
  */
 int *inthandler0c(int *esp){
 
   struct Process *proc = task_now();
-  print("Segmentation fault");  //異常終了することをシェルに出力
+  puts("Segmentation fault");  //異常終了することをシェルに出力
+  puts("general protected exception.");
   return &(proc->tss.esp0);      //異常終了実行
 
 }
@@ -70,11 +72,13 @@ int *inthandler0c(int *esp){
  *=======================================================================================
  *inthandler0d関数
  *プログラムが変なことをしたら飛んでくる割り込みを受け付ける関数
+ *スタック例外
  *=======================================================================================
  */
 int *inthandler0d(int *esp){
 
   struct Process *proc = task_now();
-  print("Segmentation fault");  //異常終了することをシェルに出力
+  puts("Segmentation fault");  //異常終了することをシェルに出力
+  puts("stack exception.");
   return &(proc->tss.esp0);      //異常終了実行
 }

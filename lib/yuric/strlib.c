@@ -25,7 +25,7 @@ void string_getNext(char *str, char *dst){
 }
 
 
-void cut_string(const char *str, char *dst, int start_point){
+char *cut_string(const char *str, char *dst, int start_point){
 
 	str += start_point;
 
@@ -35,7 +35,8 @@ void cut_string(const char *str, char *dst, int start_point){
 	}
 
 	*dst = '\0';
-	return;
+
+	return dst;
 }
 /*
 
