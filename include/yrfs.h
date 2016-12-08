@@ -26,7 +26,7 @@
 #define __FILE_OBJECT_ZONE__ 20
 
 #define __WRITABLE_INODE_SIZE__ 116
-#define __WRITABLE_INODE_SECTORS__ 3
+#define __WRITABLE_INODE_SECTORS__ 1
 
 #define __UNUSED_BLOCK__ 0x01
 #define __USED_BLOCK__   0x00

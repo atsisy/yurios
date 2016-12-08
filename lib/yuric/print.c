@@ -20,8 +20,9 @@ void puts(char *string){
  *改行で区切ってファイルの中身を返す
  *=======================================================================================
  */
-void getline(int fd, char *line) {
 
+void getline(int fd, char *line) {
+	
 	u32_t  i, p = 0;
 	u32_t box[78] = { 0 };
 
@@ -47,4 +48,6 @@ void getline(int fd, char *line) {
 			}
 		}
 	}
+	
 }
+
