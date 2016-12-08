@@ -13,7 +13,7 @@ OBJS = dst/start.o dst/core.o	\
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall
 export BINOPT
-CC = gcc -m32
+CC = gcc -O0 -m32
 AS = gcc -c -Wa,--32
 export CC
 export AS

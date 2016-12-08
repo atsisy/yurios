@@ -15,15 +15,6 @@ int strcmp(const char *s, const char *t){
 	return 1;
 }
 
-unsigned long int strlen(const char *str){
-	u32_t count = 0;
-      while(*str){
-		str++;
-		count++;
-	}
-	return count;
-}
-
 void string_getNext(char *str, char *dst){
 	int i;
 	for(i = 0;str[i] != ' ' && str[i] != '\0';i++){
@@ -33,14 +24,24 @@ void string_getNext(char *str, char *dst){
 	return;
 }
 
-void cut_string(char *str, char *dst, int start_point){
-	int i;
-	for(i = 0;i < 1024 && str[i] != '\0';i++){
-		dst[i] = str[i+start_point];
+
+void cut_string(const char *str, char *dst, int start_point){
+
+	str += start_point;
+
+	/*
+	while(*str++){
+		*dst = *str;
+		dst++;
 	}
-	dst[i] = 0;
+	*/
+	int i;
+	for(;;);
+
+	*dst = '\0';
 	return;
 }
+/*
 
 char *strcpy(char *s1, const char *s2){
 	while(*s2){
@@ -67,3 +68,14 @@ char *strcat(char *s1, const char *s2) {
 
 	return s1;
 }
+
+
+unsigned long int strlen(const char *str){
+	u32_t count = 0;
+      while(*str){
+		str++;
+		count++;
+	}
+	return count;
+}
+*/

@@ -10,7 +10,8 @@ int do_open(char *pathname, u32_t flags) {
 		/*
 		 *inode作成
 		 */
-		inode = icreat(pathname);
+		if(ffind(pathname) != -1)
+			inode = icreat(pathname);
 		/*
 		 *inodeを補助記憶装置に書き出し
 		 */
