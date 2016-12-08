@@ -148,6 +148,8 @@ void char4tou32(char *data, u32_t *u32);
  */
 i32_t ffind(char *pathname);
 
+void file_list(char *option);
+
 int do_open(char *pathname, u32_t flags);
 off_t do_seek(int fd, off_t offset, int whence);
 u32_t do_stat(int fd, u32_t *box);

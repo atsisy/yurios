@@ -9,7 +9,8 @@ OBJS = dst/start.o dst/core.o	\
 	dst/ata_back.o dst/prepare_wr.o dst/display.o \
 	dst/open.o dst/fs.o dst/inode.o dst/wdata.o \
 	dst/shfunc.o dst/cpuinfo.o dst/seek.o dst/stat.o \
-	dst/close.o dst/find.o dst/read.o dst/write.o dst/sleep.o
+	dst/close.o dst/find.o dst/read.o dst/write.o dst/sleep.o \
+	dst/flist.o
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall
 export BINOPT

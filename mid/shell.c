@@ -314,8 +314,8 @@ void shell_master(void){
 			puts(inode.file_name);
 
 			
-		}else if(strcmp(command, "install")){
-
+		}else if(strcmp(command, "fls")){
+			file_list(NULL);
 			
 		}else if(strcmp(command, "lscpu")){
 			command_lscpu();
