@@ -43,7 +43,7 @@ size_t do_read(int fd, char *buf, int count){
 		/*
 		 *読み込むセクタを取得し読み込む
 		 */
-	      read_ata_sector(&ATA_DEVICE0, inode.address.sector+(inode.address.offset/255), buf, count);
+	      read_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+(inode.begin_address.offset/255), buf, count);
 	}
 
 	/*
