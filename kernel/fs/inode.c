@@ -43,8 +43,19 @@ struct i_node icreat(char *file_name) {
 	/*
 	 *今の所、隙間に割り当てるようなスキルは無いのでからのセクタにそのまま
 	 */
-	inode.address.offset = 0;
-	inode.address.sector = i;
+	inode.begin_address.offset = 0;
+	inode.begin_address.sector = i;
+
+	/*
+	 *ファイルにはまだ何も書き込まれていないはずなので開始も終了も同じ
+	 */
+	inode.end_address.offset = 0;
+	inode.end_address.sector = i;
+
+	/*
+	 *サイズ0
+	 */
+	inode.size = 0;
 
 	return inode;
 }
@@ -115,19 +126,41 @@ void iread(struct i_node *inode, u32_t index) {
  */
 static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	u32_t i, *data_p = data->data;
+	char *unp = inode->cr_user;
 	char *fnp = inode->file_name;
+	
 	/*
-	 *ID、アドレス、サイズをコピー
+	 *ID、アドレス、サイズ、作成日時をコピー
 	 */
+
+	//inode ID
 	*data_p = inode->id;
 	data_p++;
-	*data_p = inode->address.sector;
+	//開始アドレス
+	*data_p = inode->begin_address.sector;
 	data_p++;
-	*data_p = inode->address.offset;
+	*data_p = inode->begin_address.offset;
 	data_p++;
+	//終了アドレス
+	*data_p = inode->end_address.sector;
+	data_p++;
+	*data_p = inode->end_address.offset;
+	data_p++;
+	//サイズ
 	*data_p = inode->size;
 	data_p++;
+	//パーミッション
+	*data_p = inode->permission;
+	data_p++;
+	//作成日時
+	*data_p = inode->cr_time;
+	data_p++;
 
+	//ファイルの作成者名
+	for(i = 0;i < 16; i++, data_p++, unp+=4)
+		char4tou32(unp, data_p);
+	
+	//ファイル名
 	for(i = 0;i < 64; i++, data_p++, fnp+=4)
 	      char4tou32(fnp, data_p);
 
@@ -144,16 +177,33 @@ static void translate_wrdata2inode(struct i_node *inode, struct writable_data *d
 
 	//ファイル名へのポインタを先に入れておく
 	char *fnp = inode->file_name;
+	char *unp = inode->cr_user;
 
 	/*
 	 *アドレスとサイズをコピー
 	 */
-	inode->id = data->data[0];
-	inode->address.sector = data->data[1];
-	inode->address.offset = data->data[2];
-	inode->size = data->data[3];
 
+	//inode ID
+	inode->id = data->data[0];
+	//開始アドレス
+	inode->begin_address.sector = data->data[1];
+	inode->begin_address.offset = data->data[2];
+	//終了アドレス
+	inode->begin_address.sector = data->data[3];
+	inode->begin_address.offset = data->data[4];
+	//サイズ
+	inode->size = data->data[5];
+	//パーミッション
+	inode->permission = data->data[6];
+	//作成日時
+	inode->cr_time = data->data[7];
+
+	//このファイルの作成者名
+	for(i = 0;i < 16; i++, unp+=4)
+		u32to4char(data->data[i+8], unp);
+
+	//ファイル名
 	for(i = 0;i < 64; i++, fnp+=4)
-		u32to4char(data->data[i+4], fnp);
+		u32to4char(data->data[i+24], fnp);
 
 }

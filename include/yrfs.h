@@ -74,7 +74,7 @@ struct i_node {
 	//このファイルの作成日時
 	u32_t cr_time;
 	//このファイルの作成者
-	char cr_user[16];
+	char cr_user[64];
 	//ファイル名
 	char file_name[256];
 };
