@@ -29,14 +29,10 @@ void cut_string(const char *str, char *dst, int start_point){
 
 	str += start_point;
 
-	/*
 	while(*str++){
 		*dst = *str;
 		dst++;
 	}
-	*/
-	int i;
-	for(;;);
 
 	*dst = '\0';
 	return;

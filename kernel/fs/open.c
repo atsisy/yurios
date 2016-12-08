@@ -8,15 +8,20 @@ int do_open(char *pathname, u32_t flags) {
 	
 	if(flags & __O_CREAT__){
 		/*
-		 *inode作成
-		 */
-		if(ffind(pathname) != -1)
+		*同名のファイルが存在しない
+		*/
+		if(ffind(pathname) != -1){
+			/*
+		 	*inode作成
+		 	*/
 			inode = icreat(pathname);
-		/*
-		 *inodeを補助記憶装置に書き出し
-		 */
-		fd = iwrite(&inode);
-	}else if(flags & __O_RDONLY__){
+			/*
+			 *inodeを補助記憶装置に書き出し
+			 */
+			fd = iwrite(&inode);
+		}
+	}
+	if(flags & __O_RDONLY__){
 		/*
 		 *ffind関数をつかってinode idを求めて返す
 		 */
