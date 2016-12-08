@@ -9,7 +9,7 @@
  */
 u32_t do_stat(int fd, u32_t *box) {
 	u32_t i;
-	char *fnp;
+	char *fnp, *unp;
 	struct i_node inode;
 
 	/*
@@ -17,22 +17,41 @@ u32_t do_stat(int fd, u32_t *box) {
 	 */
 	iread(&inode, fd);
 
-	/*
-	 *ファイル内容へのポインタをコピー
+      /*
+	 *ID、アドレス、サイズ、作成日時をコピー
 	 */
-	fnp = inode.file_name;
 
+	//inode ID
 	*box = inode.id;
 	box++;
-	*box = inode.address.sector;
+	//開始アドレス
+	*box = inode.begin_address.sector;
 	box++;
-	*box = inode.address.offset;
+	*box = inode.begin_address.offset;
 	box++;
+	//終了アドレス
+	*box = inode.end_address.sector;
+	box++;
+	*box = inode.end_address.offset;
+	box++;
+	//サイズ
 	*box = inode.size;
+	box++;
+	//パーミッション
+	*box = inode.permission;
+	box++;
+	//作成日時
+	*box = inode.cr_time;
+	box++;
 
-	for(i = 0;i < 64; i++, fnp+=4, box++)
-		char4tou32(fnp, box);
-
+	//ファイルの作成者名
+	for(i = 0, unp = inode.cr_user;i < 16; i++, box++, unp+=4)
+		char4tou32(unp, box);
+	
+	//ファイル名
+	for(i = 0, fnp = inode.file_name;i < 64; i++, box++, fnp+=4)
+	      char4tou32(fnp, box);
+	
 	return 0;
 }
 
