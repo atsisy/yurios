@@ -150,4 +150,9 @@ void do_sleep(unsigned int timeout);
 
 void cpu_vendor(u32_t *ebx, u32_t *ecx, u32_t *edx);
 
+/*
+ *256色を表示するときのRGB値を決定する関数マクロ
+ */
+#define __RGB256COL__(r, g, b) (16+(r/51)+(6*(g/51))+(36*(b/51))
+
 #endif
