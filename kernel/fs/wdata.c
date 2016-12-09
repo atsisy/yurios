@@ -1,5 +1,5 @@
 #include "../../include/yrfs.h"
-#include "../../include/bootpack.h"
+#include "../../include/kernel.h"
 
 /*
  *=======================================================================================

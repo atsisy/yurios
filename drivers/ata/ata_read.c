@@ -1,4 +1,4 @@
-#include "../../include/bootpack.h"
+#include "../../include/kernel.h"
 #include "../../include/ata.h"
 #include "../../include/sh.h"
 

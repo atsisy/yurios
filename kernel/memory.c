@@ -1,5 +1,5 @@
 /* メモリ関係 */
-#include "../include/bootpack.h"
+#include "../include/kernel.h"
 #include "../include/value.h"
 #include "../include/sh.h"
 

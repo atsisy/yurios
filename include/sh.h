@@ -1,7 +1,7 @@
 #ifndef YULLIB_H
 #define YULLIB_H
 
-#include "bootpack.h"
+#include "kernel.h"
 
 #define __stdin__  0xffffffff
 #define __stdout__ 0xfffffffe

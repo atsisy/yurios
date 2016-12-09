@@ -1,5 +1,5 @@
 /* 割り込み関係 */
-#include "../include/bootpack.h"
+#include "../include/kernel.h"
 #include "../include/sh.h"
 #include "../include/value.h"
 

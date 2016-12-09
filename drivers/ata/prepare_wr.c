@@ -1,6 +1,6 @@
 #include "../../include/ata.h"
 #include "../../include/types.h"
-#include "../../include/bootpack.h"
+#include "../../include/kernel.h"
 
 i32_t ata_select_device_ext(struct ATA_DEVICE *device, u8_t ext_flags);
 

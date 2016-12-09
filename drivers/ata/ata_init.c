@@ -3,7 +3,7 @@
  *ATAデバイスの初期化処理を記述するファイル
  *=======================================================================================
  */
-#include "../../include/bootpack.h"
+#include "../../include/kernel.h"
 #include "../../include/ata.h"
 #include "../../include/types.h"
 #include "../../include/sh.h"

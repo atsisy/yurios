@@ -1,5 +1,5 @@
 //マルチタスク関係
-#include "../include/bootpack.h"
+#include "../include/kernel.h"
 #include "../include/types.h"
 #include "../include/limits.h"
 #include "../include/string.h"
