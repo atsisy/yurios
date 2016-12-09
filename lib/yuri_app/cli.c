@@ -1,7 +1,7 @@
 #include "../../include/yuri/yuri.h"
 #include "../../include/yuri/stdio.h"
 
-int main(void){
+void main(void){
 
 	char a[10];
 
@@ -9,5 +9,6 @@ int main(void){
 
 	puts(a);
       exit();
+
 }
 

@@ -12,7 +12,7 @@ OBJS = dst/start.o dst/core.o	\
 	dst/close.o dst/find.o dst/read.o dst/write.o dst/sleep.o \
 	dst/flist.o
 
-BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall
+BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
 export BINOPT
 CC = gcc -O0 -m32
 AS = gcc -c -Wa,--32

@@ -5,7 +5,7 @@ SECTIONS
 {
     .head 0x0 : {
         LONG(128 * 1024)  /*  0 : stack+.data+heap の大きさ（4KBの倍数） */
-        LONG(0x78657279)      /*  4 : シグネチャ "yrex" */
+        LONG(0x78657279)      /*  4 : シグネチャ*/
         LONG(0)               /*  8 : mmarea の大きさ（4KBの倍数） */
         LONG(0x0400)          /* 12 : スタック初期値＆.data転送先 */
         LONG(SIZEOF(.data))   /* 16 : .dataサイズ */

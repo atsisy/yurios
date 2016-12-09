@@ -20,15 +20,16 @@ void puts(char *string){
  *改行で区切ってファイルの中身を返す
  *=======================================================================================
  */
-
 void getline(int fd, char *line) {
 	
-	u32_t  i, p = 0;
-	u32_t box[78] = { 0 };
+	u32_t  i, p;
 
 	malloc_init();
 
+	u32_t *box = (u32_t *)malloc(78*sizeof(u32_t));
 	char *buffer = (char *)malloc(256*sizeof(char));
+
+	p = 0;
 
 	stat(fd, box);
 
@@ -40,6 +41,7 @@ void getline(int fd, char *line) {
 			case 0x0a:
 			case '\0':
 				line[p] = '\0';
+				free(box);
 				free(buffer);
 				seek(fd, i+1, SEEK_CUR);
 				return;
@@ -50,4 +52,3 @@ void getline(int fd, char *line) {
 	}
 	
 }
-
