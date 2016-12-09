@@ -30,7 +30,7 @@ all:
 	mcopy dst/yuli.sys -i yuli.img ::
 	mcopy yuri_doc.txt -i yuli.img ::
 	mcopy application/cli.yx -i yuli.img ::
-	mcopy application/cli_app2.yx -i yuli.img ::
+	#mcopy application/cli_app2.yx -i yuli.img ::
 	mcopy application/yrs.yx -i yuli.img ::
 
 clean :
