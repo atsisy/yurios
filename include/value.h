@@ -98,4 +98,14 @@
  */
 #define FLAGS_OVERRUN		0x0001
 
+/*
+ *時刻取得のためのフラグ
+ */
+#define __SECOND__ 0x00
+#define __MINUTE__ 0x02
+#define __HOUR__   0x04
+#define __DAY__    0x08
+#define __MONTH__  0x10
+#define __YEAR__   0x20
+
 #endif

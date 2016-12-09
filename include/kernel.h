@@ -141,6 +141,9 @@ void proc_manager_init(void);
 void proc_manager_main(void);
 void create_process(int (*function)(char *), int level, int priority);
 
+/*
+ *t_clock.c
+ */
 
 
 /*
