@@ -1,4 +1,4 @@
-#include "../include/kernel.h"
+#include "../../include/kernel.h"
 
 static char access_rct(char flag);
 static char translate_time(char time);
