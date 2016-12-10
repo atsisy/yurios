@@ -4,6 +4,13 @@ static char access_rct(char flag);
 static char translate_time(char time);
 static u16_t translate_timeh(u16_t time);
 
+/*
+ *=======================================================================================
+ *do_gettime関数
+ *現在時刻をRCTにアクセスして得る関数
+ *フラグによって何を返すか決める
+ *=======================================================================================
+ */
 u16_t do_gettime(char flag){
 
 	if(flag & __SECOND__){
@@ -63,7 +70,7 @@ static char access_rct(char flag) {
  *=======================================================================================
  */
 static char translate_time(char time) {
-	return ((time << 7) >> 7) + ((time >> 1)*10);
+	return  (time & 0x0f) + (time >> 4)*10;
 }
 
 /*
@@ -73,11 +80,11 @@ static char translate_time(char time) {
  *=======================================================================================
  */
 static u16_t translate_timeh(u16_t time) {
-	return ((time << 15) >> 15)
+	return (time & 0x000f)
 		+
-		(((((time >> 1) << 15) >> 15)*10)
+		(((time & 0x00f0) >> 4)*10)
 		+
-		(((((time >> 2) << 15) >> 15)*100))
+		(((time & 0x0f00) >> 8)*100)
 		+
-		(((((time >> 3) << 15) >> 15)*1000)));
+		(((time & 0xf000) >> 12)*1000);
 }

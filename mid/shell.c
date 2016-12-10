@@ -314,9 +314,13 @@ void shell_master(void){
 			puts(inode.file_name);
 
 			
+		}else if(strcmp(command, "now")){
+			char time[32];
+			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),
+				  do_gettime(__DAY__), do_gettime(__YEAR__));
+			puts(time);
 		}else if(strcmp(command, "fls")){
 			file_list(NULL);
-			
 		}else if(strcmp(command, "lscpu")){
 			command_lscpu();
 		}else if(do_shell_app(fat, copied_str) == 0){
