@@ -1,5 +1,3 @@
-; haribote-os boot asm
-; TAB=4
 
 VBEMODE	EQU		0x107			;1024 x  768 x 8bitカラー
 ; （画面モード一覧）
@@ -204,5 +202,6 @@ GDTR0:
 		DW		8*3-1
 		DD		GDT0
 
-		ALIGN 16, DB 0
+	ALIGN 16, DB 0
+ 
 bootpack:
