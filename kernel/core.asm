@@ -14,7 +14,7 @@ global	load_gdtr, load_idtr
 global	load_cr0, store_cr0
 global	asm_inthandler21, asm_inthandler2c
 global	asm_inthandler20, asm_inthandler0d
-global	asm_inthandler0c
+global	asm_inthandler0c, asm_inthandler00
 global	memtest_sub
 global	farjmp, run_app
 global	farcall, start_app
@@ -25,6 +25,7 @@ extern	inthandler21, inthandler2c
 extern	inthandler20
 extern	inthandler0d, sys_call
 extern	inthandler0c
+extern	inthandler00
 
 ; 以下は実際の関数
 
@@ -132,6 +133,27 @@ store_cr0:
 	mov	eax, [esp+4]
 	mov	cr0, eax
 	ret
+
+  ;; スタック例外のイベントハンドラ
+asm_inthandler00:
+	sti
+	push es
+	push ds
+	pushad
+	mov  eax, esp
+	push eax
+	mov  ax, ss
+	mov  ds, ax
+	mov  es, ax
+	call inthandler00
+	cmp  eax, 0
+	jne  end_app
+	pop  eax
+	popad
+	pop	 ds
+	pop  es
+	add  esp, 4
+	iretd
 
   ;; スタック例外のイベントハンドラ
 asm_inthandler0c:

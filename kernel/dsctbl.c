@@ -23,6 +23,9 @@ void init_gdtidt(void){
 	}
 	load_idtr(LIMIT_IDT, ADR_IDT);
 
+	//ゼロ除算例外が発生したときのハンドラを登録
+	set_gatedesc(idt + 0x00, (int) asm_inthandler00, 16, AR_INTGATE32);
+
 	//スタック例外が発生したときのハンドラを登録
 	set_gatedesc(idt + 0x0c, (int) asm_inthandler0c, 16, AR_INTGATE32);
 

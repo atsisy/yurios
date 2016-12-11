@@ -26,6 +26,7 @@ int io_load_eflags(void);	//eflagsレジスタの値を返す関数
 void io_store_eflags(int eflags);	//eflagsに値を代入する関数
 void load_gdtr(int limit, int addr);
 void load_idtr(int limit, int addr);
+void asm_inthandler00(void);
 void asm_inthandler0c(void);
 void asm_inthandler0d(void);
 void asm_inthandler21(void);
