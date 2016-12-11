@@ -14,7 +14,7 @@ OBJS = dst/start.o dst/core.o	\
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
 export BINOPT
-CC = gcc -O0 -m32 -c -Wa,--32
+CC = /home/annet/bin/gcc62/bin/gcc -O0 -m32 -c -Wa,--32
 export CC
 
 all:
