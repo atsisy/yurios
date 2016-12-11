@@ -15,6 +15,8 @@ global seek
 global stat
 global close
 
+  [SECTION .text]
+
   ;; put_charシステムコール
   ;; 一文字シェルに表示する
   ;; 引数
