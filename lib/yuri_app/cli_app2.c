@@ -7,10 +7,10 @@ int main(void){
 	char str[256] = { 0 };
 	char wr[256] = "YURI\nOS";
 	
-	//fd = open("b.txt", O_CREAT);
-	fd = open("b.txt", O_RDONLY);
+	fd = open("b.txt", O_CREAT);
+	//fd = open("b.txt", O_RDONLY);
 	
-	//write(fd, wr, 1);
+	write(fd, wr, 1);
 
 	getline(fd, str);
 	puts(str);
