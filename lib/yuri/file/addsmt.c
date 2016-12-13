@@ -9,11 +9,18 @@
  *=======================================================================================
  */
 void fadd(int fd, char *buffer) {
-	char read_buf[512];
+	char rw_buf[512];
+	u32_t i, arg_index;
 	struct i_node inode;
+
 	iread(&inode, fd);
 
-      do_seek(fd, 0, __SEEK_END__);
-	do_read(fd, read_buf, 1);
-	
+	do_seek(fd, 0, __SEEK_END__);
+	do_read(fd, rw_buf, 1);
+
+	for(i = inode.begin_address.offset % 512, arg_index = 0;i < 512;i++, arg_index++)
+		rw_buf[i] = buffer[arg_index];
+
+	do_write(fd, rw_buf, 1);
+
 }
