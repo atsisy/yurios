@@ -24,11 +24,7 @@ void Main(void) {
 	//以下のメモリ番地はasmhead.nasで記述済み
 	//cyls...0xff0 leds...0x0ff1 vmode...0x0ff2 reserve...0x0ff3
 	//scrnx...0x0ff4 scrny...0x0ff6 vram.自動..0x0ff8
-	//シフト演算は高速化が図れるので積極的に使っていこう！
-	/*
-		アイデア
-		シェルのtask_runをカーネル側で行う
-	*/
+	//シフト演算は高速化が図れるので積極的に使っていこう
 	memman = (struct MEMMAN *) MEMMAN_ADDR;
 	binfo  = (struct BOOTINFO *) ADR_BOOTINFO;
 	struct QUEUE keycmd;
@@ -101,8 +97,6 @@ void Main(void) {
 	memory_free(memman, 0x00001000, 0x0009e000);
 	memory_free(memman, 0x00400000, memtotal-0x00400000);
 
-	//print_value(memman->frees, 300, 300);
-
 	yuri_kernel = task_init(memman, "init_process");
 	fifo.task = yuri_kernel;
 	task_run(yuri_kernel, 1, 2);
@@ -117,7 +111,6 @@ void Main(void) {
 	puts("Welcome to Yuri.");
 	puts("Enjoy hacking on Yuri!!");
 	put_char('%');
-	//history_init();
 
 	ylsh          = task_alloc("shell");
 	ylsh->tss.eip = (int) shell_master;

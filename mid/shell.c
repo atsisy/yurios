@@ -313,7 +313,12 @@ void shell_master(void){
 			iread(&inode, fd);
 			puts(inode.file_name);
 
-			
+		}else if(strcmp(command, "fszeroclear")){
+			u32_t i;
+			u8_t zero[512] = { 0 };
+			for(i = 0;i < 2000;i++){
+				write_ata_sector(&ATA_DEVICE0, i, zero, 1);
+			}
 		}else if(strcmp(command, "now")){
 			char time[32];
 			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),

@@ -1,6 +1,6 @@
 #include "../../../include/sh.h"
 #include "../../../include/yrfs.h"
-#
+
 
 /*
  *=======================================================================================
@@ -9,8 +9,11 @@
  *=======================================================================================
  */
 void fadd(int fd, char *buffer) {
-	char read_buf[256];
-	do_seek(fd, 0, __SEEK_END__);
+	char read_buf[512];
+	struct i_node inode;
+	iread(&inode, fd);
+
+      do_seek(fd, 0, __SEEK_END__);
 	do_read(fd, read_buf, 1);
 	
 }
