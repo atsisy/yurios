@@ -33,6 +33,7 @@
 #define __UNUSED_BLOCK__ 0x01
 #define __USED_BLOCK__   0x00
 
+#define __INODE_LIMIT__ 10000
 typedef unsigned int off_t;
 
 /*
@@ -93,10 +94,7 @@ struct writable_data {
 	u32_t *data;
 };
 
-/*
- *ブロックの情報を保持しておく
- */
-extern struct block_info blocks_info[100];
+
 
 //inodeを作る関数
 struct i_node icreat(char *file_name);
@@ -156,5 +154,15 @@ int do_open(char *pathname, u32_t flags);
 off_t do_seek(int fd, off_t offset, int whence);
 u32_t do_stat(int fd, u32_t *box);
 i32_t do_close(i32_t fd);
+
+/*
+ *=======================================================================================
+ *extern関係
+ *=======================================================================================
+ */
+/*
+ *ブロックの情報を保持しておく
+ */
+extern struct block_info blocks_info[__INODE_LIMIT__];
 
 #endif
