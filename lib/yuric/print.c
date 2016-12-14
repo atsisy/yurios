@@ -35,7 +35,7 @@ void getline(int fd, char *line) {
 
 	while(1){
 		read(fd, buffer, 1);
-		for(i = box[2];i < 512; i++, p++ ){
+		for(i = box[4];i < 512; i++, p++ ){
 			switch(buffer[i]){
 				//改行
 			case 0x0a:
