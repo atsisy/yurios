@@ -24,25 +24,37 @@ u32_t do_stat(int fd, u32_t *box) {
 	//inode ID
 	*box = inode.id;
 	box++;
+
 	//開始アドレス
 	*box = inode.begin_address.sector;
 	box++;
 	*box = inode.begin_address.offset;
 	box++;
+
+	//シークアドレス
+	*box = inode.seek_address.sector;
+	box++;
+	*box = inode.seek_address.offset;
+	box++;
+
 	//終了アドレス
 	*box = inode.end_address.sector;
 	box++;
 	*box = inode.end_address.offset;
 	box++;
+
 	//サイズ
 	*box = inode.size;
 	box++;
+
 	//パーミッション
 	*box = inode.permission;
 	box++;
+
 	//作成日時
 	*box = inode.cr_time;
 	box++;
+
 	//フラグ
 	*box = inode.flags;
 	box++;
