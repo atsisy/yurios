@@ -39,7 +39,6 @@ void init_keyboard(struct QUEUE *fifo, int data0){
 	io_out8(PORT_KEYDAT, KBC_MODE);
 	return;
 }
-
 /*
   ch_keybuf関数の説明
   流し込むキーバッファを変更する。

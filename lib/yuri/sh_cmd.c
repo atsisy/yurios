@@ -27,7 +27,7 @@ void command_echo(char *inputed_command){
 	 *カットした文字列を表示
 	 */
 	print(str);
-
+	
 	indent_shell();
 
 	return;
@@ -105,7 +105,7 @@ void command_ls(void){
 			}
 		}
 	}
-	
+
 	return;
 }
 

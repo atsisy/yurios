@@ -6,3 +6,4 @@ yuli.img
 *.yx
 *.kdev4
 .kdev4
+.clang_complete

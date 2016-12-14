@@ -21,7 +21,7 @@ void puts(char *string){
  *=======================================================================================
  */
 void getline(int fd, char *line) {
-	
+
 	u32_t  i, p;
 
 	malloc_init();
@@ -35,7 +35,7 @@ void getline(int fd, char *line) {
 
 	while(1){
 		read(fd, buffer, 1);
-		for(i = box[2];i < 256; i++, p++ ){
+		for(i = box[2];i < 512; i++, p++ ){
 			switch(buffer[i]){
 				//改行
 			case 0x0a:
@@ -50,5 +50,5 @@ void getline(int fd, char *line) {
 			}
 		}
 	}
-	
+
 }

@@ -50,11 +50,10 @@ u32_t do_stat(int fd, u32_t *box) {
 	//ファイルの作成者名
 	for(i = 0, unp = inode.cr_user;i < 16; i++, box++, unp+=4)
 		char4tou32(unp, box);
-	
+
 	//ファイル名
 	for(i = 0, fnp = inode.file_name;i < 64; i++, box++, fnp+=4)
 	      char4tou32(fnp, box);
-	
+
 	return 0;
 }
-

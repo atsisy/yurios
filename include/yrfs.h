@@ -28,6 +28,8 @@
 #define __WRITABLE_INODE_SIZE__ 116
 #define __WRITABLE_INODE_SECTORS__ 1
 
+#define __YRFS_BLOCK_SIZE__	512
+
 #define __UNUSED_BLOCK__ 0x01
 #define __USED_BLOCK__   0x00
 

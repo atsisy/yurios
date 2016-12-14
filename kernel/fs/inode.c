@@ -128,7 +128,7 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	u32_t i, *data_p = data->data;
 	char *unp = inode->cr_user;
 	char *fnp = inode->file_name;
-	
+
 	/*
 	 *ID、アドレス、サイズ、作成日時をコピー
 	 */
@@ -158,11 +158,11 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	//フラグ
 	*data_p = inode->flags;
 	data_p++;
-	
+
 	//ファイルの作成者名
 	for(i = 0;i < 16; i++, data_p++, unp+=4)
 		char4tou32(unp, data_p);
-	
+
 	//ファイル名
 	for(i = 0;i < 64; i++, data_p++, fnp+=4)
 	      char4tou32(fnp, data_p);
