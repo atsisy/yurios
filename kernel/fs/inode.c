@@ -47,6 +47,12 @@ struct i_node icreat(char *file_name) {
 	inode.begin_address.sector = i;
 
 	/*
+	*最初はbegin_addressと同じ
+	*/
+	inode.seek_address.offset = 0;
+	inode.seek_address.sector = i;
+
+	/*
 	 *ファイルにはまだ何も書き込まれていないはずなので開始も終了も同じ
 	 */
 	inode.end_address.offset = 0;
@@ -136,25 +142,37 @@ static void writable_inode(struct i_node *inode, struct writable_data *data) {
 	//inode ID
 	*data_p = inode->id;
 	data_p++;
+
 	//開始アドレス
 	*data_p = inode->begin_address.sector;
 	data_p++;
 	*data_p = inode->begin_address.offset;
 	data_p++;
+
+	//シークアドレス
+	*data_p = inode->seek_address.sector;
+	data_p++;
+	*data_p = inode->seek_address.offset;
+	data_p++;
+
 	//終了アドレス
 	*data_p = inode->end_address.sector;
 	data_p++;
 	*data_p = inode->end_address.offset;
 	data_p++;
+
 	//サイズ
 	*data_p = inode->size;
 	data_p++;
+
 	//パーミッション
 	*data_p = inode->permission;
 	data_p++;
+
 	//作成日時
 	*data_p = inode->cr_time;
 	data_p++;
+
 	//フラグ
 	*data_p = inode->flags;
 	data_p++;
