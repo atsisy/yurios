@@ -319,7 +319,7 @@ void shell_master(void){
 			for(i = 0;i < 2000;i++){
 				write_ata_sector(&ATA_DEVICE0, i, zero, 1);
 			}
-		}else if(strcmp(command, "now")){
+		}else if(strcmp(command, "date")){
 			char time[32];
 			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),
 				  do_gettime(__DAY__), do_gettime(__YEAR__));
@@ -468,7 +468,7 @@ void multi_shellscroll(struct BOOTINFO *binfo, int height, int top, int under){
 	int i, textzone_x = binfo->scrnx-151, scrnx = binfo->scrnx;
 	int under_addr = under*scrnx;
 	int copy_from = scrnx * height;
-	
+
 	for(i = top*scrnx;i < under_addr;i++){
 		if((i % scrnx) > textzone_x){
 			i += 149;
@@ -513,7 +513,7 @@ int do_shell_app(int *fat, char *command){
 		/* ファイルが見つかった場合 */
 		p = (char *) memory_alloc_4k(memman, finfo->size);
 		loadfile(finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
-		
+
 		if (finfo->size >= 36 && strcmp(p + 4, "yrex") == 1 && *p == 0x00){
 			seg_size 	= *((int *) (p + 0x0000));
 			esp        	= *((int *) (p + 0x000c));
@@ -531,7 +531,7 @@ int do_shell_app(int *fat, char *command){
 		}else{
 			print("yuri executable file format error.");
 		}
-		
+
 		memory_free_4k(memman, (int) p, finfo->size);
 
 		return 1;
