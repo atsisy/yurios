@@ -27,19 +27,19 @@ off_t do_seek(int fd, off_t offset, int whence) {
 		/*
 		 *ファイルの始まりからシーク
 		 */
-		inode.begin_address.offset = offset;
+		inode.seek_address.offset = offset;
 		break;
 	case __SEEK_CUR__:
 		/*
 		 *現在のオフセットからシーク
 		 */
-		inode.begin_address.offset += offset;
+		inode.seek_address.offset += offset;
 		break;
 	case __SEEK_END__:
 		/*
 		 *ファイルの終わりからシーク
 		 */
-		inode.begin_address.offset = inode.size + offset;
+		inode.seek_address.offset = inode.size + offset;
 		break;
 	}
 
