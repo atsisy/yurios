@@ -52,7 +52,7 @@ size_t do_write(int fd, char *buf, int count){
 		/*
 		 *書き込むセクタを取得し書き込む
 		 */
-		write_ata_sector(&ATA_DEVICE0, inode.seek_address.sector, buf, count);
+		write_ata_sector(&ATA_DEVICE0, inode.seek_address.sector, buf, 1+(count / 513));
 	}
 
 	return size;

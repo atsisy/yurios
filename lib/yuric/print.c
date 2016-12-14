@@ -34,7 +34,7 @@ void getline(int fd, char *line) {
 	stat(fd, box);
 
 	while(1){
-		read(fd, buffer, 1);
+		read(fd, buffer, 512);
 		for(i = box[4];i < 512; i++, p++ ){
 			switch(buffer[i]){
 				//改行

@@ -16,7 +16,7 @@ void fadd(int fd, char *buffer) {
 	iread(&inode, fd);
 
 	do_seek(fd, 0, __SEEK_END__);
-	do_read(fd, rw_buf, 1);
+	do_read(fd, rw_buf, 512);
 
 	for(i = inode.begin_address.offset % 512, arg_index = 0;i < 512;i++, arg_index++)
 		rw_buf[i] = buffer[arg_index];
