@@ -70,6 +70,8 @@ struct i_node {
 	struct fs_address begin_address;
 	//ファイルの終了アドレス
 	struct fs_address end_address;
+	//シーク中のアドレス
+	struct fs_address seek_address;
 	//ファイルのサイズ
 	u32_t size;
 	//このファイルのパーミッション
