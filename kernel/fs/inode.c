@@ -206,27 +206,37 @@ static void translate_wrdata2inode(struct i_node *inode, struct writable_data *d
 
 	//inode ID
 	inode->id = data->data[0];
+
 	//開始アドレス
 	inode->begin_address.sector = data->data[1];
 	inode->begin_address.offset = data->data[2];
+
+	//シークアドレス
+	inode->seek_address.sector = data->data[3];
+	inode->seek_address.offset = data->data[4];
+
 	//終了アドレス
-	inode->begin_address.sector = data->data[3];
-	inode->begin_address.offset = data->data[4];
+	inode->begin_address.sector = data->data[5];
+	inode->begin_address.offset = data->data[6];
+
 	//サイズ
-	inode->size = data->data[5];
+	inode->size = data->data[7];
+
 	//パーミッション
-	inode->permission = data->data[6];
+	inode->permission = data->data[8];
+
 	//作成日時
-	inode->cr_time = data->data[7];
+	inode->cr_time = data->data[9];
+
 	//フラグ
-	inode->flags = data->data[8];
+	inode->flags = data->data[10];
 
 	//このファイルの作成者名
 	for(i = 0;i < 16; i++, unp+=4)
-		u32to4char(data->data[i+9], unp);
+		u32to4char(data->data[i+11], unp);
 
 	//ファイル名
 	for(i = 0;i < 64; i++, fnp+=4)
-		u32to4char(data->data[i+25], fnp);
+		u32to4char(data->data[i+27], fnp);
 
 }
