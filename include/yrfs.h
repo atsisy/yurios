@@ -23,7 +23,7 @@
 #define __SEEK_END__ 0x02
 
 #define __INODE_ZONE__        0
-#define __FILE_OBJECT_ZONE__ 20
+#define __FILE_OBJECT_ZONE__ 10001
 
 #define __WRITABLE_INODE_SIZE__ 116
 #define __WRITABLE_INODE_SECTORS__ 1
@@ -34,6 +34,7 @@
 #define __USED_BLOCK__   0x00
 
 #define __INODE_LIMIT__ 10000
+
 typedef unsigned int off_t;
 
 /*
