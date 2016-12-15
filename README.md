@@ -32,7 +32,7 @@ make all
 環境にもよりますが数秒でビルドは完了します。
 
 
-ビルドに必要なもの
+###ビルドに必要なもの
 
 
 ・GCC（32bit）
@@ -45,6 +45,12 @@ make all
 ・GCC 6.2.0
 
 ・NASM 2.10.09
+
+###ビルド環境の構築例(openSUSE Leap 42.2の場合)
+
+```
+$ sudo zypper in make gcc gcc-32bit nasm
+```
 
 ## Contributing
 
