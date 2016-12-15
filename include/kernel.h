@@ -160,6 +160,7 @@ u16_t do_gettime(char flag);
 void do_sleep(unsigned int timeout);
 
 void cpu_vendor(u32_t *ebx, u32_t *ecx, u32_t *edx);
+void cpu_cache_sub(u32_t *ebx, u32_t *ecx, u32_t *edx);
 
 /*
  *256色を表示するときのRGB値を決定する関数マクロ
