@@ -11,8 +11,9 @@ void yrsw_main(){
       struct Process *me = task_now();
       u32_t data;
 
+      init_mouse();
+      io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
-      return;
       while(1){
             /*
             *マウスのキューはからか?

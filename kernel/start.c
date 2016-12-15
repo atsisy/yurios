@@ -92,9 +92,6 @@ void Main(void) {
 
 	init_palette();
 
-	init_mouse();
-      io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
-
 	memory_init(memman);
 	memtotal = memtest(0x00400000, 0xbfffffff);
 	memory_free(memman, 0x00001000, 0x0009e000);
