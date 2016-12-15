@@ -108,4 +108,10 @@
 #define __MONTH__  0x10
 #define __YEAR__   0x20
 
+/*
+*YRWS
+*/
+#define __KEYCMD_MOUSE__ 0xd4
+#define __ENABLE_MOUSE__ 0xf4
+
 #endif
