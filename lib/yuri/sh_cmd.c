@@ -151,7 +151,7 @@ void command_cat(char *inputed_command){
 				}
 			}
 			break;
-		}
+		}u32_t *ebx, u32_t *ecx, u32_t *edxu32_t *ebx, u32_t *ecx, u32_t *edx
 type_next_file:
 		x++;
 	}
