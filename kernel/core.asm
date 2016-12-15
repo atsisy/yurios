@@ -21,11 +21,13 @@ global	farcall, start_app
 global	load_tr
 global	asm_put_char
 global	asm_sys_call
-extern	inthandler21, inthandler2c
-extern	inthandler20
-extern	inthandler0d, sys_call
-extern	inthandler0c
-extern	inthandler00
+extern	keyboard_handler
+extern 	mouse_handler
+extern	timer_handler
+extern	stack_exp_handler
+extern	sys_call
+extern	general_exp_handler
+extern	zzdiv_handler
 
 ; 以下は実際の関数
 
@@ -145,7 +147,7 @@ asm_inthandler00:
 	mov  ax, ss
 	mov  ds, ax
 	mov  es, ax
-	call inthandler00
+	call zzdiv_handler
 	cmp  eax, 0
 	jne  end_app
 	pop  eax
@@ -166,7 +168,7 @@ asm_inthandler0c:
 	mov  ax, ss
 	mov  ds, ax
 	mov  es, ax
-	call inthandler0c
+	call stack_exp_handler
 	cmp  eax, 0
 	jne  end_app
 	pop  eax
@@ -187,7 +189,7 @@ asm_inthandler0d:
 	mov		ax, ss
 	mov		ds, ax
 	mov		es, ax
-	call	inthandler0d
+	call	general_exp_handler
 	cmp		eax, 0		; ここだけ違う
 	jne		end_app		; ここだけ違う
 	pop		eax
@@ -208,7 +210,7 @@ asm_inthandler20:
 	mov	ax, ss
 	mov	ds, ax
 	mov	es, ax
-	call	inthandler20
+	call	timer_handler
 	pop	eax
 	popad
 	pop	ds
@@ -225,7 +227,7 @@ asm_inthandler21:
 	mov	ax, ss
 	mov	ds, ax
 	mov	es, ax
-	call	inthandler21
+	call	keyboard_handler
 	pop	eax
 	popad
 	pop	ds
@@ -242,7 +244,7 @@ asm_inthandler2c:
 	mov	ax, ss
 	mov	ds, ax
 	mov	es, ax
-	call	inthandler2c
+	call	mouse_handler
 	pop	eax
 	popad
 	pop	ds

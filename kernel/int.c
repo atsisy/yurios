@@ -44,7 +44,7 @@ void init_pic(void){
  *一般保護例外
  *=======================================================================================
  */
-int *inthandler00(int *esp){
+int *zzdiv_handler(int *esp){
 
 	struct Process *proc = task_now();
 	puts("Segmentation fault");  //異常終了することをシェルに出力
@@ -61,7 +61,7 @@ int *inthandler00(int *esp){
  *一般保護例外
  *=======================================================================================
  */
-int *inthandler0c(int *esp){
+int *general_exp_handler(int *esp){
 
   struct Process *proc = task_now();
   puts("Segmentation fault");  //異常終了することをシェルに出力
@@ -77,7 +77,7 @@ int *inthandler0c(int *esp){
  *スタック例外
  *=======================================================================================
  */
-int *inthandler0d(int *esp){
+int *stack_exp_handler(int *esp){
 
   struct Process *proc = task_now();
   puts("Segmentation fault");  //異常終了することをシェルに出力

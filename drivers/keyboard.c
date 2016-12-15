@@ -5,7 +5,7 @@
 struct QUEUE *keybuf;
 int keydata0;
 
-void inthandler21(int *esp){  //キーボードからの割り込み
+void keyboard_handler(int *esp){  //キーボードからの割り込み
     unsigned char data;
     io_out8(PIC0_OCW2, 0x61);   //IRQ1受付完了をPICに送信, 0x61は、0x60+IRQ番号
     data = io_in8(PORT_KEYDAT);

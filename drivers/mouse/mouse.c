@@ -26,7 +26,7 @@ void init_mouse(void){
  *マウスからの割り込みを受け付ける関数
  *=======================================================================================
  */
-void inthandler2c(int *esp){
+void mouse_handler(int *esp){
 
 	u8_t data;
       /*
@@ -37,7 +37,7 @@ void inthandler2c(int *esp){
       *マスタに受付完了を通知
       */
       io_out8(PIC0_OCW2, 0x62);
-      
+
       data = io_in8(PORT_KEYDAT);
       queue_push(mouse_queue, data);
 

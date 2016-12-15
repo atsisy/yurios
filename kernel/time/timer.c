@@ -58,7 +58,7 @@ void init_pit(void){
  *タイマのカウントをしたりタイムアップ処理などを行う
  *=======================================================================================
  */
-void inthandler20(int *esp){
+void timer_handler(int *esp){
 
 	io_out8(PIC0_OCW2, 0x60);	//IRQ-00受付完了をPICに通知
 
