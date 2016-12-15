@@ -27,7 +27,7 @@ void command_echo(char *inputed_command){
 	 *カットした文字列を表示
 	 */
 	print(str);
-	
+
 	indent_shell();
 
 	return;
@@ -200,6 +200,9 @@ void command_lscpu(void) {
 	char vendor[13];
 	ebx = ecx = edx = 0;
 
+	/*
+	*CPUベンダ名を取得
+	*/
 	cpu_vendor(&ebx, &ecx, &edx);
 	print("Vendor ID:");
 
@@ -215,7 +218,8 @@ void command_lscpu(void) {
 	vendor[9] = (char)(ecx >> 8);
 	vendor[10] = (char)(ecx >> 16);
 	vendor[11] = (char)(ecx >> 24);
-	vendor[12] = '\0';
+	vendor[12] = '\0';;
+
 
 	puts(vendor);
 }
