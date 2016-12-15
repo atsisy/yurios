@@ -7,7 +7,7 @@ OBJS = dst/start.o dst/core.o dst/default_font.o dst/graphic.o	\
 	dst/open.o dst/fs.o dst/inode.o dst/wdata.o dst/shfunc.o \
 	dst/cpuinfo.o dst/seek.o dst/stat.o dst/close.o dst/find.o \
 	dst/read.o dst/write.o dst/sleep.o dst/flist.o dst/get_clock.o \
-	dst/set_clock.o
+	dst/set_clock.o dst/mouse.o
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
 CC = gcc -O0 -m32 -c -Wa,--32
