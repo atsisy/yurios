@@ -88,6 +88,7 @@ int sprintf(char *str, const char *format, ...){
 	}
 
 	str[count] = '\0';
+
 	return count;
 }
 

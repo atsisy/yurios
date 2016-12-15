@@ -220,6 +220,21 @@ void command_lscpu(void) {
 	vendor[11] = (char)(ecx >> 24);
 	vendor[12] = '\0';;
 
-
 	puts(vendor);
+
+	/*
+	*CPUのキャッシュ情報を得る
+	*/
+	cpu_cache_sub(&ebx, &ecx, &edx);
+	puts("CPU cache infomation.");
+
+	sprintf(vendor, "L1 cache:%d", ebx);
+	puts(vendor);
+
+	sprintf(vendor, "L2 cache:%d", ecx);
+	puts(vendor);
+
+	sprintf(vendor, "L3 cache:%d", edx);
+	puts(vendor);
+
 }
