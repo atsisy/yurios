@@ -25,7 +25,7 @@ void print(char *str){
 	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, str);
 
 	length += strlen(str);
-	
+
 	return;
 }
 
@@ -65,6 +65,14 @@ void puts(char *str){
  *=======================================================================================
  */
 void put_char(char ch){
+
+	/*
+	*改行文字が来たら改行する
+	*/
+	if(ch == 0x0a){
+		indent_shell();
+		return;
+	}
 
 	extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
 
