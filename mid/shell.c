@@ -334,6 +334,8 @@ void shell_master(void){
 			file_list(NULL);
 		}else if(strcmp(command, "lscpu")){
 			command_lscpu();
+		}else if(strcmp(part, "show")){
+			command_show(command);
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*

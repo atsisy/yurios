@@ -2,6 +2,7 @@
 #include "../../include/sh.h"
 #include "../../include/string.h"
 #include "../../include/value.h"
+#include "../../include/yrfs.h"
 
 /*
  *シェル組み込みのコマンドだけを書いていきたいなと思ふ
@@ -151,7 +152,7 @@ void command_cat(char *inputed_command){
 				}
 			}
 			break;
-		}u32_t *ebx, u32_t *ecx, u32_t *edxu32_t *ebx, u32_t *ecx, u32_t *edx
+		}
 type_next_file:
 		x++;
 	}
@@ -238,3 +239,27 @@ void command_lscpu(void) {
 	puts(vendor);
 
 }
+
+/*
+ *=======================================================================================
+ *command_show関数
+ *showコマンドを実行する関数
+ *=======================================================================================
+ */
+ void command_show(char *inputed_command) {
+	 /*
+ 	 *文字列を表示するべき文字列だけにカット
+ 	 */
+ 	char fname[256], str[1024];
+	int fd;
+ 	cut_string(inputed_command, fname, 5);
+
+	if((fd = do_open(str, __O_RDONLY__)) != -1){
+		do_read(fd, str, 2);
+		puts(str);
+	}else{
+		puts("file not found.");
+	}
+
+ 	return;
+ }
