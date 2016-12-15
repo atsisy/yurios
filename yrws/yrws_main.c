@@ -1,16 +1,18 @@
 #include "../include/kernel.h"
 #include "../include/yrws.h"
+#include "../include/sh.h"
 
 extern struct MOUSE_INFO mouse_info;
-
+extern struct QUEUE *mouse_queue;
 struct MOUSE_CURSOR cursor;
 
 void yrsw_main(){
 
-      struct QUEUE *mouse_queue;
       struct Process *me = task_now();
       u32_t data;
 
+
+      return;
       while(1){
             /*
             *マウスのキューはからか?
@@ -53,6 +55,8 @@ void yrsw_main(){
 				cursor.x += mouse_info.x;
 				cursor.y += mouse_info.y;
 
+
+
                         //Xの限界
 				if(cursor.x < 0)
 					cursor.x = 0;
@@ -69,6 +73,7 @@ void yrsw_main(){
 				if(cursor.y > binfo->scrny - 1)
 					cursor.y = binfo->scrny - 1;
 
+                        print_value(6, cursor.x, cursor.y);
 			}
             }
       }

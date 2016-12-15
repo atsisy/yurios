@@ -22,5 +22,9 @@ struct MOUSE_CURSOR {
       u16_t y;
 };
 
+/*
+*マウスを初期化する関数
+*/
+void init_mouse(void);
 
 #endif

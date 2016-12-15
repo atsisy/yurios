@@ -22,6 +22,8 @@ void ylsh_cursor(void);
 
 short enter_flag;
 
+void yrsw_main();
+
 struct Process *ylsh_cursor_timer;
 /*
 	enter_flagが0=>押されていない
@@ -336,6 +338,8 @@ void shell_master(void){
 			command_lscpu();
 		}else if(strcmp(part, "show")){
 			command_show(command);
+		}else if(strcmp(command, "yrws")){
+			yrsw_main();
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*

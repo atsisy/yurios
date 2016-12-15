@@ -40,7 +40,7 @@ void init_gdtidt(void){
 
 	//0x21 => キーボード割り込みのIRQ番号	asm_inthandler21 => イベントハンドラ登録 16=2*8で、セグメント番号2であることを表す
 
-	//set_gatedesc(idt + 0x2c, (int) asm_inthandler2c, 16, AR_INTGATE32);
+	set_gatedesc(idt + 0x2c, (int) asm_inthandler2c, 16, AR_INTGATE32);
 
 	//0x21 => マウス割り込みのIRQ番号	asm_inthandler2c => イベントハンドラ登録 16=2*8で、セグメント番号2であることを表す
 	//セグメント番号2はbootpackすべてをカバーするセグメント

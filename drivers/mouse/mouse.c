@@ -3,6 +3,7 @@
 
 struct MOUSE_INFO mouse_info;
 struct QUEUE *mouse_queue;
+
 int mouse_buf[512];
 
 void init_mouse(void){
@@ -17,7 +18,9 @@ void init_mouse(void){
       wait_KBC_sendready();
       io_out8(PORT_KEYCMD, __KEYCMD_MOUSE__);
       wait_KBC_sendready();
-      io_out8(PORT_KEYDAT, __ENABLE_MOUSE__);
+      io_out8(PORT_KEYDAT, 0xf4);
+
+      mouse_info.phase = 0;
 
       return;
 }

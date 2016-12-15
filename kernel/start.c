@@ -3,6 +3,7 @@
 #include "../include/sh.h"
 #include "../include/string.h"
 #include "../include/ata.h"
+#include "../include/yrws.h"
 
 void init_yrfs();
 
@@ -67,7 +68,6 @@ void Main(void) {
 
 	init_pit();
 	io_out8(PIC0_IMR, 0xf8); // PIC1とキーボードを許可(11111001)
-	//io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111) マウスは使うようになった時のため
 
 	timer    = timer_alloc();
 	timer_init(timer, &fifo, 10);
@@ -91,6 +91,9 @@ void Main(void) {
 	init_keyboard(&fifo, 256);
 
 	init_palette();
+
+	init_mouse();
+      io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
 	memory_init(memman);
 	memtotal = memtest(0x00400000, 0xbfffffff);
@@ -124,7 +127,7 @@ void Main(void) {
 	//*((int *) (ylsh->tss.esp + 4)) = 0;
 
 	shell_master();
-	
+
 	for(;;){
 		task_sleep(task_now());
 	}
@@ -160,4 +163,3 @@ void task_b_main(void){
 		}
 	}
 }
-
