@@ -261,10 +261,10 @@ void shell_master(void){
 		task_sleep(ylsh_cursor_timer);
 
   		if(command[0] ==  '\0'){   //なにも入力されずEnterキーを押した場合
-    			indent_shell();
     			put_char('%');
 			enter_flag = 0;
 			length = 1;
+			task_run(ylsh_cursor_timer, -1, 0);
     			continue;
 		}
 
