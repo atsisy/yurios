@@ -50,14 +50,106 @@ struct Layer *layer_alloc(struct Layer_Master *master){
 
 /*
  *=======================================================================================
- *mouse_handler関数
- *マウスからの割り込みを受け付ける関数
+ *layer_ch_position関数
+ *レイヤーの位置を変更する関数
  *=======================================================================================
  */
- void modify_layer_info(struct Layer *layer, u8_t *arg_data, u16_t x, u16_t y, u32_t invi_col){
-       layer->data = arg_data;
-       layer->display_x = x;
-       layer->display_y = y;
-       layer->invisible = invi_col;
-       return;
- }
+ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, int new_position){
+
+	int h, old = layer->position;
+
+	/*
+      *指定が低すぎや高すぎだったら、修正する
+      */
+	if(new_position > layer_master->top_layer + 1)
+		new_position = layer_master->top_layer + 1;
+
+	if(new_position < -1)
+		new_position = -1;
+
+      /*
+      *高さを設定
+      */
+      layer->position = new_position;
+
+	/*
+      *以下は主にlayers_pointersの並べ替え
+      */
+	if(old > new_position){
+      	/*
+            *もとより低くなる
+            */
+		if(new_position >= 0){
+			/*
+                  *間のものを引き上げる
+                  */
+			for (h = old; h > new_position; h--) {
+				layer_master->layers_pointers[h] = layer_master->layers_pointers[h - 1];
+				layer_master->layers_pointers[h]->position = h;
+			}
+
+			layer_master->layers_pointers[new_position] = layer;
+		}else{
+                  /*
+                  *非表示化
+                  */
+			if(layer_master->top_layer > old){
+				/*
+                        *上になっているものをおろす
+                        */
+				for(h = old;h < layer_master->top_layer;h++){
+					layer_master->layers_pointers[h] = layer_master->layers_pointers[h + 1];
+					layer_master->layers_pointers[h]->position = h;
+				}
+
+			}
+
+                  /*
+                  *表示中の下じきが一つ減るので、一番上の高さが減る
+                  */
+			layer_master->top_layer--;
+		}
+            /*
+            *新しい下じきの情報に沿って画面を描き直す
+            */
+		sheet_refresh(layer_master);
+	}else if(old < new_position){
+            /*
+            *以前よりも高くなる
+            */
+		if(old >= 0){
+			/*
+                  *間のものを押し下げる
+                  */
+			for(h = old;h < new_position;h++){
+				layer_master->layers_pointers[h] = layer_master->layers_pointers[h + 1];
+				layer_master->layers_pointers[h]->position = h;
+			}
+
+			layer_master->layers_pointers[new_position] = layer;
+
+            }else{
+
+                  /*
+                  *非表示状態から表示状態へ
+                  */
+
+			//上になるものを持ち上げる
+			for(h = layer_master->top_layer;h >= new_position;h--){
+				layer_master->layers_pointers[h + 1] = layer_master->layers_pointers[h];
+				layer_master->layers_pointers[h + 1]->position = h + 1;
+			}
+
+                  /*
+                  *表示中の下じきが一つ増えるので、一番上の高さが増える
+                  */
+			layer_master->layers_pointers[new_position] = layer;
+			layer_master->top_layer++;
+		}
+             /*
+             *新しい下じきの情報に沿って画面を描き直す
+             */
+		sheet_refresh(layer_master);
+	}
+	return;
+}
