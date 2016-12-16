@@ -3,6 +3,8 @@
 #include "../include/sh.h"
 
 static void init_yrws(void);
+static void draw_cursor(void);
+static void erase_cursor(void);
 
 struct MOUSE_CURSOR cursor;
 struct MOUSE_INFO mouse_info;
@@ -63,12 +65,14 @@ void yrsw_main(){
                               *中央ボタン
                               */
 				}
+
+                        erase_cursor();
+                        
 				/*
                         *マウスカーソルの移動
                         */
 				cursor.x += mouse_info.x;
 				cursor.y += mouse_info.y;
-
 
                         //Xの限界
 				if(cursor.x < 0)
@@ -86,6 +90,7 @@ void yrsw_main(){
 				if(cursor.y > binfo->scrny - 1)
 					cursor.y = binfo->scrny - 1;
 
+                        draw_cursor();
 			}
             }
       }
@@ -93,4 +98,12 @@ void yrsw_main(){
 
 static void init_yrws(void){
       boxfill8(binfo->vram, binfo->scrnx, BLACK, 0, 0, binfo->scrnx, binfo->scrny);
+}
+
+static void draw_cursor(void){
+      boxfill8(binfo->vram, binfo->scrnx, __RGB256COL__(255, 255, 255), cursor.x, cursor.y, cursor.x+5, cursor.y+5);
+}
+
+static void erase_cursor(void){
+      boxfill8(binfo->vram, binfo->scrnx, BLACK, cursor.x, cursor.y, cursor.x+5, cursor.y+5);
 }
