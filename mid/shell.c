@@ -348,8 +348,7 @@ void shell_master(void){
 			length += 30;
 			print(copied_str);
 			length += strlen(copied_str);
-			print("'.");
-			indent_shell();
+			puts("'.");
 		}
 		/*
 		 *次のコマンドを受け付けるための準備
