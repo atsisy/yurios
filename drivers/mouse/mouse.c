@@ -1,16 +1,15 @@
 #include "../../include/kernel.h"
 #include "../../include/yrws.h"
+#include "../../include/sh.h"
 
-struct MOUSE_INFO mouse_info;
+extern struct MOUSE_INFO mouse_info;
 struct QUEUE *mouse_queue;
 
-int mouse_buf[512];
-
-void init_mouse(void){
+void init_mouse(struct QUEUE *ms_queue){
       /*
-      *マウスのバッファを初期化する
+      *マウスを指定する
       */
-      queue_init(mouse_queue, 512, mouse_buf, NULL);
+      mouse_queue = ms_queue;
 
       /*
       *マウスを有効化する
@@ -20,7 +19,10 @@ void init_mouse(void){
       wait_KBC_sendready();
       io_out8(PORT_KEYDAT, 0xf4);
 
-      mouse_info.phase = 0;
+      /*
+      *マウスの情報を保持する構造体の初期化
+      */
+      mouse_info.phase = mouse_info.x = mouse_info.y = 0;
 
       return;
 }
@@ -44,6 +46,7 @@ void mouse_handler(int *esp){
       io_out8(PIC0_OCW2, 0x62);
 
       data = io_in8(PORT_KEYDAT);
+
       queue_push(mouse_queue, data);
 
       return;

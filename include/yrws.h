@@ -25,6 +25,7 @@ struct MOUSE_CURSOR {
 /*
 *マウスを初期化する関数
 */
-void init_mouse(void);
+void init_mouse(struct QUEUE *ms_queue);
+int decode_mdata(u8_t dat);
 
 #endif

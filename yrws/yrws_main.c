@@ -2,16 +2,24 @@
 #include "../include/yrws.h"
 #include "../include/sh.h"
 
-extern struct MOUSE_INFO mouse_info;
-extern struct QUEUE *mouse_queue;
 struct MOUSE_CURSOR cursor;
+struct MOUSE_INFO mouse_info;
+struct QUEUE *mouse_queue;
 
 void yrsw_main(){
 
+      i32_t mouse_buf[512];
       struct Process *me = task_now();
       u32_t data;
 
-      init_mouse();
+      puts("Starting...");
+
+      mouse_queue = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
+
+      queue_init(mouse_queue, 512, mouse_buf, me);
+
+      init_mouse(mouse_queue);
+
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
       while(1){
@@ -31,7 +39,7 @@ void yrsw_main(){
 			data = queue_pop(mouse_queue);
 			io_sti();
 
-			if(decode_mdata(&mouse_info, data) != 0){
+			if(decode_mdata(data) != 0){
 				/*
                         *データが3バイト揃ったので表示
                         */
@@ -57,7 +65,6 @@ void yrsw_main(){
 				cursor.y += mouse_info.y;
 
 
-
                         //Xの限界
 				if(cursor.x < 0)
 					cursor.x = 0;
@@ -74,7 +81,6 @@ void yrsw_main(){
 				if(cursor.y > binfo->scrny - 1)
 					cursor.y = binfo->scrny - 1;
 
-                        print_value(6, cursor.x, cursor.y);
 			}
             }
       }
