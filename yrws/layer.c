@@ -47,3 +47,17 @@ struct Layer *layer_alloc(struct Layer_Master *master){
 
       return NULL;
 }
+
+/*
+ *=======================================================================================
+ *mouse_handler関数
+ *マウスからの割り込みを受け付ける関数
+ *=======================================================================================
+ */
+ void modify_layer_info(struct Layer *layer, u8_t *arg_data, u16_t x, u16_t y, u32_t invi_col){
+       layer->data = arg_data;
+       layer->display_x = x;
+       layer->display_y = y;
+       layer->invisible = invi_col;
+       return;
+ }
