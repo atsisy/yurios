@@ -40,13 +40,11 @@ void shell_init(void){
 	/*
 	 *パラメータ初期化
 	 */
-	input_y = 32;
+	input_y = 0;
 	length = 0;
 	indent = 1;
 	enter_flag = 0;
 	MAX_SCROLL = (binfo->scrny >> 4)-2;
-	draw_vline(binfo->vram, binfo->scrnx,
-		 binfo->scrny, binfo->scrnx-RUNNING_TASK_SPACE, binfo->scrny);
 
 	/*
 	 *シェル起動時のモードはシングルモード

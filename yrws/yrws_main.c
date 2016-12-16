@@ -105,5 +105,5 @@ static void draw_cursor(void){
 }
 
 static void erase_cursor(void){
-      boxfill8(binfo->vram, binfo->scrnx, BLACK, cursor.x, cursor.y, cursor.x+5, cursor.y+5);
+      boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, cursor.x, cursor.y, cursor.x+5, cursor.y+5);
 }
