@@ -2,6 +2,8 @@
 #include "../include/yrws.h"
 #include "../include/sh.h"
 
+static void init_yrws(void);
+
 struct MOUSE_CURSOR cursor;
 struct MOUSE_INFO mouse_info;
 struct QUEUE *mouse_queue;
@@ -14,13 +16,16 @@ void yrsw_main(){
 
       puts("Starting...");
 
+      /*
+      *マウスのキューを設定
+      */
       mouse_queue = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
-
       queue_init(mouse_queue, 512, mouse_buf, me);
 
       init_mouse(mouse_queue);
-
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
+
+      init_yrws();
 
       while(1){
             /*
@@ -84,4 +89,8 @@ void yrsw_main(){
 			}
             }
       }
+}
+
+static void init_yrws(void){
+      boxfill8(binfo->vram, binfo->scrnx, BLACK, 0, 0, binfo->scrnx, binfo->scrny);
 }
