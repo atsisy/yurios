@@ -67,7 +67,7 @@ void yrsw_main(){
 				}
 
                         erase_cursor();
-                        
+
 				/*
                         *マウスカーソルの移動
                         */
@@ -97,7 +97,7 @@ void yrsw_main(){
 }
 
 static void init_yrws(void){
-      boxfill8(binfo->vram, binfo->scrnx, BLACK, 0, 0, binfo->scrnx, binfo->scrny);
+      boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, 0, 0, binfo->scrnx, binfo->scrny);
 }
 
 static void draw_cursor(void){

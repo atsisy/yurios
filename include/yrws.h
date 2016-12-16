@@ -23,6 +23,11 @@ struct MOUSE_CURSOR {
 };
 
 /*
+*デフォルトの背景色
+*/
+#define __DEFAULT_WALLPAPER_COLOR__ 54
+
+/*
 *マウスを初期化する関数
 */
 void init_mouse(struct QUEUE *ms_queue);
