@@ -3,8 +3,8 @@
 #include "../include/sh.h"
 
 static void init_yrws(void);
-static void draw_cursor(void);
-static void erase_cursor(void);
+void draw_cursor(void);
+void erase_cursor(void);
 
 struct MOUSE_CURSOR cursor;
 struct MOUSE_INFO mouse_info;

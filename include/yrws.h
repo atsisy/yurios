@@ -11,6 +11,12 @@
 *レイヤーの最大数
 */
 #define __LAYER_LIMIT__ 1024
+
+/*
+*レイヤーの仕様状況フラグ
+*/
+#define __UNUSED_LAYER__ 0
+#define __USED_LAYER__	 1
 /*
 *マウスのデータとかをひとまとめにした構造体
 */
