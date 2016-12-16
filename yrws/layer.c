@@ -50,6 +50,34 @@ struct Layer *layer_alloc(struct Layer_Master *master){
 
 /*
  *=======================================================================================
+ *all_layer_redraw関数
+ *すべてのレイヤーを下から再描画していく関数
+ *=======================================================================================
+ */
+void redraw_all_layer(struct Layer_Master *master){
+	int h, x, y, display_x, display_y;
+	unsigned char *buf, *vram = binfo->vram, c;
+	struct Layer *layer;
+
+      for(h = 0;h <= master->top_layer;h++) {
+		layer = master->layers_pointers[h];
+		buf = layer->data;
+		for (y = 0; y < layer->height; y++) {
+			display_y = layer->display_y + y;
+			for(x = 0; x < layer->width; x++) {
+				display_x = layer->display_x + x;
+				c = buf[y * layer->display_x + x];
+				if (c != layer->invisible) {
+					vram[display_y * binfo->scrnx + display_x] = c;
+				}
+			}
+		}
+	}
+	return;
+}
+
+/*
+ *=======================================================================================
  *layer_ch_position関数
  *レイヤーの位置を変更する関数
  *=======================================================================================
@@ -112,7 +140,7 @@ struct Layer *layer_alloc(struct Layer_Master *master){
             /*
             *新しい下じきの情報に沿って画面を描き直す
             */
-		sheet_refresh(layer_master);
+		redraw_all_layer(layer_master);
 	}else if(old < new_position){
             /*
             *以前よりも高くなる
@@ -153,3 +181,41 @@ struct Layer *layer_alloc(struct Layer_Master *master){
 	}
 	return;
 }
+
+/*
+ *=======================================================================================
+ *move_layer関数
+ *レイヤー移動させる関数
+ *=======================================================================================
+ */
+void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t y){
+      layer->display_x = x;
+      layer->display_y = y;
+
+      /*
+      *表示中のレイヤーならば全て書き直す
+      */
+      if(layer->position >= 0)
+            redraw_all_layer(master);
+
+      return;
+}
+
+/*
+ *=======================================================================================
+ *free_layer関数
+ *レイヤーを開放する関数
+ *=======================================================================================
+ */
+void free_layer(struct Layer_Master *master, struct Layer *layer){
+
+      /*
+      *レイヤーが表示中なら先に非表示にする
+      */
+      if(layer->height >= 0)
+            layer_ch_position(master, layer, -1);
+
+      layer->flags = __UNUSED_LAYER__;
+
+      return;
+ }
