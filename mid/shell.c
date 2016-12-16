@@ -448,19 +448,17 @@ void scroll(struct BOOTINFO *binfo, int height){
 	 *スクロールに必要なパラメータの取得、計算
 	 */
 	int i, textzone_x = binfo->scrnx-151, scrnx = binfo->scrnx, scrny = binfo->scrny;
-	int scrnxy = scrnx * scrny;
+	int scrnxy = (scrnx * scrny) - (scrnx*height);
 	int copy_from = scrnx * height;
 
 	/*
 	 *塗替え処理
 	 */
 	for(i = 0;i < scrnxy;i++){
-		if((i % scrnx) > textzone_x){
-			i += 149;
-		}else{
-			binfo->vram[i] = binfo->vram[i+copy_from];
-		}
+		binfo->vram[i] = binfo->vram[i+copy_from];
 	}
+
+	boxfill8(binfo->vram, scrnx, BLACK, 0, scrny-height, scrnx, scrny);
 
 	/*
 	 *入力位置を適宜決定

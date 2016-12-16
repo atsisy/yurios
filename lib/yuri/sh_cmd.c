@@ -101,8 +101,7 @@ void command_ls(void){
 				a[10] = finfo[x].ext[1];
 				a[11] = finfo[x].ext[2];
 				a[12] = '\0';
-				print(a);
-				indent_shell();
+				puts(a);
 			}
 		}
 	}
@@ -263,4 +262,3 @@ void command_lscpu(void) {
 
  	return;
  }
- 
