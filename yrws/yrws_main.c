@@ -99,15 +99,3 @@ void yrsw_main(){
 static void init_yrws(void){
       boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, 0, 0, binfo->scrnx, binfo->scrny);
 }
-
-static void draw_cursor(void){
-      //boxfill8(binfo->vram, binfo->scrnx, __RGB256COL__(255, 255, 255), cursor.x, cursor.y, cursor.x+5, cursor.y+5);
-      u32_t i;
-      for(i = 0;i < 12;i++){
-            binfo->vram[(binfo->scrnx*(cursor.y+i))+cursor.x] = 0;
-      }
-}
-
-static void erase_cursor(void){
-      boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, cursor.x, cursor.y, cursor.x+5, cursor.y+5);
-}

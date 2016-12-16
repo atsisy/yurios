@@ -1,9 +1,9 @@
 DST = ../dst
-OBJS = yrws_main.o
+OBJS = yrws_main.o cursor.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YRWS DIRECTORY'
-	@ld -melf_i386 -r yrws_main.o -o $(DST)/yrws.o
+	@ld -melf_i386 -r $(OBJS) -o $(DST)/yrws.o
 	@rm -f *.o
 
 %.o: %.c
