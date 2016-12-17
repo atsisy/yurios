@@ -14,7 +14,7 @@ void task_b_main(void);
 
 char sent_command[1024];
 
-struct BOOTINFO *binfo;
+const struct BOOTINFO *binfo;
 struct QUEUE fifo;
 
 unsigned int memtotal;

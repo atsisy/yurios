@@ -45,7 +45,7 @@ struct Layer {
 	u16_t height;	//レイヤーの高さ
 	u16_t display_x;	//レイヤーがディスプレイのどこにいるか
 	u16_t display_y;	//レイヤーがディスプレイのどこにいるか
-	u16_t position;	//レイヤーの表面からの順番
+	i16_t position;	//レイヤーの表面からの順番
 	u32_t invisible;	//透明色
 	u32_t flags;	//フラグ
 };
@@ -73,11 +73,13 @@ int decode_mdata(u8_t dat);
 /*
 *レイヤー関係
 */
-struct Layer_Master *layer_master_alloc(struct Layer_Master *master);
+struct Layer_Master *layer_master_alloc(struct Layer_Master **master);
 struct Layer *layer_alloc(struct Layer_Master *master);
 void redraw_all_layer(struct Layer_Master *master);
 void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, int new_position);
 void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t y);
 void free_layer(struct Layer_Master *master, struct Layer *layer);
+u8_t *layer_chbuf(struct Layer *layer, u8_t *buffer);
+struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, i32_t invisible);
 
 #endif

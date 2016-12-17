@@ -3,13 +3,15 @@
 #include "../include/sh.h"
 
 static void init_yrws(void);
-void draw_cursor(void);
 void erase_cursor(void);
+void init_mscursor(struct Layer *layer);
 
 struct MOUSE_CURSOR cursor;
 struct MOUSE_INFO mouse_info;
 struct QUEUE *mouse_queue;
 struct Layer_Master *LAYER_MASTER;
+struct Layer *mouse_cursor_layer;
+struct Layer *wall_paper;
 
 void yrsw_main(){
 
@@ -67,8 +69,6 @@ void yrsw_main(){
                               */
 				}
 
-                        erase_cursor();
-
 				/*
                         *マウスカーソルの移動
                         */
@@ -91,7 +91,7 @@ void yrsw_main(){
 				if(cursor.y > binfo->scrny - 1)
 					cursor.y = binfo->scrny - 1;
 
-                        draw_cursor();
+                        move_layer(LAYER_MASTER, mouse_cursor_layer, cursor.x, cursor.y);
 			}
             }
       }
@@ -101,10 +101,9 @@ static void init_yrws(void){
       /*
       *レイヤー管理構造体を確保
       */
-      layer_master_alloc(LAYER_MASTER);
+      layer_master_alloc(&LAYER_MASTER);
 
-      struct Layer *wall_paper, *mouse_cursor_layer;
-      u8_t *wp_buffer, mc_buffer[128];
+      u8_t *wp_buffer, *mc_buffer;
 
       //壁紙のレイヤーを確保
       wall_paper = layer_alloc(LAYER_MASTER);
@@ -113,6 +112,36 @@ static void init_yrws(void){
 
       //壁紙のレイヤーの描画情報を格納するバッファを確保
       wp_buffer = (u8_t *)memory_alloc_4k(memman, binfo->scrnx * binfo->scrny);
+      mc_buffer = (u8_t *)memory_alloc(memman, 128);
 
-      boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, 0, 0, binfo->scrnx, binfo->scrny);
+      /*
+      *壁紙レイヤーの情報をセット
+      */
+      layer_chbuf(wall_paper, wp_buffer);
+      modify_layer(wall_paper, binfo->scrnx, binfo->scrny, -1);
+      boxfill8(wall_paper->data, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, 0, 0, wall_paper->width, wall_paper->height);
+
+      /*
+      *マウスカーソルレイヤーの情報をセット
+      */
+      layer_chbuf(mouse_cursor_layer, mc_buffer);
+      modify_layer(mouse_cursor_layer, 8, 16, 255);
+      init_mscursor(mouse_cursor_layer);        //マウスカーソルの描画
+
+      cursor.x = wall_paper->width >> 1;
+      cursor.y = wall_paper->height >> 1;
+
+      /*
+      *レイヤーを移動
+      */
+      move_layer(LAYER_MASTER, wall_paper, 0, 0);
+      move_layer(LAYER_MASTER, mouse_cursor_layer, cursor.x, cursor.y);
+
+      /*
+      *レイヤーの位置を調整
+      */
+      layer_ch_position(LAYER_MASTER, wall_paper, 0);
+      layer_ch_position(LAYER_MASTER, mouse_cursor_layer, 1);
+
+      redraw_all_layer(LAYER_MASTER);
 }

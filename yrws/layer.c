@@ -1,5 +1,6 @@
 #include "../include/kernel.h"
 #include "../include/yrws.h"
+#include "../include/sh.h"
 
 /*
  *=======================================================================================
@@ -7,20 +8,20 @@
  *layer_masterを確保する関数
  *=======================================================================================
  */
-struct Layer_Master *layer_master_alloc(struct Layer_Master *master){
+struct Layer_Master *layer_master_alloc(struct Layer_Master **master){
 
       u32_t i;
-      master = (struct Layer_Master *)memory_alloc_4k(memman, sizeof(struct Layer_Master));
+      *master = (struct Layer_Master *)memory_alloc_4k(memman, sizeof(struct Layer_Master));
 
-      master->top_layer = -1;
+      (*master)->top_layer = -1;
 
       /*
       *全てに未使用フラグを立てる
       */
       for(i = 0;i < __LAYER_LIMIT__;i++)
-            master->layers[i].flags = __UNUSED_LAYER__;  //未使用フラグ
+            (*master)->layers[i].flags = __UNUSED_LAYER__;  //未使用フラグ
 
-      return master;
+      return *master;
 }
 
 /*
@@ -50,27 +51,50 @@ struct Layer *layer_alloc(struct Layer_Master *master){
 
 /*
  *=======================================================================================
- *all_layer_redraw関数
+ *redraw_all_layer関数
  *すべてのレイヤーを下から再描画していく関数
  *=======================================================================================
  */
 void redraw_all_layer(struct Layer_Master *master){
-	int h, x, y, display_x, display_y;
+
+      int h, x, y, display_x, display_y;
 	unsigned char *buf, *vram = binfo->vram, c;
 	struct Layer *layer;
 
-      for(h = 0;h <= master->top_layer;h++) {
+      for(h = 0;h <= master->top_layer;h++){
+
+            /*
+            *レイヤーとそのデータバッファを得る
+            */
 		layer = master->layers_pointers[h];
 		buf = layer->data;
-		for (y = 0; y < layer->height; y++) {
+            /*
+            *描画処理
+            */
+		for(y = 0;y < layer->height;y++){
+
+                  /*
+                  *レイヤーの位置を考慮したY座標
+                  */
 			display_y = layer->display_y + y;
-			for(x = 0; x < layer->width; x++) {
+
+                  for(x = 0;x < layer->width;x++){
+
+                        /*
+                        *レイヤーの位置を考慮したX座標
+                        */
 				display_x = layer->display_x + x;
-				c = buf[y * layer->display_x + x];
-				if (c != layer->invisible) {
-					vram[display_y * binfo->scrnx + display_x] = c;
-				}
+
+                        /*
+                        *レイヤーの色をとってくる
+                        */
+                        c = buf[(y * layer->width) + x];
+
+                        if(c != layer->invisible)
+					vram[(display_y * binfo->scrnx) + display_x] = c;
+
 			}
+
 		}
 	}
 	return;
@@ -104,7 +128,7 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
       *以下は主にlayers_pointersの並べ替え
       */
 	if(old > new_position){
-      	/*
+            /*
             *もとより低くなる
             */
 		if(new_position >= 0){
@@ -141,6 +165,7 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
             *新しい下じきの情報に沿って画面を描き直す
             */
 		redraw_all_layer(layer_master);
+
 	}else if(old < new_position){
             /*
             *以前よりも高くなる
@@ -237,7 +262,7 @@ u8_t *layer_chbuf(struct Layer *layer, u8_t *buffer){
  *レイヤーの基本情報をセットする関数
  *=======================================================================================
  */
-struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, u32_t invisible){
+struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, i32_t invisible){
       layer->width = width;
       layer->height = height;
       layer->invisible = invisible;

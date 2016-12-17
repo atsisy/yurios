@@ -5,7 +5,7 @@
 
 //bootpack.c
 extern struct MEMMAN *memman;
-extern struct BOOTINFO *binfo;
+extern const struct BOOTINFO *binfo;
 extern struct QUEUE fifo;
 
 extern char sent_command[1024];
