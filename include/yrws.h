@@ -65,6 +65,19 @@ struct Layer_Master {
 *マウスを初期化する関数
 */
 void init_mouse(struct QUEUE *ms_queue);
+/*
+*マウスの割り込み情報を解読する関数
+*/
 int decode_mdata(u8_t dat);
+
+/*
+*レイヤー関係
+*/
+struct Layer_Master *layer_master_alloc(struct Layer_Master *master);
+struct Layer *layer_alloc(struct Layer_Master *master);
+void redraw_all_layer(struct Layer_Master *master);
+void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, int new_position);
+void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t y);
+void free_layer(struct Layer_Master *master, struct Layer *layer);
 
 #endif

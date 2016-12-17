@@ -7,10 +7,10 @@
  *layer_masterを確保する関数
  *=======================================================================================
  */
-struct Layer_Master *layer_master_alloc(void){
+struct Layer_Master *layer_master_alloc(struct Layer_Master *master){
 
       u32_t i;
-      struct Layer_Master *master = (struct Layer_Master *)memory_alloc_4k(memman, sizeof(Layer_Master));
+      master = (struct Layer_Master *)memory_alloc_4k(memman, sizeof(struct Layer_Master));
 
       master->top_layer = -1;
 
@@ -82,7 +82,7 @@ void redraw_all_layer(struct Layer_Master *master){
  *レイヤーの位置を変更する関数
  *=======================================================================================
  */
- void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, int new_position){
+void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, int new_position){
 
 	int h, old = layer->position;
 
@@ -177,7 +177,7 @@ void redraw_all_layer(struct Layer_Master *master){
              /*
              *新しい下じきの情報に沿って画面を描き直す
              */
-		sheet_refresh(layer_master);
+		redraw_all_layer(layer_master);
 	}
 	return;
 }

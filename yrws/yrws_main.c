@@ -9,6 +9,7 @@ void erase_cursor(void);
 struct MOUSE_CURSOR cursor;
 struct MOUSE_INFO mouse_info;
 struct QUEUE *mouse_queue;
+struct Layer_Master *LAYER_MASTER;
 
 void yrsw_main(){
 
@@ -97,5 +98,21 @@ void yrsw_main(){
 }
 
 static void init_yrws(void){
+      /*
+      *レイヤー管理構造体を確保
+      */
+      layer_master_alloc(LAYER_MASTER);
+
+      struct Layer *wall_paper, *mouse_cursor_layer;
+      u8_t *wp_buffer, mc_buffer[128];
+
+      //壁紙のレイヤーを確保
+      wall_paper = layer_alloc(LAYER_MASTER);
+      //マウスカーソルのレイヤーを確保
+      mouse_cursor_layer = layer_alloc(LAYER_MASTER);
+
+      //壁紙のレイヤーの描画情報を格納するバッファを確保
+      wp_buffer = (u8_t *)memory_alloc_4k(memman, binfo->scrnx * binfo->scrny);
+
       boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, 0, 0, binfo->scrnx, binfo->scrny);
 }
