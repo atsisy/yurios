@@ -24,7 +24,7 @@ void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t st
  */
 void redraw_layers(struct Layer_Master *master, u16_t start_x, u16_t start_y, u16_t end_x, u16_t end_y){
 
-      i32_t h, x, y, display_x, display_y;
+      i32_t h, x, y, display_x, display_y, start_x_sub, start_y_sub, end_x_sub, end_y_sub;
 	unsigned char *buf, *vram = binfo->vram, c;
 	struct Layer *layer;
 
@@ -35,35 +35,46 @@ void redraw_layers(struct Layer_Master *master, u16_t start_x, u16_t start_y, u1
             */
 		layer = master->layers_pointers[h];
 		buf = layer->data;
+
+            start_x_sub = start_x - layer->display_x;
+            start_y_sub = start_y - layer->display_y;
+            end_x_sub = end_x - layer->display_x;
+            end_y_sub = end_y - layer->display_y;
+
+            if(start_x_sub < 0)
+                  start_x_sub = 0;
+            if(start_y_sub < 0)
+                  start_y_sub = 0;
+
+            if(end_x_sub > layer->width)
+                  end_x_sub = layer->width;
+            if(end_y_sub > layer->height)
+                  end_y_sub = layer->height;
             /*
             *描画処理
             */
-		for(y = 0;y < layer->height;y++){
+		for(y = start_y_sub;y < end_y_sub;y++){
 
                   /*
                   *レイヤーの位置を考慮したY座標
                   */
 			display_y = layer->display_y + y;
 
-                  for(x = 0;x < layer->width;x++){
+                  for(x = start_x_sub;x < end_x_sub;x++){
 
                         /*
                         *レイヤーの位置を考慮したX座標
                         */
 				display_x = layer->display_x + x;
 
-                        if(start_x <= display_x && end_x >= display_x && start_y <= display_y && end_y >= display_y){
+                        /*
+                        *レイヤーの色をとってくる
+                        */
+                        c = buf[(y * layer->width) + x];
+                        if(c != layer->invisible)
+			      vram[(display_y * binfo->scrnx) + display_x] = c;
 
-                              /*
-                              *レイヤーの色をとってくる
-                              */
-                              c = buf[(y * layer->width) + x];
-
-                              if(c != layer->invisible)
-					      vram[(display_y * binfo->scrnx) + display_x] = c;
-                        }
 			}
-
 		}
 	}
 
