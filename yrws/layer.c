@@ -162,14 +162,22 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
  *=======================================================================================
  */
 void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t y){
+
+      i16_t old_start_x, old_start_y;
+
+      old_start_x = layer->display_x;
+      old_start_y = layer->display_y;
+
       layer->display_x = x;
       layer->display_y = y;
 
       /*
       *表示中のレイヤーならば全て書き直す
       */
-      if(layer->position >= 0)
-            redraw_all_layer(master);
+      if(layer->position >= 0){
+            redraw_layers(master, old_start_x, old_start_y, old_start_x+layer->width, old_start_y+layer->height);
+            redraw_layers(master, x, y, x+layer->width, y+layer->height);
+      }
 
       return;
 }

@@ -81,5 +81,6 @@ void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t
 void free_layer(struct Layer_Master *master, struct Layer *layer);
 u8_t *layer_chbuf(struct Layer *layer, u8_t *buffer);
 struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, i32_t invisible);
+void redraw_layers(struct Layer_Master *master, u16_t start_x, u16_t start_y, u16_t end_x, u16_t end_y);
 
 #endif
