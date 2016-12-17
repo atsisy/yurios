@@ -219,3 +219,27 @@ void free_layer(struct Layer_Master *master, struct Layer *layer){
 
       return;
  }
+
+/*
+ *=======================================================================================
+ *layer_chbuf関数
+ *レイヤー描画バッファを変更する関数
+ *=======================================================================================
+ */
+u8_t *layer_chbuf(struct Layer *layer, u8_t *buffer){
+      layer->data = buffer;
+      return buffer;
+}
+
+/*
+ *=======================================================================================
+ *modify_layer関数
+ *レイヤーの基本情報をセットする関数
+ *=======================================================================================
+ */
+struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, u32_t invisible){
+      layer->width = width;
+      layer->height = height;
+      layer->invisible = invisible;
+      return layer;
+}
