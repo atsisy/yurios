@@ -97,6 +97,9 @@ void yrsw_main(){
       }
 }
 
+/*
+*
+*/
 static void init_yrws(void){
       /*
       *レイヤー管理構造体を確保
@@ -143,5 +146,5 @@ static void init_yrws(void){
       layer_ch_position(LAYER_MASTER, wall_paper, 0);
       layer_ch_position(LAYER_MASTER, mouse_cursor_layer, 1);
 
-      redraw_all_layer(LAYER_MASTER);
+      redraw_all_layer(LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
 }

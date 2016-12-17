@@ -7,48 +7,12 @@
  *すべてのレイヤーを下から再描画していく関数
  *=======================================================================================
  */
-void redraw_all_layer(struct Layer_Master *master){
-
-      i32_t h, x, y, display_x, display_y;
-	unsigned char *buf, *vram = binfo->vram, c;
-	struct Layer *layer;
-
-      for(h = 0;h <= master->top_layer;h++){
-
-            /*
-            *レイヤーとそのデータバッファを得る
-            */
-		layer = master->layers_pointers[h];
-		buf = layer->data;
-            /*
-            *描画処理
-            */
-		for(y = 0;y < layer->height;y++){
-
-                  /*
-                  *レイヤーの位置を考慮したY座標
-                  */
-			display_y = layer->display_y + y;
-
-                  for(x = 0;x < layer->width;x++){
-
-                        /*
-                        *レイヤーの位置を考慮したX座標
-                        */
-				display_x = layer->display_x + x;
-
-                        /*
-                        *レイヤーの色をとってくる
-                        */
-                        c = buf[(y * layer->width) + x];
-
-                        if(c != layer->invisible)
-					vram[(display_y * binfo->scrnx) + display_x] = c;
-
-			}
-
-		}
-	}
+void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t start_x, u16_t start_y, u16_t end_x, u16_t end_y){
+      //表示中のレイヤーですか？
+      if(layer->position >= 0){
+            redraw_layers(master, layer->display_x+start_x, layer->display_y+start_y,
+                   layer->display_x+end_x, layer->display_y+end_y);
+      }
 	return;
 }
 

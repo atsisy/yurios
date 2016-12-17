@@ -75,7 +75,7 @@ int decode_mdata(u8_t dat);
 */
 struct Layer_Master *layer_master_alloc(struct Layer_Master **master);
 struct Layer *layer_alloc(struct Layer_Master *master);
-void redraw_all_layer(struct Layer_Master *master);
+void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t start_x, u16_t start_y, u16_t end_x, u16_t end_y);
 void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, int new_position);
 void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t y);
 void free_layer(struct Layer_Master *master, struct Layer *layer);
