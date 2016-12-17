@@ -4,6 +4,5 @@ yuli.img
 *.yl
 .directory
 *.yx
-*.kdev4
-.kdev4
 .clang_complete
+*.sh
