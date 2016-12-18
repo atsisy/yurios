@@ -55,6 +55,7 @@ struct Layer {
 */
 struct Layer_Master {
 	i32_t top_layer;
+	u8_t *layers_map;
 	struct Layer layers[__LAYER_LIMIT__];
 	struct Layer *layers_pointers[__LAYER_LIMIT__];
 };

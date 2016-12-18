@@ -15,6 +15,11 @@ struct Layer_Master *layer_master_alloc(struct Layer_Master **master){
       (*master)->top_layer = -1;
 
       /*
+      *レイヤー情報をマッピングするバッファ
+      */
+      (*master)->layers_map = (u8_t *)memory_alloc_4k(memman, binfo->scrnx * binfo->scrny);
+
+      /*
       *全てに未使用フラグを立てる
       */
       for(i = 0;i < __LAYER_LIMIT__;i++)
