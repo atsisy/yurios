@@ -1,5 +1,5 @@
 DST = ../dst
-OBJS = yrws_main.o cursor.o layer.o layer_redraw.o
+OBJS = yrws_main.o cursor.o layer.o layer_redraw.o draw_window.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YRWS DIRECTORY'

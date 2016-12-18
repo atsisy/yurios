@@ -57,6 +57,7 @@ void yrsw_main(){
 					/*
                               *左ボタン
                               */
+                              draw_window(cursor.x, cursor.y, 300, 300);
 				}
 				if((mouse_info.button & 0x02) != 0){
 				      /*
