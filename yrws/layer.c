@@ -113,7 +113,7 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
             *新しい下じきの情報に沿って画面を描き直す
             */
 		redraw_layers(layer_master, layer->display_x, layer->display_y,
-                  layer->display_x*layer->width, layer->display_y+layer->height);
+                  layer->display_x*layer->width, layer->display_y+layer->height, layer->position);
 
 	}else if(old < new_position){
             /*
@@ -152,7 +152,7 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
              *新しい下じきの情報に沿って画面を描き直す
              */
              redraw_layers(layer_master, layer->display_x, layer->display_y,
-                  layer->display_x*layer->width, layer->display_y+layer->height);
+                  layer->display_x*layer->width, layer->display_y+layer->height, layer->position);
 	}
 	return;
 }
@@ -177,8 +177,8 @@ void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t
       *表示中のレイヤーならば全て書き直す
       */
       if(layer->position >= 0){
-            redraw_layers(master, old_start_x, old_start_y, old_start_x+layer->width, old_start_y+layer->height);
-            redraw_layers(master, x, y, x+layer->width, y+layer->height);
+            redraw_layers(master, old_start_x, old_start_y, old_start_x+layer->width, old_start_y+layer->height, 0);
+            redraw_layers(master, x, y, x+layer->width, y+layer->height, layer->position);
       }
 
       return;

@@ -11,7 +11,7 @@ void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t st
       //表示中のレイヤーですか？
       if(layer->position >= 0){
             redraw_layers(master, layer->display_x+start_x, layer->display_y+start_y,
-                   layer->display_x+end_x, layer->display_y+end_y);
+                   layer->display_x+end_x, layer->display_y+end_y, layer->position);
       }
 	return;
 }
@@ -22,7 +22,7 @@ void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t st
  *redraw_all_layerで、範囲を指定し高速化した関数
  *=======================================================================================
  */
-void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y){
+void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position){
 
       i32_t h, x, y, display_x, display_y, start_x_sub, start_y_sub, end_x_sub, end_y_sub;
 	unsigned char *buf, *vram = binfo->vram, c;
@@ -37,7 +37,7 @@ void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i1
       if(end_y > binfo->scrny)
             end_y = binfo->scrny;
 
-      for(h = 0;h <= master->top_layer;h++){
+      for(h = redraw_position;h <= master->top_layer;h++){
 
             /*
             *レイヤーとそのデータバッファを得る
