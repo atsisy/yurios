@@ -245,8 +245,8 @@ void command_lscpu(void) {
  *showコマンドを実行する関数
  *=======================================================================================
  */
- void command_show(char *inputed_command) {
-	 /*
+void command_show(char *inputed_command) {
+	/*
  	 *文字列を表示するべき文字列だけにカット
  	 */
  	char fname[256], str[1024];
@@ -261,4 +261,4 @@ void command_lscpu(void) {
 	}
 
  	return;
- }
+}
