@@ -101,16 +101,42 @@ void yrsw_main(){
 }
 
 /*
-*
-*/
-static void init_yrws(void){
-      /*
-      *レイヤー管理構造体を確保
-      */
+ *=======================================================================================
+ *ゆりウィンドウシステムをお管理する構造体を初期化する関数
+ *=======================================================================================
+ */
+static void init_yrws_master(void){
+	/*
+	 *レイヤー管理構造体を確保
+	 */
       layer_master_alloc(&(Yrws_Master.LAYER_MASTER));
+
+      /*
+	 *各種パラメータ設定
+	 */
+	Yrws_Master.screen_height = binfo->scrny;
+	Yrws_Master.screen_width = binfo->scrnx;
+	Yrws_Master.flags = 0;
+	Yrws_Master.video_ram = binfo->vram;
+
+	/*
+	 *マウスカーソルの位置
+	 */
+	Yrws_Master.cursor.x = Yrws_Master.screen_width >> 1;
+      Yrws_Master.cursor.y = Yrws_Master.screen_height >> 1;
+}
+
+/*
+ *=======================================================================================
+ *ゆりウィンドウシステムを初期化する関数
+ *=======================================================================================
+ */
+static void init_yrws(void){
 
       u8_t *wp_buffer, *mc_buffer;
 
+	init_yrws_master();
+	
       //壁紙のレイヤーを確保
       wall_paper = layer_alloc(Yrws_Master.LAYER_MASTER);
       //マウスカーソルのレイヤーを確保
@@ -133,9 +159,6 @@ static void init_yrws(void){
       layer_chbuf(mouse_cursor_layer, mc_buffer);
       modify_layer(mouse_cursor_layer, 8, 16, 255);
       init_mscursor(mouse_cursor_layer);        //マウスカーソルの描画
-
-      Yrws_Master.cursor.x = wall_paper->width >> 1;
-      Yrws_Master.cursor.y = wall_paper->height >> 1;
 
       /*
       *レイヤーを移動

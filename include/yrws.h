@@ -75,8 +75,6 @@ struct YRWS_MASTER {
 	u16_t screen_height;
 	//ビデオラムのアドレス
 	u8_t *video_ram;
-	//ビデオラムのマップ
-	u8_t *vram_map;
 	//いろんなフラグ
 	u32_t *flags;
 
