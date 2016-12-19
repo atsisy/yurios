@@ -3,7 +3,7 @@
 
 #define __INVISIBLE__ 0xff
 
-extern struct MOUSE_CURSOR cursor;
+extern struct YRWS_MASTER Yrws_Master;
 
 /*
  *=======================================================================================
@@ -58,8 +58,4 @@ void init_mscursor(struct Layer *layer){
             vram += 8;
 	}
 
-}
-
-void erase_cursor(void){
-      boxfill8(binfo->vram, binfo->scrnx, __DEFAULT_WALLPAPER_COLOR__, cursor.x, cursor.y, cursor.x+8, cursor.y+16);
 }

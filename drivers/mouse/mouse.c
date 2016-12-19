@@ -2,7 +2,7 @@
 #include "../../include/yrws.h"
 #include "../../include/sh.h"
 
-extern struct MOUSE_INFO mouse_info;
+extern struct YRWS_MASTER Yrws_Master;
 struct QUEUE *mouse_queue;
 
 /*
@@ -28,7 +28,7 @@ void init_mouse(struct QUEUE *ms_queue){
       /*
       *マウスの情報を保持する構造体の初期化
       */
-      mouse_info.phase = mouse_info.x = mouse_info.y = 0;
+      Yrws_Master.mouse_info.phase = Yrws_Master.mouse_info.x = Yrws_Master.mouse_info.y = 0;
 
       return;
 }
@@ -60,55 +60,55 @@ void mouse_handler(int *esp){
 
 int decode_mdata(u8_t dat){
 
-	if(mouse_info.phase == 0){
+	if(Yrws_Master.mouse_info.phase == 0){
 		/*
             *初めて割り込みが入る
             */
 		if(dat == 0xfa)
-			mouse_info.phase = 1;
+			Yrws_Master.mouse_info.phase = 1;
 
             return false;
 	}
-	if(mouse_info.phase == 1){
+	if(Yrws_Master.mouse_info.phase == 1){
 		/*
             *1バイト目
             */
 		if((dat & 0xc8) == 0x08){
 			/* 正しい1バイト目だった */
-			mouse_info.data[0] = dat;
-			mouse_info.phase = 2;
+			Yrws_Master.mouse_info.data[0] = dat;
+			Yrws_Master.mouse_info.phase = 2;
 		}
 
 		return false;
 	}
-	if(mouse_info.phase == 2){
+	if(Yrws_Master.mouse_info.phase == 2){
 		/*
             *2バイト目
             */
-		mouse_info.data[1] = dat;
-		mouse_info.phase = 3;
+		Yrws_Master.mouse_info.data[1] = dat;
+		Yrws_Master.mouse_info.phase = 3;
 		return false;
 	}
-	if(mouse_info.phase == 3){
+	if(Yrws_Master.mouse_info.phase == 3){
 		/*
             *3バイト目
             */
-		mouse_info.data[2] = dat;
-		mouse_info.phase = 1;
-		mouse_info.button = mouse_info.data[0] & 0x07;
-		mouse_info.x = mouse_info.data[1];
-		mouse_info.y = mouse_info.data[2];
+		Yrws_Master.mouse_info.data[2] = dat;
+		Yrws_Master.mouse_info.phase = 1;
+		Yrws_Master.mouse_info.button = Yrws_Master.mouse_info.data[0] & 0x07;
+		Yrws_Master.mouse_info.x = Yrws_Master.mouse_info.data[1];
+		Yrws_Master.mouse_info.y = Yrws_Master.mouse_info.data[2];
 
-		if((mouse_info.data[0] & 0x10) != 0)
-			mouse_info.x |= 0xffffff00;
+		if((Yrws_Master.mouse_info.data[0] & 0x10) != 0)
+			Yrws_Master.mouse_info.x |= 0xffffff00;
 
-		if((mouse_info.data[0] & 0x20) != 0)
-			mouse_info.y |= 0xffffff00;
+		if((Yrws_Master.mouse_info.data[0] & 0x20) != 0)
+			Yrws_Master.mouse_info.y |= 0xffffff00;
 
             /*
             *マウスではy方向の符号が画面と反対であることに注意
             */
-		mouse_info.y = - mouse_info.y;
+		Yrws_Master.mouse_info.y = - Yrws_Master.mouse_info.y;
 
 		return true;
 	}

@@ -83,7 +83,9 @@ struct YRWS_MASTER {
 	//レイヤー管理構造体
 	struct Layer_Master *LAYER_MASTER;
 	//マウスカーソル情報構造体
-	struct MOUSE_CURSOR *cursor;
+	struct MOUSE_CURSOR cursor;
+	//マウス解読のための構造体
+	struct MOUSE_INFO mouse_info;
 };
 
 

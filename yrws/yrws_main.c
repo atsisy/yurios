@@ -6,12 +6,14 @@ static void init_yrws(void);
 void erase_cursor(void);
 void init_mscursor(struct Layer *layer);
 
-struct MOUSE_CURSOR cursor;
-struct MOUSE_INFO mouse_info;
+struct YRWS_MASTER Yrws_Master;
 struct QUEUE *mouse_queue;
-struct Layer_Master *LAYER_MASTER;
 struct Layer *mouse_cursor_layer;
 struct Layer *wall_paper;
+/*
+struct MOUSE_CURSOR cursor;
+struct Layer_Master *LAYER_MASTER;
+*/
 
 void yrsw_main(){
 
@@ -53,18 +55,18 @@ void yrsw_main(){
 				/*
                         *データが3バイト揃ったので表示
                         */
-                        if((mouse_info.button & 0x01) != 0){
+                        if((Yrws_Master.mouse_info.button & 0x01) != 0){
 					/*
                               *左ボタン
                               */
-                              draw_window(cursor.x, cursor.y, 300, 300);
+                              draw_window(Yrws_Master.cursor.x, Yrws_Master.cursor.y, 300, 300);
 				}
-				if((mouse_info.button & 0x02) != 0){
+				if((Yrws_Master.mouse_info.button & 0x02) != 0){
 				      /*
                               *右ボタン
                               */
 				}
-				if((mouse_info.button & 0x04) != 0){
+				if((Yrws_Master.mouse_info.button & 0x04) != 0){
 					/*
                               *中央ボタン
                               */
@@ -73,26 +75,26 @@ void yrsw_main(){
 				/*
                         *マウスカーソルの移動
                         */
-				cursor.x += mouse_info.x;
-				cursor.y += mouse_info.y;
+				Yrws_Master.cursor.x += Yrws_Master.mouse_info.x;
+				Yrws_Master.cursor.y += Yrws_Master.mouse_info.y;
 
                         //Xの限界
-				if(cursor.x < 0)
-					cursor.x = 0;
+				if(Yrws_Master.cursor.x < 0)
+					Yrws_Master.cursor.x = 0;
 
                         //Yの限界
-				if(cursor.y < 0)
-					cursor.y = 0;
+				if(Yrws_Master.cursor.y < 0)
+					Yrws_Master.cursor.y = 0;
 
                         //逆方向のXの限界
-                        if(cursor.x > binfo->scrnx - 1)
-					cursor.x = binfo->scrnx - 1;
+                        if(Yrws_Master.cursor.x > binfo->scrnx - 1)
+					Yrws_Master.cursor.x = binfo->scrnx - 1;
 
                         //逆方向のYの限界
-				if(cursor.y > binfo->scrny - 1)
-					cursor.y = binfo->scrny - 1;
+				if(Yrws_Master.cursor.y > binfo->scrny - 1)
+					Yrws_Master.cursor.y = binfo->scrny - 1;
 
-                        move_layer(LAYER_MASTER, mouse_cursor_layer, cursor.x, cursor.y);
+                        move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
 			}
             }
       }
@@ -105,14 +107,14 @@ static void init_yrws(void){
       /*
       *レイヤー管理構造体を確保
       */
-      layer_master_alloc(&LAYER_MASTER);
+      layer_master_alloc(&(Yrws_Master.LAYER_MASTER));
 
       u8_t *wp_buffer, *mc_buffer;
 
       //壁紙のレイヤーを確保
-      wall_paper = layer_alloc(LAYER_MASTER);
+      wall_paper = layer_alloc(Yrws_Master.LAYER_MASTER);
       //マウスカーソルのレイヤーを確保
-      mouse_cursor_layer = layer_alloc(LAYER_MASTER);
+      mouse_cursor_layer = layer_alloc(Yrws_Master.LAYER_MASTER);
 
       //壁紙のレイヤーの描画情報を格納するバッファを確保
       wp_buffer = (u8_t *)memory_alloc_4k(memman, binfo->scrnx * binfo->scrny);
@@ -132,20 +134,20 @@ static void init_yrws(void){
       modify_layer(mouse_cursor_layer, 8, 16, 255);
       init_mscursor(mouse_cursor_layer);        //マウスカーソルの描画
 
-      cursor.x = wall_paper->width >> 1;
-      cursor.y = wall_paper->height >> 1;
+      Yrws_Master.cursor.x = wall_paper->width >> 1;
+      Yrws_Master.cursor.y = wall_paper->height >> 1;
 
       /*
       *レイヤーを移動
       */
-      move_layer(LAYER_MASTER, wall_paper, 0, 0);
-      move_layer(LAYER_MASTER, mouse_cursor_layer, cursor.x, cursor.y);
+      move_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0);
+      move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
 
       /*
       *レイヤーの位置を調整
       */
-      layer_ch_position(LAYER_MASTER, wall_paper, 0);
-      layer_ch_position(LAYER_MASTER, mouse_cursor_layer, 1);
+      layer_ch_position(Yrws_Master.LAYER_MASTER, wall_paper, 0);
+      layer_ch_position(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, 1);
 
-      redraw_all_layer(LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
+      redraw_all_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
 }
