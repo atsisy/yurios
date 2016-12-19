@@ -16,5 +16,7 @@ void draw_window(i16_t start_x, i16_t start_y, i16_t width, i16_t height){
       move_layer(Yrws_Master.LAYER_MASTER, window, start_x, start_y);
       layer_ch_position(Yrws_Master.LAYER_MASTER, window, 2);
 
+	puttext(window, "YURI OS window!!", 20, 20, __RGB256COL__(0, 0, 0));
+
       redraw_all_layer(Yrws_Master.LAYER_MASTER, window, 0, 0, binfo->scrny, binfo->scrny);
 }

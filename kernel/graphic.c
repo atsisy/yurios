@@ -144,9 +144,7 @@ void putfont8(u8_t *vram, int xsize, int x, int y, char c, char *font){
  */
 void putfonts8_asc(u8_t *vram, int xsize, int x, int y, char c, char *s){
 
-	extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
-
-	for (;*s != 0x00;s++){
+	for(;*s != 0x00;s++){
 		/*
 		*改行文字がきたら改行する
 		*/

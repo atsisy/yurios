@@ -9,6 +9,7 @@ extern const struct BOOTINFO *binfo;
 extern struct QUEUE fifo;
 
 extern char sent_command[1024];
+extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
 /* プロトタイプ宣言 */
 
 /* nasmfunc.asm */

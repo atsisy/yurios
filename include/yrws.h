@@ -111,6 +111,11 @@ void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i1
 void draw_window(i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y);
 
 /*
+ *yuri window systemのAPI的な
+ */
+bool puttext(struct Layer *window, char *text, u16_t x, u16_t y, char color);
+
+/*
  *ゆりウィンドウシステムをお管理する構造体
  */
 extern struct YRWS_MASTER Yrws_Master;
