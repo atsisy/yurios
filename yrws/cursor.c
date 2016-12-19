@@ -3,8 +3,6 @@
 
 #define __INVISIBLE__ 0xff
 
-extern struct YRWS_MASTER Yrws_Master;
-
 /*
  *=======================================================================================
  *draw_cursor関数

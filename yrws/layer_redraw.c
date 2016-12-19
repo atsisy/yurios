@@ -1,6 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/yrws.h"
 
+
 /*
  *=======================================================================================
  *redraw_all_layer関数
@@ -25,7 +26,7 @@ void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t st
 void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position){
 
       i32_t h, x, y, display_x, display_y, start_x_sub, start_y_sub, end_x_sub, end_y_sub;
-	unsigned char *buf, *vram = binfo->vram, c;
+	unsigned char *buf, *vram = Yrws_Master.video_ram, c;
 	struct Layer *layer;
 
       if(start_x < 0)

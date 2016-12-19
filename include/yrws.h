@@ -110,4 +110,10 @@ struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, i32_t
 void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position);
 void draw_window(i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y);
 
+/*
+ *ゆりウィンドウシステムをお管理する構造体
+ */
+extern struct YRWS_MASTER Yrws_Master;
+
+
 #endif
