@@ -33,6 +33,7 @@ void yrsw_main(){
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
       init_yrws();
+	struct Layer *window = draw_window(Yrws_Master.cursor.x, Yrws_Master.cursor.y, 300, 300);
 
       while(1){
             /*
@@ -59,7 +60,7 @@ void yrsw_main(){
 					/*
                               *左ボタン
                               */
-                              draw_window(Yrws_Master.cursor.x, Yrws_Master.cursor.y, 300, 300);
+                              move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
 				}
 				if((Yrws_Master.mouse_info.button & 0x02) != 0){
 				      /*

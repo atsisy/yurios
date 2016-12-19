@@ -20,7 +20,7 @@ struct Layer *draw_window(i16_t start_x, i16_t start_y, i16_t width, i16_t heigh
       boxfill8(window->data, width, __RGB256COL__(255, 255, 255), 0, 16, width, height);
 
       move_layer(Yrws_Master.LAYER_MASTER, window, start_x, start_y);
-      layer_ch_position(Yrws_Master.LAYER_MASTER, window, 2);
+      layer_ch_position(Yrws_Master.LAYER_MASTER, window, 1);
 
 	puttext(window, "YURI OS window!!", 20, 20, __RGB256COL__(0, 0, 0));
 
