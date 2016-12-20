@@ -6,7 +6,7 @@
 #include "../../include/yrfs.h"
 #include "../../include/sh.h"
 
-struct block_info blocks_info[__INODE_LIMIT__];
+struct block_info *blocks_info;
 
 /*
  *=======================================================================================
@@ -19,12 +19,24 @@ void init_yrfs() {
 	struct i_node inode;
 
 	puts("Start Initializing yurifs...");
+
+	blocks_info = (struct blocks_info *)memory_alloc_4k(memman, __BLOCKS_LIMIT__);
+
+	puts("alloc blocks info structure...");
 	for(;i < __INODE_LIMIT__;i++){
 		iread(&inode, i);
 		/*
 		 *ファイル名の先頭がヌル文字のとき空と定義する
 		 */
-		blocks_info[i].empty = (inode.file_name[0] == '\0');
+		if(!inode.file_name[0]){   //NULL文字
+			blocks_info[i].empty = __UNUSED_BLOCK__;
+		}else{
+			u32_t n;
+			blocks_info[i].empty = __USED_BLOCK__;
+			for(n = inode.begin_address.sector;n < inode.end_address.sector;n++){
+				blocks_info[n].empty = __USED_BLOCK__;
+			}
+		}
 	}
 	puts("Complete Initializing yurifs.");
 }

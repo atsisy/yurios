@@ -1,5 +1,6 @@
 #include "../../include/yrfs.h"
 #include "../../include/ata.h"
+#include "../../include/sh.h"
 
 //inodeを書き込み可能状態にする関数
 static void writable_inode(struct i_node *inode, struct writable_data *data);

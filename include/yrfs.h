@@ -22,9 +22,6 @@
 #define __SEEK_CUR__ 0x01
 #define __SEEK_END__ 0x02
 
-#define __INODE_ZONE__        0
-#define __FILE_OBJECT_ZONE__ 10001
-
 #define __WRITABLE_INODE_SIZE__ 116
 #define __WRITABLE_INODE_SECTORS__ 1
 
@@ -33,7 +30,11 @@
 #define __UNUSED_BLOCK__ 0x01
 #define __USED_BLOCK__   0x00
 
+#define __INODE_ZONE__        0
+#define __FILE_OBJECT_ZONE__ 10001
 #define __INODE_LIMIT__ 10000
+
+#define __BLOCKS_LIMIT__ 2097152
 
 typedef unsigned int off_t;
 
@@ -166,6 +167,6 @@ i32_t do_close(i32_t fd);
 /*
  *ブロックの情報を保持しておく
  */
-extern struct block_info blocks_info[__INODE_LIMIT__];
+extern struct block_info *blocks_info;
 
 #endif

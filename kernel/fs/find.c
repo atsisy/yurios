@@ -1,5 +1,6 @@
 #include "../../include/yrfs.h"
 #include "../../include/string.h"
+#include "../../include/sh.h"
 
 /*
  *=======================================================================================
@@ -28,7 +29,7 @@ i32_t ffind(char *pathname) {
 			 *もしも最初の文字があっていたら
 			 */
 			if(*inode.file_name == *pathname){
-				/*
+                        /*
 				 *確かめる
 				 */
 				w_flag = 0;

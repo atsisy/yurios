@@ -318,14 +318,18 @@ void shell_master(void){
 			ylsh_clear();
 		}else if(strcmp(command, "open")){
 
+			struct i_node inode;
 			int fd = do_open("yuri_doc.txt", __O_CREAT__);
+			iread(&inode, fd);
+			print_value(fd, 400, 400);
+			/*
 			char *src = (char *)memory_alloc(memman, 256);
 			char *src2 = (char *)memory_alloc(memman, 256);
 			
 			read_mem2hd("cat YURI_DOC.TXT", src, 256);
 			
 			do_write(fd, src, 1);
-			/*
+			
 			memory_free(memman, (u32_t)src, 256);
 
 			do_read(fd, src2, 1);
@@ -335,9 +339,12 @@ void shell_master(void){
 		}else if(strcmp(command, "fszeroclear")){
 			u32_t i;
 			u8_t zero[512] = { 0 };
-			for(i = 0;i < 2000;i++){
+			for(i = 0;i < 2000;i++)
 				write_ata_sector(&ATA_DEVICE0, i, zero, 1);
-			}
+			
+			for(i = 0;i < __INODE_LIMIT__;i++)
+				blocks_info[i].empty = __UNUSED_BLOCK__;
+			
 		}else if(strcmp(command, "date")){
 			char time[32];
 			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),

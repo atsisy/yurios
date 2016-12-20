@@ -40,10 +40,11 @@ size_t do_read(int fd, char *buf, int count){
 		 *inode情報を取得
 		 */
 		iread(&inode, fd);
+
 		/*
 		 *読み込むセクタを取得し読み込む
 		 */
-	      read_ata_sector(&ATA_DEVICE0, inode.seek_address.sector+(inode.seek_address.offset/255), buf, 1+(count / 513));
+	    read_ata_sector(&ATA_DEVICE0, inode.seek_address.sector+(inode.seek_address.offset/255), buf, 1+(count / 513));
 	}
 
 	/*
