@@ -318,11 +318,20 @@ void shell_master(void){
 			ylsh_clear();
 		}else if(strcmp(command, "open")){
 
-			int fd = do_open("SampleFile", __O_CREAT__);
-			struct i_node inode;
-			iread(&inode, fd);
-			puts(inode.file_name);
+			int fd = do_open("yuri_doc.txt", __O_CREAT__);
+			char *src = (char *)memory_alloc(memman, 256);
+			char *src2 = (char *)memory_alloc(memman, 256);
+			
+			read_mem2hd("cat YURI_DOC.TXT", src, 256);
+			
+			do_write(fd, src, 1);
+			/*
+			memory_free(memman, (u32_t)src, 256);
 
+			do_read(fd, src2, 1);
+
+			puts(src2);
+			*/
 		}else if(strcmp(command, "fszeroclear")){
 			u32_t i;
 			u8_t zero[512] = { 0 };

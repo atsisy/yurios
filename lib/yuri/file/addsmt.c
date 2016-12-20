@@ -21,6 +21,6 @@ void fadd(int fd, char *buffer) {
 	for(i = inode.begin_address.offset % 512, arg_index = 0;i < 512;i++, arg_index++)
 		rw_buf[i] = buffer[arg_index];
 
-	do_write(fd, rw_buf, 1);
+	do_write(fd, buffer, 20);
 
 }
