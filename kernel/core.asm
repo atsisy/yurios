@@ -136,7 +136,7 @@ store_cr0:
 	mov	cr0, eax
 	ret
 
-  ;; スタック例外のイベントハンドラ
+  ;; ゼロ除算例外のイベントハンドラ
 asm_inthandler00:
 	sti
 	push es

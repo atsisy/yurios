@@ -178,7 +178,7 @@ type_next_file:
 				continue;
 			}
 			print(s);
-			increase_length();
+			//increase_length();
 		}
 		memory_free_4k(memman, (int)p, finfo[x].size);
 	}else{
