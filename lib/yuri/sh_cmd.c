@@ -159,7 +159,7 @@ type_next_file:
 		//ファイルが見つかった時
 		p = (char *)memory_alloc_4k(memman, finfo[x].size);
 		loadfile(finfo[x].clustno, finfo[x].size, p, fat, (char *)(ADR_DISKIMG + 0x003e00));
-		for(y = 0;y < finfo[x].size;y++){
+		for(y = 0;y < finfo[x].size;y++) {
 			s[0] = p[y];
 			s[1] = '\0';
 			if(length > (binfo->scrnx-166)){

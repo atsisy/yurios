@@ -8,7 +8,7 @@
  *メモリ上のファイルからHDDに書き込む関数
  *=======================================================================================
  */
-u32_t write_mem2hd(char *file_name, char *buffer, u32_t length){
+char *read_mem2hd(char *file_name, char *buffer, u32_t length){
 	int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
 	readfat(fat, (unsigned char *)(ADR_DISKIMG + 0x0000200));
 
@@ -52,26 +52,8 @@ type_next_file:
 		p = (char *)memory_alloc_4k(memman, finfo[x].size);
 		loadfile(finfo[x].clustno, finfo[x].size, p, fat, (char *)(ADR_DISKIMG + 0x003e00));
 		for(y = 0;y < finfo[x].size;y++){
-			s[0] = p[y];
-			s[1] = '\0';
-			if(length > (binfo->scrnx-166)){
-				//increase_indent();
-			}
-			if(s[0] == 0x09){	//タブだった場合
-				while(length % 4 == 0){	//4の倍数分の空白を開ける
-					print(" ");
-					continue;
-				}
-			}else if(s[0] == 0x0a){	//改行がだった場合
-				indent_shell();
-				continue;
-			}else if(s[0] == 0x0d){
-				length = 0;
-				continue;
-			}
-			//print(s);
-			strcpy(buffer, s, length);
-			//increase_length();
+			*buffer = p[y];
+			buffer++;
 		}
 		memory_free_4k(memman, (int)p, finfo[x].size);
 	}else{
@@ -79,5 +61,5 @@ type_next_file:
 		print("File not found.");
 	}
 
-	indent_shell();
+	return buffer;
 }
