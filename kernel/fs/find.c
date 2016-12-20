@@ -21,23 +21,25 @@ i32_t ffind(char *pathname) {
 	 *ファイルの中身領域に到達するまで走査
 	 */
 	for(i = 0;i < __FILE_OBJECT_ZONE__;i++){
-		//inode情報を読み取る
-		iread(&inode, i);
-		/*
-		 *もしも最初の文字があっていたら
-		 */
-		if(*inode.file_name == *pathname){
+		if(!blocks_info[i].empty){
+			//inode情報を読み取る
+			iread(&inode, i);
 			/*
-			 *確かめる
+			 *もしも最初の文字があっていたら
 			 */
-			w_flag = 0;
-			if(!strcmp(pathname, inode.file_name))   //違ったら
-				w_flag = 1;   //違ったフラグを立てる
-			/*
-			 *あった
-			 */
-			if(!w_flag)
-				return i;
+			if(*inode.file_name == *pathname){
+				/*
+				 *確かめる
+				 */
+				w_flag = 0;
+				if(!strcmp(pathname, inode.file_name))   //違ったら
+					w_flag = 1;   //違ったフラグを立てる
+				/*
+				 *あった
+				 */
+				if(!w_flag)
+					return i;
+			}
 		}
 	}
 
