@@ -20,7 +20,6 @@ int do_open(char *pathname, u32_t flags) {
 			 */
 			fd = iwrite(&inode);
 			blocks_info[fd].exist = __USED_BLOCK__;
-			print_value(inode.begin_address.sector, 500, 500);
 		}
 	}
 	if(flags & __O_RDONLY__){

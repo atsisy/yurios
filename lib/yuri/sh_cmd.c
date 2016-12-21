@@ -252,7 +252,6 @@ void command_show(char *inputed_command) {
  	char fname[256], str[1024];
 	int fd;
  	cut_string(inputed_command, fname, 5);
-	puts(fname);
 
 	if((fd = do_open(fname, __O_RDONLY__)) != -1){
 		do_read(fd, str, 2);
