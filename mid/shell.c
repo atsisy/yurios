@@ -305,11 +305,8 @@ void shell_master(void){
 			/*
 			 *ファイルの内容を表示
 			 */
-			//command_cat(command);
-			char *src = (char *)memory_alloc(memman, 256);
-			read_mem2hd(command, src, 256);
-			puts(src);
-			memory_free(memman, (u32_t)src, 256);
+			command_cat(command);
+			
 		}else if(strcmp(command, "clear")){
 			/*
 			 *シェルの画面を新しい画面に置き換えるコマンド
