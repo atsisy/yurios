@@ -98,7 +98,7 @@ void yrsw_main(){
                         move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
 
                         if(__MOUSE_DRAGGING__){
-                              if(Yrws_Master.cursor.x > window->display_x && Yrws_Master.cursor.x > window->display_x < window->display_x+window->width && Yrws_Master.cursor.y > window->display_y && Yrws_Master.cursor.y < window->display_y+16){
+                              if(Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x] == 2){
                                     move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
                               }
                         }
