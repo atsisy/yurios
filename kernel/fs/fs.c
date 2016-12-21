@@ -39,8 +39,8 @@ void init_yrfs() {
 			print_value(i, 0, param_y);
 
 		}else{
-			i32_t n = inode.begin_address.sector;
-			print_value(inode.end_address.sector, 600, 600);
+			u32_t n = inode.begin_address.sector;
+
 			blocks_info[i].exist = __USED_BLOCK__;
 			for(;n < inode.end_address.sector;n++){
 				blocks_info[n].exist = __USED_BLOCK__;
