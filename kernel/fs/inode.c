@@ -30,16 +30,16 @@ struct i_node icreat(char *file_name) {
 
 	i = 0;
 	//inode領域の空きを探す
-	while(blocks_info[i].empty == __USED_BLOCK__) i++;
+	while(blocks_info[i].exist == __USED_BLOCK__) i++;
 	inode.id = i;
 
 	/*
 	 *次にファイル割り当て
 	 */
 	i = __FILE_OBJECT_ZONE__;
-	while(blocks_info[i].empty == __USED_BLOCK__) i++;
+	while(blocks_info[i].exist == __USED_BLOCK__) i++;
 
-	blocks_info[i].empty = __USED_BLOCK__;
+	blocks_info[i].exist = __USED_BLOCK__;
 
 	/*
 	 *今の所、隙間に割り当てるようなスキルは無いのでからのセクタにそのまま

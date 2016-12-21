@@ -343,7 +343,7 @@ void shell_master(void){
 				write_ata_sector(&ATA_DEVICE0, i, zero, 1);
 			
 			for(i = 0;i < __INODE_LIMIT__;i++)
-				blocks_info[i].empty = __UNUSED_BLOCK__;
+				blocks_info[i].exist = __UNUSED_BLOCK__;
 			
 		}else if(strcmp(command, "date")){
 			char time[32];

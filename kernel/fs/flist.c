@@ -12,7 +12,7 @@ void file_list(char *option) {
 	struct i_node inode;
 
 	for(i = 0;i < __FILE_OBJECT_ZONE__;i++){
-		if(!blocks_info[i].empty){
+		if(blocks_info[i].exist){
 			iread(&inode, i);
 			puts(inode.file_name);
 		}

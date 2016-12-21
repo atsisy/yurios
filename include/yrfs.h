@@ -27,8 +27,8 @@
 
 #define __YRFS_BLOCK_SIZE__	512
 
-#define __UNUSED_BLOCK__ 0x01
-#define __USED_BLOCK__   0x00
+#define __UNUSED_BLOCK__ 0x00
+#define __USED_BLOCK__   0x01
 
 #define __INODE_ZONE__        0
 #define __FILE_OBJECT_ZONE__ 10001
@@ -47,7 +47,7 @@ struct block_info {
 	/*
 	 *このブロックは空か？
 	 */
-	u32_t empty : 1;
+	u32_t exist : 1;
 };
 
 /*
