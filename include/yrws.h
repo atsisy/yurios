@@ -19,6 +19,7 @@
 #define __USED_LAYER__	 1
 
 #define __MOUSE_DRAGGING_FLAG__ 0x01
+#define __MOUSE_CARRYING_WINDOW__ 0x02
 
 #define __MOUSE_DRAGGING__ (Yrws_Master.flags & __MOUSE_DRAGGING_FLAG__)
 /*

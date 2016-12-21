@@ -145,6 +145,7 @@ int decode_mdata(u8_t dat){
                   *ドラッグ終了
                   */
                   Yrws_Master.flags &= ~__MOUSE_DRAGGING_FLAG__;
+                  Yrws_Master.flags &= ~__MOUSE_CARRYING_WINDOW__;
             }
 
 		return true;

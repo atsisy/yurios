@@ -98,8 +98,9 @@ void yrsw_main(){
                         move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
 
                         if(__MOUSE_DRAGGING__){
-                              if(Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x] == 2){
+                              if(Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x] == 2 || Yrws_Master.flags & __MOUSE_CARRYING_WINDOW__){
                                     move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
+                                    Yrws_Master.flags |= __MOUSE_CARRYING_WINDOW__;
                               }
                         }
 			}
