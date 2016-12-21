@@ -60,7 +60,7 @@ void yrsw_main(){
 					/*
                               *左ボタン
                               */
-                              move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
+                              //move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
 				}
 				if((Yrws_Master.mouse_info.button & 0x02) != 0){
 				      /*
@@ -96,6 +96,12 @@ void yrsw_main(){
 					Yrws_Master.cursor.y = binfo->scrny - 1;
 
                         move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
+
+                        if(__MOUSE_DRAGGING__){
+                              if(Yrws_Master.cursor.x > window->display_x && Yrws_Master.cursor.x > window->display_x < window->display_x+window->width && Yrws_Master.cursor.y > window->display_y && Yrws_Master.cursor.y < window->display_y+16){
+                                    move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
+                              }
+                        }
 			}
             }
       }

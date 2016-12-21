@@ -122,7 +122,7 @@ int decode_mdata(u8_t dat){
             *右クリック押し込みフラグ(ドラッグに用いる)
             */
             if(
-                  Yrws_Master.mouse_info.data[0] == 8
+                  Yrws_Master.mouse_info.data[0] == 9
                   &&
                   Yrws_Master.mouse_info.data[1] == 0
                   &&
