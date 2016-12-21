@@ -115,6 +115,35 @@ int decode_mdata(u8_t dat){
             sprintf(str, "%x %d %d", Yrws_Master.mouse_info.data[0], Yrws_Master.mouse_info.data[1], Yrws_Master.mouse_info.data[2]);
             putfonts8_asc(binfo->vram, binfo->scrnx, 400, 400, __RGB256COL__(255, 255, 255), str);
 
+            /*
+            *右クリック押し込みフラグ(ドラッグに用いる)
+            */
+            if(
+                  Yrws_Master.mouse_info.data[0] == 8
+                  &&
+                  Yrws_Master.mouse_info.data[1] == 0
+                  &&
+                  Yrws_Master.mouse_info.data[2] == 0 
+            ){
+                  /*
+                  *ドラッグ開始
+                  */
+                  Yrws_Master.flags |= __MOUSE_DRAGING_FLAG__;
+            }
+            else
+            if(
+                  Yrws_Master.mouse_info.data[0] == 8
+                  &&
+                  Yrws_Master.mouse_info.data[1] == 0
+                  &&
+                  Yrws_Master.mouse_info.data[2] == 0 
+            ){
+                  /*
+                  *ドラッグ終了
+                  */
+                  Yrws_Master.flags &= ~__MOUSE_DRAGING_FLAG__;
+            }
+
 		return true;
 	}
 

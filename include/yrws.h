@@ -17,6 +17,8 @@
 */
 #define __UNUSED_LAYER__ 0
 #define __USED_LAYER__	 1
+
+#define __MOUSE_DRAGING_FLAG__ 0x01
 /*
 *マウスのデータとかをひとまとめにした構造体
 */
@@ -76,7 +78,7 @@ struct YRWS_MASTER {
 	//ビデオラムのアドレス
 	u8_t *video_ram;
 	//いろんなフラグ
-	u32_t *flags;
+	u32_t flags;
 
 	//レイヤー管理構造体
 	struct Layer_Master *LAYER_MASTER;
