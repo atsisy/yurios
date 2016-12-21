@@ -13,10 +13,10 @@ struct Layer *draw_window(i16_t start_x, i16_t start_y, i16_t width, i16_t heigh
       layer_chbuf(window, window_buf);
       modify_layer(window, width, height, 255);
 
-      boxfill8(window->data, width, __RGB256COL__(255, 29, 63), 0, 0, 16, 16);
-      boxfill8(window->data, width, __RGB256COL__(181, 255, 69), 16, 0, 32, 16);
-      boxfill8(window->data, width, __RGB256COL__(58, 137, 255), 32, 0, 48, 16);
-      boxfill8(window->data, width, __RGB256COL__(0, 0, 0), 48, 0, width, 16);
+      boxfill8(window->data, width, __RGB256COL__(36, 49, 61), 0, 0, width-48, 16);
+      boxfill8(window->data, width, __RGB256COL__(196, 199, 255), width-48, 0, width-32, 16);
+      boxfill8(window->data, width, __RGB256COL__(232, 255, 148), width-32, 0, width-16, 16);
+      boxfill8(window->data, width, __RGB256COL__(255, 226, 220), width-16, 0, width-1, 16);
       boxfill8(window->data, width, __RGB256COL__(255, 255, 255), 0, 16, width, height);
 
       move_layer(Yrws_Master.LAYER_MASTER, window, start_x, start_y);
