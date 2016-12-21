@@ -10,7 +10,7 @@
 void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position){
 
       i32_t h, x, y, display_x, display_y, start_x_sub, start_y_sub, end_x_sub, end_y_sub, layer_id;
-	unsigned char *buf, *lmap = master->layers_map, c;
+	unsigned char *buf, *lmap = Yrws_Master.LAYER_MASTER->layers_map;
 	struct Layer *layer;
 
       if(start_x < 0)
@@ -63,7 +63,7 @@ void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t
 				display_x = layer->display_x + x;
 
                         if(buf[(y * layer->width) + x] != layer->invisible)
-			            lmap[(display_y * binfo->scrnx) + display_x] = layer_id;
+			            lmap[(display_y * Yrws_Master.screen_width) + display_x] = layer_id;
 
 			}
 		}

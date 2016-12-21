@@ -94,6 +94,16 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
 			}
 
 			layer_master->layers_pointers[new_position] = layer;
+
+
+                  /*
+                  *新しい下じきの情報に沿って画面を描き直す
+                  */
+                  map_layers(layer_master, layer->display_x, layer->display_y,
+                        layer->display_x+layer->width, layer->display_y+layer->height, new_position + 1);
+
+		      redraw_layers(layer_master, layer->display_x, layer->display_y,
+                        layer->display_x+layer->width, layer->display_y+layer->height, new_position + 1, old);
 		}else{
                   /*
                   *非表示化
@@ -113,13 +123,16 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
                   *表示中の下じきが一つ減るので、一番上の高さが減る
                   */
 			layer_master->top_layer--;
-		}
-            /*
-            *新しい下じきの情報に沿って画面を描き直す
-            */
-		redraw_layers(layer_master, layer->display_x, layer->display_y,
-                  layer->display_x*layer->width, layer->display_y+layer->height, layer->position);
 
+                  /*
+                  *新しい下じきの情報に沿って画面を描き直す
+                  */
+                  map_layers(layer_master, layer->display_x, layer->display_y,
+                        layer->display_x+layer->width, layer->display_y+layer->height, 0);
+
+                  redraw_layers(layer_master, layer->display_x, layer->display_y,
+                        layer->display_x+layer->width, layer->display_y+layer->height, 0, old - 1);
+		}
 	}else if(old < new_position){
             /*
             *以前よりも高くなる
@@ -153,11 +166,15 @@ void layer_ch_position(struct Layer_Master *layer_master, struct Layer *layer, i
 			layer_master->layers_pointers[new_position] = layer;
 			layer_master->top_layer++;
 		}
+
              /*
              *新しい下じきの情報に沿って画面を描き直す
              */
-             redraw_layers(layer_master, layer->display_x, layer->display_y,
-                  layer->display_x*layer->width, layer->display_y+layer->height, layer->position);
+             map_layers(Yrws_Master.LAYER_MASTER, layer->display_x, layer->display_y,
+                  layer->display_x+layer->width, layer->display_y+layer->height, new_position);
+
+             redraw_layers(Yrws_Master.LAYER_MASTER, layer->display_x, layer->display_y,
+                  layer->display_x+layer->width, layer->display_y+layer->height, new_position, new_position);
 	}
 	return;
 }
@@ -182,8 +199,10 @@ void move_layer(struct Layer_Master *master, struct Layer *layer, u16_t x, u16_t
       *表示中のレイヤーならば全て書き直す
       */
       if(layer->position >= 0){
-            redraw_layers(master, old_start_x, old_start_y, old_start_x+layer->width, old_start_y+layer->height, 0);
-            redraw_layers(master, x, y, x+layer->width, y+layer->height, layer->position);
+            map_layers(master, old_start_x, old_start_y, old_start_x+layer->width, old_start_y+layer->height, 0);
+            map_layers(master, x, y, x+layer->width, y+layer->height, layer->position);
+            redraw_layers(master, old_start_x, old_start_y, old_start_x+layer->width, old_start_y+layer->height, 0, layer->position - 1);
+            redraw_layers(master, x, y, x+layer->width, y+layer->height, layer->position, layer->position);
       }
 
       return;
