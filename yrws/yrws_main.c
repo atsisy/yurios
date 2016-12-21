@@ -53,6 +53,8 @@ void yrsw_main(){
 			io_sti();
 
 			if(decode_mdata(data) != 0){
+                        if(__MOUSE_DRAGGING__)
+                              boxfill8(Yrws_Master.video_ram, Yrws_Master.screen_width, 0, 0, 0, 400, 400);
 				/*
                         *データが3バイト揃ったので表示
                         */

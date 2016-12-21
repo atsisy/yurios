@@ -18,7 +18,9 @@
 #define __UNUSED_LAYER__ 0
 #define __USED_LAYER__	 1
 
-#define __MOUSE_DRAGING_FLAG__ 0x01
+#define __MOUSE_DRAGGING_FLAG__ 0x01
+
+#define __MOUSE_DRAGGING__ (Yrws_Master.flags & __MOUSE_DRAGGING_FLAG__)
 /*
 *マウスのデータとかをひとまとめにした構造体
 */

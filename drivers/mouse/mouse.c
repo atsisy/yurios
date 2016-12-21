@@ -131,7 +131,7 @@ int decode_mdata(u8_t dat){
                   /*
                   *ドラッグ開始
                   */
-                  Yrws_Master.flags |= __MOUSE_DRAGING_FLAG__;
+                  Yrws_Master.flags |= __MOUSE_DRAGGING_FLAG__;
             }
             else
             if(
@@ -144,7 +144,7 @@ int decode_mdata(u8_t dat){
                   /*
                   *ドラッグ終了
                   */
-                  Yrws_Master.flags &= ~__MOUSE_DRAGING_FLAG__;
+                  Yrws_Master.flags &= ~__MOUSE_DRAGGING_FLAG__;
             }
 
 		return true;
