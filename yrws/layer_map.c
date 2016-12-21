@@ -62,12 +62,8 @@ void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t
                         */
 				display_x = layer->display_x + x;
 
-                        /*
-                        *レイヤーの色をとってくる
-                        */
-                        c = buf[(y * layer->width) + x];
-                        if(c != layer->invisible)
-			      lmap[(display_y * binfo->scrnx) + display_x] = c;
+                        if(buf[(y * layer->width) + x] != layer->invisible)
+			            lmap[(display_y * binfo->scrnx) + display_x] = layer_id;
 
 			}
 		}
