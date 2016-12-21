@@ -22,7 +22,7 @@ i32_t ffind(char *pathname) {
 	 *ファイルの中身領域に到達するまで走査
 	 */
 	for(i = 0;i < __FILE_OBJECT_ZONE__;i++){
-		if(!blocks_info[i].exist){
+		if(blocks_info[i].exist){
 			//inode情報を読み取る
 			iread(&inode, i);
 			/*

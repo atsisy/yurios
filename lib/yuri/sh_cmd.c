@@ -254,7 +254,7 @@ void command_show(char *inputed_command) {
  	cut_string(inputed_command, fname, 5);
 	puts(fname);
 
-	if((fd = do_open(str, __O_RDONLY__)) != -1){
+	if((fd = do_open(fname, __O_RDONLY__)) != -1){
 		do_read(fd, str, 2);
 		puts(str);
 	}else{

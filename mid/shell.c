@@ -321,8 +321,7 @@ void shell_master(void){
 			struct i_node inode;
 			int fd = do_open("yuri_doc.txt", __O_CREAT__);
 			iread(&inode, fd);
-			print_value(fd, 400, 400);
-			/*
+			
 			char *src = (char *)memory_alloc(memman, 256);
 			char *src2 = (char *)memory_alloc(memman, 256);
 			
@@ -331,7 +330,7 @@ void shell_master(void){
 			do_write(fd, src, 1);
 			
 			memory_free(memman, (u32_t)src, 256);
-
+			/*
 			do_read(fd, src2, 1);
 
 			puts(src2);
