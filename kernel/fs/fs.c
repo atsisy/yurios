@@ -5,6 +5,7 @@
  */
 #include "../../include/yrfs.h"
 #include "../../include/sh.h"
+#include "../../include/kernel.h"
 
 struct block_info *blocks_info;
 
@@ -15,7 +16,7 @@ struct block_info *blocks_info;
  *=======================================================================================
  */
 void init_yrfs() {
-	u32_t i;
+	u32_t i, param_y;
 	struct i_node inode;
 
 	puts("Start Initializing yurifs...");
@@ -23,6 +24,9 @@ void init_yrfs() {
 	blocks_info = (struct blocks_info *)memory_alloc_4k(memman, __BLOCKS_LIMIT__);
 
 	puts("alloc blocks info structure...");
+
+	param_y = indent << 4;
+	
 	for(i = 0;i < __INODE_LIMIT__;i++){
 		iread(&inode, i);
 		/*
@@ -30,6 +34,10 @@ void init_yrfs() {
 		 */
 		if(!inode.file_name[0]){   //NULL文字
 			blocks_info[i].exist = __UNUSED_BLOCK__;
+			boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
+			
+			print_value(i, 0, param_y);
+
 		}else{
 			u32_t n;
 			blocks_info[i].exist = __USED_BLOCK__;
@@ -37,6 +45,8 @@ void init_yrfs() {
 				blocks_info[n].exist = __USED_BLOCK__;
 			}
 		}
+
 	}
+	indent_shell();
 	puts("Complete Initializing yurifs.");
 }
