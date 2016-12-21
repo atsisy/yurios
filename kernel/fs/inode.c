@@ -217,8 +217,8 @@ static void translate_wrdata2inode(struct i_node *inode, struct writable_data *d
 	inode->seek_address.offset = data->data[4];
 
 	//終了アドレス
-	inode->begin_address.sector = data->data[5];
-	inode->begin_address.offset = data->data[6];
+	inode->end_address.sector = data->data[5];
+	inode->end_address.offset = data->data[6];
 
 	//サイズ
 	inode->size = data->data[7];

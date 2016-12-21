@@ -110,6 +110,11 @@ int decode_mdata(u8_t dat){
             */
 		Yrws_Master.mouse_info.y = - Yrws_Master.mouse_info.y;
 
+            char str[12] = { 0 };
+            boxfill8(binfo->vram, binfo->scrnx, 0, 400, 400, 500, 416);
+            sprintf(str, "%x %d %d", Yrws_Master.mouse_info.data[0], Yrws_Master.mouse_info.data[1], Yrws_Master.mouse_info.data[2]);
+            putfonts8_asc(binfo->vram, binfo->scrnx, 400, 400, __RGB256COL__(255, 255, 255), str);
+
 		return true;
 	}
 

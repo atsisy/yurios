@@ -39,11 +39,15 @@ void init_yrfs() {
 			print_value(i, 0, param_y);
 
 		}else{
-			u32_t n;
+			i32_t n = inode.begin_address.sector;
+			print_value(inode.end_address.sector, 600, 600);
 			blocks_info[i].exist = __USED_BLOCK__;
-			for(n = inode.begin_address.sector;n < inode.end_address.sector;n++){
+			for(;n < inode.end_address.sector;n++){
 				blocks_info[n].exist = __USED_BLOCK__;
 			}
+			boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
+			
+			print_value(i, 0, param_y);
 		}
 
 	}
