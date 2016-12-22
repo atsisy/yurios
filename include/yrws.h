@@ -22,6 +22,9 @@
 #define __MOUSE_CARRYING_WINDOW__ 0x02
 
 #define __MOUSE_DRAGGING__ (Yrws_Master.flags & __MOUSE_DRAGGING_FLAG__)
+
+#define __SYSTEM_LAYER__ 0x01
+#define __WINDOW_LAYER__ 0x02
 /*
 *マウスのデータとかをひとまとめにした構造体
 */

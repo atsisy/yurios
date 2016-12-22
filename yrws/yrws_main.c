@@ -98,7 +98,10 @@ void yrsw_main(){
                         move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
 
                         if(__MOUSE_DRAGGING__){
-                              if(Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x] == 2 || Yrws_Master.flags & __MOUSE_CARRYING_WINDOW__){
+                              if(
+                              Yrws_Master.LAYER_MASTER->layers[Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x]].flags & __WINDOW_LAYER__
+                              ||
+                              Yrws_Master.flags & __MOUSE_CARRYING_WINDOW__){
                                     move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
                                     Yrws_Master.flags |= __MOUSE_CARRYING_WINDOW__;
                               }
@@ -179,6 +182,12 @@ static void init_yrws(void){
       */
       layer_ch_position(Yrws_Master.LAYER_MASTER, wall_paper, 0);
       layer_ch_position(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, 1);
+
+      /*
+      *レイヤーのタイプ
+      */
+      wall_paper->flags |= __SYSTEM_LAYER__;
+      wall_paper->flags |= __SYSTEM_LAYER__;
 
       redraw_all_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
 }

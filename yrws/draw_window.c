@@ -24,6 +24,8 @@ struct Layer *draw_window(i16_t start_x, i16_t start_y, i16_t width, i16_t heigh
 
 	puttext(window, "YURI OS window!!", 20, 20, __RGB256COL__(0, 0, 0));
 
+      window->flags |= __WINDOW_LAYER__;
+
       redraw_all_layer(Yrws_Master.LAYER_MASTER, window, 0, 0, binfo->scrny, binfo->scrny);
 
 	return window;
