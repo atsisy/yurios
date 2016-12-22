@@ -34,9 +34,10 @@ void init_yrfs() {
 		 */
 		if(!inode.file_name[0]){   //NULL文字
 			blocks_info[i].exist = __UNUSED_BLOCK__;
-			boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
-			
-			print_value(i, 0, param_y);
+			if(i % 100 == 0){
+				boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
+				print_value(i/100, 0, param_y);
+			}
 
 		}else{
 			u32_t n = inode.begin_address.sector;
@@ -45,12 +46,17 @@ void init_yrfs() {
 			for(;n < inode.end_address.sector;n++){
 				blocks_info[n].exist = __USED_BLOCK__;
 			}
-			boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
-			
-			print_value(i, 0, param_y);
+			if(i % 100 == 0){
+				boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
+				print_value(i/100, 0, param_y);
+			}
 		}
 
 	}
+
+	boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
+	print_value(100, 0, param_y);
+	
 	indent_shell();
 	puts("Complete Initializing yurifs.");
 }
