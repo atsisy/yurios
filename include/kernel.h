@@ -178,4 +178,11 @@ void fadd(int fd, char *buffer);
  */
 #define __RGB256COL__(r, g, b) (16+(r/51)+(6*(g/51))+(36*(b/51)))
 
+/*
+*ゼロクリアする関数
+*/
+void zeroclear_8array(i8_t *array, u32_t length);
+void zeroclear_16array(i16_t *array, u32_t length);
+void zeroclear_32array(i32_t *array, u32_t length);
+
 #endif
