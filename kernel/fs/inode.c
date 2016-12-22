@@ -32,6 +32,7 @@ struct i_node icreat(char *file_name) {
 	//inode領域の空きを探す
 	while(blocks_info[i].exist == __USED_BLOCK__) i++;
 	inode.id = i;
+	blocks_info[i].exist = __USED_BLOCK__;
 
 	/*
 	 *次にファイル割り当て
@@ -109,6 +110,8 @@ void iread(struct i_node *inode, u32_t index) {
 	 */
 	struct writable_data *data = NULL;
 	new_wrdata(data, __WRITABLE_INODE_SIZE__);
+
+	zeroclear_8array(inode->file_name, 256);
 
 	/*
 	 *読み込む

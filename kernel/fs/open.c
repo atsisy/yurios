@@ -19,7 +19,7 @@ int do_open(char *pathname, u32_t flags) {
 			 *inodeを補助記憶装置に書き出し
 			 */
 			fd = iwrite(&inode);
-			blocks_info[fd].exist = __USED_BLOCK__;
+			//blocks_info[fd].exist = __USED_BLOCK__;
 		}
 	}
 	if(flags & __O_RDONLY__){

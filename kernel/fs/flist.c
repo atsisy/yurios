@@ -10,11 +10,16 @@
 void file_list(char *option) {
 	u32_t i;
 	struct i_node inode;
-
+	char inode_id[24];
 	for(i = 0;i < __FILE_OBJECT_ZONE__;i++){
 		if(blocks_info[i].exist){
+			
 			iread(&inode, i);
-			puts(inode.file_name);
+			print(inode.file_name);
+			sprintf(inode_id, " %d", inode.id);
+			puts(inode_id);
+
+			zeroclear_8array(inode_id, 24);
 		}
 	}
 }
