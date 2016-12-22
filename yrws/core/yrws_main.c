@@ -1,6 +1,6 @@
-#include "../include/kernel.h"
-#include "../include/yrws.h"
-#include "../include/sh.h"
+#include "../../include/kernel.h"
+#include "../../include/yrws.h"
+#include "../../include/sh.h"
 
 static void init_yrws(void);
 void erase_cursor(void);

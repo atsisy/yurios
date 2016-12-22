@@ -1,5 +1,21 @@
-#include "../include/kernel.h"
-#include "../include/yrws.h"
+#include "../../include/kernel.h"
+#include "../../include/yrws.h"
+
+
+/*
+ *=======================================================================================
+ *redraw_all_layer関数
+ *すべてのレイヤーを下から再描画していく関数
+ *=======================================================================================
+ */
+void redraw_all_layer(struct Layer_Master *master, struct Layer *layer, u16_t start_x, u16_t start_y, u16_t end_x, u16_t end_y){
+      //表示中のレイヤーですか？
+      if(layer->position >= 0){
+            redraw_layers(master, layer->display_x+start_x, layer->display_y+start_y,
+                   layer->display_x+end_x, layer->display_y+end_y, layer->position, layer->position);
+      }
+	return;
+}
 
 /*
  *=======================================================================================
@@ -7,10 +23,10 @@
  *redraw_all_layerで、範囲を指定し高速化した関数
  *=======================================================================================
  */
-void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position){
+void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position, i32_t above){
 
       i32_t h, x, y, display_x, display_y, start_x_sub, start_y_sub, end_x_sub, end_y_sub, layer_id;
-	unsigned char *buf, *lmap = Yrws_Master.LAYER_MASTER->layers_map;
+	unsigned char *buf, *vram = Yrws_Master.video_ram, *lmap = Yrws_Master.LAYER_MASTER->layers_map;
 	struct Layer *layer;
 
       if(start_x < 0)
@@ -22,7 +38,7 @@ void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t
       if(end_y > binfo->scrny)
             end_y = binfo->scrny;
 
-      for(h = redraw_position;h <= master->top_layer;h++){
+      for(h = redraw_position;h <= above;h++){
 
             /*
             *レイヤーとそのデータバッファを得る
@@ -62,8 +78,8 @@ void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t
                         */
 				display_x = layer->display_x + x;
 
-                        if(buf[(y * layer->width) + x] != layer->invisible)
-			            lmap[(display_y * Yrws_Master.screen_width) + display_x] = layer_id;
+                        if(lmap[(display_y * Yrws_Master.screen_width) + display_x] == layer_id)
+			            vram[(display_y * Yrws_Master.screen_width) + display_x] = buf[(y * layer->width) + x];
 
 			}
 		}

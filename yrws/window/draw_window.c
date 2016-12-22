@@ -1,5 +1,5 @@
-#include "../include/kernel.h"
-#include "../include/yrws.h"
+#include "../../include/kernel.h"
+#include "../../include/yrws.h"
 
 /*
  *=======================================================================================
