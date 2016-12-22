@@ -8,4 +8,4 @@ all: $(OBJS) Makefile
 	@rm -f *.o
 
 %.o: %.c
-	$(CC) $*.c $(BINOPT) -o $*.o
+	gcc -O2 -m32 -c -Wa,--32 $*.c $(BINOPT) -o $*.o
