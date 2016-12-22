@@ -16,11 +16,14 @@ void fadd(int fd, char *buffer) {
 	iread(&inode, fd);
 
 	do_seek(fd, 0, __SEEK_END__);
-	do_read(fd, rw_buf, 512);
+	do_read(fd, rw_buf, 1);
 
-	for(i = inode.begin_address.offset % 512, arg_index = 0;i < 512;i++, arg_index++)
+	for(i = inode.begin_address.offset % 512, arg_index = 0;i < 512;i++, arg_index++){
+		if(!buffer[arg_index])
+			break;
 		rw_buf[i] = buffer[arg_index];
+	}
 
-	do_write(fd, buffer, 20);
+	do_write(fd, rw_buf, 20);
 
 }

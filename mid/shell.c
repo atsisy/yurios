@@ -327,6 +327,9 @@ void shell_master(void){
 			do_write(fd, src, 1);
 			
 			memory_free(memman, (u32_t)src, 256);
+
+			fd = do_open("yuri_doc.txt", __O_RDONLY__);
+			fadd(fd, "SATORI");
 			/*
 			do_read(fd, src2, 1);
 
