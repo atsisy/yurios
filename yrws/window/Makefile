@@ -1,5 +1,5 @@
 YRWS = ..
-OBJS = $(YRWS)/draw_window.o
+OBJS = $(YRWS)/draw_window.o $(YRWS)/create_window.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YRWS/WINDOW DIRECTORY'

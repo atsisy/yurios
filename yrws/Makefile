@@ -1,6 +1,6 @@
 DST = ../dst
 OBJS = yrws_main.o cursor.o layer.o layer_redraw.o draw_window.o layer_map.o \
-	puttext.o
+	puttext.o create_window.o
 
 all: Makefile
 	cd core && make all

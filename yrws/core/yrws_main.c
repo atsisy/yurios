@@ -33,7 +33,7 @@ void yrsw_main(){
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
       init_yrws();
-	struct Layer *window = draw_window(Yrws_Master.cursor.x, Yrws_Master.cursor.y, 300, 300);
+	struct YURI_WINDOW *window = create_window("YURI OS", Yrws_Master.cursor.x, Yrws_Master.cursor.y, 300, 300);
 
       while(1){
             /*
@@ -102,7 +102,7 @@ void yrsw_main(){
                               Yrws_Master.LAYER_MASTER->layers[Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x]].flags & __WINDOW_LAYER__
                               ||
                               Yrws_Master.flags & __MOUSE_CARRYING_WINDOW__){
-                                    move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
+                                    move_layer(Yrws_Master.LAYER_MASTER, window->layer, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
                                     Yrws_Master.flags |= __MOUSE_CARRYING_WINDOW__;
                               }
                         }

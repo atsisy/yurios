@@ -100,7 +100,7 @@ struct YRWS_MASTER {
  *=======================================================================================
  */
 struct YURI_WINDOW {
-	struct Layer layer;
+	struct Layer *layer;
 	char window_name[256];
 	u32_t flags;
 };
@@ -126,13 +126,15 @@ void free_layer(struct Layer_Master *master, struct Layer *layer);
 u8_t *layer_chbuf(struct Layer *layer, u8_t *buffer);
 struct Layer *modify_layer(struct Layer *layer, u16_t width, u16_t height, i32_t invisible);
 void redraw_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position, i32_t above);
-struct Layer *draw_window(i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y);
+void draw_window_core(struct Layer *layer);
 void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t end_x, i16_t end_y, i32_t redraw_position);
 
 /*
  *yuri window systemのAPI的な
  */
 bool puttext(struct Layer *window, char *text, u16_t x, u16_t y, char color);
+
+struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t display_y, u16_t width, u16_t height);
 
 /*
  *ゆりウィンドウシステムをお管理する構造体

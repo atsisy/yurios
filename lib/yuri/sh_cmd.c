@@ -60,7 +60,10 @@ void command_memory(void){
 }
 
 void command_history(void){
+	//ファイルディスクリプタ
 	i32_t fd;
+
+	//文字列用メモリ確保
 	char *str = (char *)memory_alloc(memman, 1024);
 
 	if((fd = do_open("history", __O_RDONLY__)) != -1){
@@ -70,6 +73,7 @@ void command_history(void){
 		puts("ERROR");
 	}
 
+	//開放
 	memory_free(memman, str, 1024);
 }
 
