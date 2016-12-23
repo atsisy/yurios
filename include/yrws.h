@@ -147,6 +147,12 @@ bool puttext(struct Layer *window, char *text, u16_t x, u16_t y, char color);
 
 struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t display_y, u16_t width, u16_t height);
 
+
+/*
+ *yim画像関連
+ */
+struct YURI_IMAGE *load_yim(char *file_name);
+void draw_yim(struct YURI_WINDOW *window, struct YURI_IMAGE *image, i16_t x, i16_t y);
 /*
  *ゆりウィンドウシステムをお管理する構造体
  */

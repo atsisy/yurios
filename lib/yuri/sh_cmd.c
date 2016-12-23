@@ -120,7 +120,7 @@ void command_cat(char *inputed_command){
 	/*
 	*メモリ確保
 	*/
-	char *src = (char *)memory_alloc(memman, 256);
+	char *src = (char *)memory_alloc(memman, 200000);
 	
 	/*
 	*読み込み

@@ -1,5 +1,5 @@
 YRWS = ..
-OBJS = $(YRWS)/puttext.o
+OBJS = $(YRWS)/puttext.o $(YRWS)/yim.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YRWS/LIB DIRECTORY'

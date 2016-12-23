@@ -6,3 +6,4 @@ yuli.img
 *.yx
 .clang_complete
 *.sh
+*.yim

@@ -7,6 +7,7 @@
 
 int do_open(char *pathname, u32_t flags);
 void put_char(char ch);
+u8_t *read_yim(char *file_name, char *buffer, u32_t length);
 
 int length, indent, MAX_SCROLL;
 short input_y;
@@ -363,6 +364,25 @@ void shell_master(void){
 			command_show(command);
 		}else if(strcmp(command, "yrws")){
 			yrsw_main();
+		}else if(strcmp(command, "WriteImage")){
+			char *src = (char *)memory_alloc_4k(memman, 200000);
+	
+			/*
+			 *読み込み
+			 */
+			struct i_node inode;
+			u32_t i;
+			read_yim("cat yuri.yim", src, 256);
+
+			i32_t fd = do_open("yuri.yim", __O_CREAT__);
+			do_write(fd, src, 160000);
+			iread(&inode, fd);
+			for(i = 0;i < 156311/512;i++){
+				write_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, src, 1);
+				src += 512;
+			}
+
+			memory_free_4k(memman, src, 200000);
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*
@@ -383,7 +403,7 @@ void shell_master(void){
 		 /*
 		*historyに追加
 		*/
-		add_history(command);
+		//add_history(command);
 		
 		put_char('%');
 

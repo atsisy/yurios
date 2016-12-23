@@ -27,10 +27,11 @@ all:
 	mformat -f 1440 -C -B dst/ipl.bin -i yuli.img ::
 	mcopy dst/yuli.sys -i yuli.img ::
 	mcopy yuri_doc.txt -i yuli.img ::
-	mcopy LICENSE -i yuli.img ::
 	mcopy application/cli.yx -i yuli.img ::
 	mcopy application/cli_app2.yx -i yuli.img ::
 	mcopy application/yrs.yx -i yuli.img ::
+	mcopy yuri.yim -i yuli.img ::
+	mcopy LICENSE -i yuli.img ::
 
 clean :
 	rm -f ./dst/*.s
