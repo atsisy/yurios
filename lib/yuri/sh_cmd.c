@@ -60,7 +60,17 @@ void command_memory(void){
 }
 
 void command_history(void){
-	
+	i32_t fd;
+	char *str = (char *)memory_alloc(memman, 1024);
+
+	if((fd = do_open("history", __O_RDONLY__)) != -1){
+		do_read(fd, str, 2);
+		puts(str);
+	}else{
+		puts("ERROR");
+	}
+
+	memory_free(memman, str, 1024);
 }
 
 /*
