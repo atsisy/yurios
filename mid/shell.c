@@ -237,6 +237,8 @@ void shell_master(void){
 
 	history_init();
 
+	zeroclear_8array(command, 1024);
+
 	queue_init(&(me->irq), 128, shell_buf, me);	//シェル用FIFOを初期化
 
 	/*
@@ -373,9 +375,16 @@ void shell_master(void){
 			length += strlen(copied_str);
 			puts("'.");
 		}
+
 		/*
 		 *次のコマンドを受け付けるための準備
 		 */
+
+		 /*
+		*historyに追加
+		*/
+		add_history(command);
+		
 		put_char('%');
 
 		/*
