@@ -60,21 +60,7 @@ void command_memory(void){
 }
 
 void command_history(void){
-	int i;
-	if(indent > MAX_SCROLL){
-		scroll((struct BOOTINFO *)ADR_BOOTINFO, 16);
-	}
-
-	for(i = 0;i < put_index;i++){
-		print(get_history(i));
-		if(indent > MAX_SCROLL){
-			scroll((struct BOOTINFO *)ADR_BOOTINFO, 16);
-		}
-		indent_shell();
-	}
-
-	indent--;
-	return;
+	
 }
 
 /*

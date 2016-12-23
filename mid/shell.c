@@ -235,6 +235,8 @@ void shell_master(void){
 
 	int shell_buf[128];								//シェルに来るシグナルや割り込み情報をためておくバッファ
 
+	history_init();
+
 	queue_init(&(me->irq), 128, shell_buf, me);	//シェル用FIFOを初期化
 
 	/*
@@ -336,14 +338,49 @@ void shell_master(void){
 			puts(src2);
 			*/
 		}else if(strcmp(command, "fszeroclear")){
+			/*
 			u32_t i;
 			u8_t zero[512] = { 0 };
-			for(i = 0;i < 2000;i++)
+			for(i = 0;i < __BLOCKS_LIMIT__;i++)
 				write_ata_sector(&ATA_DEVICE0, i, zero, 1);
 			
 			for(i = 0;i < __INODE_LIMIT__;i++)
 				blocks_info[i].exist = __UNUSED_BLOCK__;
-			
+			*/
+			u8_t zero[512] = { 0 };
+			u32_t i, param_y = indent << 4;
+			struct i_node inode;
+				
+			for(i = 0;i < __INODE_LIMIT__;i++){
+				iread(&inode, i);
+				/*
+				 *ファイル名の先頭がヌル文字のとき空と定義する
+				 */
+				if(!inode.file_name[0]){   //NULL文字
+					blocks_info[i].exist = __UNUSED_BLOCK__;
+					if(i % 100 == 0){
+						boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
+						print_value(i/100, 0, param_y);
+					}
+
+				}else{
+					u32_t n = inode.begin_address.sector;
+					write_ata_sector(&ATA_DEVICE0, i, zero, 1);
+					write_ata_sector(&ATA_DEVICE0, n, zero, 1);
+					blocks_info[i].exist = __UNUSED_BLOCK__;
+					blocks_info[n].exist = __UNUSED_BLOCK__;
+					
+					if(i % 100 == 0){
+						boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
+						print_value(i/100, 0, param_y);
+					}
+				}
+
+			}
+			boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
+			print_value(100, 0, param_y);
+			indent_shell();
+			puts("done");
 		}else if(strcmp(command, "date")){
 			char time[32];
 			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),

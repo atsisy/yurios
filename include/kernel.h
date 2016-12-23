@@ -128,9 +128,8 @@ int do_shell_app(int *fat, char *command);
 void multi_shellscroll(struct BOOTINFO *binfo, int height, int top, int under);
 
 //history.c
-void history_init(void);
+i32_t history_init(void);
 void add_history(char *inputed_command);
-char *get_history(int get_index);
 
 extern char **history;
 extern int put_index;

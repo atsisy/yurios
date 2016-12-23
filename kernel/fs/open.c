@@ -11,14 +11,17 @@ int do_open(char *pathname, u32_t flags) {
 		*同名のファイルが存在しない
 		*/
 		if(ffind(pathname) == -1){
-        	/*
+		     /*
 		 	*inode作成
 		 	*/
 			inode = icreat(pathname);
+
 			/*
 			 *inodeを補助記憶装置に書き出し
 			 */
 			fd = iwrite(&inode);
+
+			puts(inode.file_name);
 			//blocks_info[fd].exist = __USED_BLOCK__;
 		}
 	}
