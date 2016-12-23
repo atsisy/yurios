@@ -14,6 +14,7 @@ int do_open(char *pathname, u32_t flags) {
 		     /*
 		 	*inode作成
 		 	*/
+			
 			inode = icreat(pathname);
 
 			/*
@@ -21,7 +22,6 @@ int do_open(char *pathname, u32_t flags) {
 			 */
 			fd = iwrite(&inode);
 
-			puts(inode.file_name);
 			//blocks_info[fd].exist = __USED_BLOCK__;
 		}
 	}

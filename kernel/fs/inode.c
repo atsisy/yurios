@@ -20,6 +20,7 @@ struct i_node icreat(char *file_name) {
 	struct i_node inode;
       u32_t i = 0;
 
+	zeroclear_8array(inode.file_name, 256);
 	/*
 	 *まずファイル名をコピー
 	 */

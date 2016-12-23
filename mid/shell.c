@@ -347,40 +347,7 @@ void shell_master(void){
 			for(i = 0;i < __INODE_LIMIT__;i++)
 				blocks_info[i].exist = __UNUSED_BLOCK__;
 			*/
-			u8_t zero[512] = { 0 };
-			u32_t i, param_y = indent << 4;
-			struct i_node inode;
-				
-			for(i = 0;i < __INODE_LIMIT__;i++){
-				iread(&inode, i);
-				/*
-				 *ファイル名の先頭がヌル文字のとき空と定義する
-				 */
-				if(!inode.file_name[0]){   //NULL文字
-					blocks_info[i].exist = __UNUSED_BLOCK__;
-					if(i % 100 == 0){
-						boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
-						print_value(i/100, 0, param_y);
-					}
-
-				}else{
-					u32_t n = inode.begin_address.sector;
-					write_ata_sector(&ATA_DEVICE0, i, zero, 1);
-					write_ata_sector(&ATA_DEVICE0, n, zero, 1);
-					blocks_info[i].exist = __UNUSED_BLOCK__;
-					blocks_info[n].exist = __UNUSED_BLOCK__;
-					
-					if(i % 100 == 0){
-						boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
-						print_value(i/100, 0, param_y);
-					}
-				}
-
-			}
-			boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
-			print_value(100, 0, param_y);
-			indent_shell();
-			puts("done");
+			filesystem_zeroclear();
 		}else if(strcmp(command, "date")){
 			char time[32];
 			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),

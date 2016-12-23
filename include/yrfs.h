@@ -152,6 +152,7 @@ void char4tou32(char *data, u32_t *u32);
  */
 i32_t ffind(char *pathname);
 
+void filesystem_zeroclear();
 void file_list(char *option);
 
 int do_open(char *pathname, u32_t flags);
