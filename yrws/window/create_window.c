@@ -2,6 +2,12 @@
 #include "../../include/yrws.h"
 #include "../../include/string.h"
 
+/*
+ *=======================================================================================
+ *create_window関数
+ *ウィンドウを生成する関数
+ *=======================================================================================
+ */
 struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t display_y, u16_t width, u16_t height){
       /*
       *ウィンドウ用のレイヤーを確保
@@ -19,8 +25,7 @@ struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t disp
       layer_chbuf(window, window_buf);
       modify_layer(window, width, height, 255);
 
-      window->width = width;
-      window->height = height;
+	modify_layer(window, width, height, 0xff);
       window->display_x = display_x;
       window->display_y = display_y;
 
@@ -58,8 +63,14 @@ struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t disp
       
 }
 
+/*
+ *=======================================================================================
+ *destroy_window関数
+ *ウィンドウを破棄する関数
+ *=======================================================================================
+ */
 void destroy_window(struct YURI_WINDOW *window){
       memory_free(memman, (u32_t)window->layer->data, window->layer->width*window->layer->height);
       free_layer(Yrws_Master.LAYER_MASTER, window->layer);
-
+	memory_free(memman, (u32_t)window, sizeof(struct YURI_WINDOW));
 }
