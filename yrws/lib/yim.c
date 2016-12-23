@@ -49,3 +49,26 @@ struct YURI_IMAGE *load_yim(char *file_name){
 
 	return image;
 }
+
+/*
+ *=======================================================================================
+ *draw_yim関数
+ *ウィンドウに画像を描画する関数
+ *=======================================================================================
+ */
+void draw_yim(struct YURI_WINDOW *window, struct YURI_IMAGE *image, i16_t x, i16_t y){
+	u16_t cx, cy;
+
+	y += 16;
+
+	/*
+	 *描画
+	 */
+	for(cy = 0;cy < image->height;cy++){
+		for(cx = 0;cx < image->width;cx++){
+			window->layer->data[(y+cy)*window->layer->width + (cx+x)] = image->data[cy*image->height+cx];
+		}
+	}
+
+	return;
+}
