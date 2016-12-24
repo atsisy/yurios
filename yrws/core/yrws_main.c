@@ -214,5 +214,7 @@ void draw_clock(){
 	char time[5];
 	zeroclear_8array(time, 5);
 	sprintf(time, "%d:%d", do_gettime(__HOUR__), do_gettime(__MINUTE__));
+	boxfill8(task_bar->data, task_bar->width, __RGB256COL__(36, 49, 61), task_bar->width-48, 0, task_bar->width, 16);
 	putfonts8_asc(task_bar->data, task_bar->width, task_bar->width-48, 0, __RGB256COL__(255, 255, 255), time);
+	redraw_all_layer(Yrws_Master.LAYER_MASTER, task_bar, 0, 0, task_bar->width, 16);
 }
