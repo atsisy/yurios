@@ -27,6 +27,7 @@ void command_cat(char *inputed_command);
 void ylsh_clear(void);
 void command_lscpu(void);
  void command_show(char *inputed_command);
+void command_writeyim(char *file_name);
 
 
 void readfat(int *fat, unsigned char *img);

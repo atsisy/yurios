@@ -7,7 +7,6 @@
 
 int do_open(char *pathname, u32_t flags);
 void put_char(char ch);
-u8_t *read_yim(char *file_name, char *buffer, u32_t length);
 
 int length, indent, MAX_SCROLL;
 short input_y;
@@ -368,27 +367,7 @@ void shell_master(void){
 		}else if(strcmp(part, "writeyim")){
 			char file_name[256];
 			cut_string(command, file_name, 9);
-			u32_t size = fat_getsize(file_name);
-			char *src = (char *)memory_alloc_4k(memman, size);
-			char *p = src;
-	
-			/*
-			 *読み込み
-			 */
-			struct i_node inode;
-			u32_t i;
-			read_yim(file_name, src, 256);
-
-			i32_t fd = do_open(file_name, __O_CREAT__);
-			do_write(fd, src, size);
-			iread(&inode, fd);
-			for(i = 0;i < byte2sectors(size);i++){
-				write_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, src, 1);
-				src += 512;
-			}
-
-			memory_free_4k(memman, (u32_t)p, size);
-			
+			command_writeyim(file_name);
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*

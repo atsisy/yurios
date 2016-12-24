@@ -29,6 +29,7 @@ all:
 	mcopy application/cli_app2.yx -i yuli.img ::
 	mcopy application/yrs.yx -i yuli.img ::
 	mcopy yuri.yim -i yuli.img ::
+	mcopy an.yim -i yuli.img ::
 	mcopy LICENSE -i yuli.img ::
 
 clean :

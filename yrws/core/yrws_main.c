@@ -35,7 +35,7 @@ void yrsw_main(){
       init_yrws();
 	struct YURI_WINDOW *window = create_window("YURI OS", Yrws_Master.cursor.x, Yrws_Master.cursor.y, 500, 500);
 
-	struct YURI_IMAGE *image = load_yim("yuri.yim");
+	struct YURI_IMAGE *image = load_yim("an.yim");
 	draw_yim(window, image, 10, 10);
 
       while(1){

@@ -3,6 +3,9 @@
 #include "../../include/string.h"
 #include "../../include/value.h"
 #include "../../include/yrfs.h"
+#include "../../include/ata.h"
+
+u8_t *read_yim(char *file_name, char *buffer, u32_t length);
 
 /*
  *シェル組み込みのコマンドだけを書いていきたいなと思ふ
@@ -219,4 +222,25 @@ void command_show(char *inputed_command) {
  */
 void command_writeyim(char *file_name){
 	
+	u32_t size = fat_getsize(file_name);
+	char *src = (char *)memory_alloc_4k(memman, size);
+	char *p = src;
+	
+	/*
+	 *読み込み
+	 */
+	struct i_node inode;
+	u32_t i;
+	read_yim(file_name, src, 256);
+
+	i32_t fd = do_open(file_name, __O_CREAT__);
+	do_write(fd, src, size);
+	iread(&inode, fd);
+	for(i = 0;i < byte2sectors(size);i++){
+		write_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, src, 1);
+		src += 512;
+	}
+
+	memory_free_4k(memman, (u32_t)p, size);
+			
 }
