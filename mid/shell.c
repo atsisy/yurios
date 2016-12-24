@@ -365,9 +365,10 @@ void shell_master(void){
 			command_show(command);
 		}else if(strcmp(command, "yrws")){
 			yrsw_main();
-		}else if(strcmp(command, "WriteImage")){
-
-			u32_t size = fat_getsize("cat yuri.yim");
+		}else if(strcmp(part, "writeyim")){
+			char file_name[256];
+			cut_string(command, file_name, 9);
+			u32_t size = fat_getsize(file_name);
 			char *src = (char *)memory_alloc_4k(memman, size);
 			char *p = src;
 	
@@ -376,10 +377,10 @@ void shell_master(void){
 			 */
 			struct i_node inode;
 			u32_t i;
-			read_yim("cat yuri.yim", src, 256);
+			read_yim(file_name, src, 256);
 
-			i32_t fd = do_open("yuri.yim", __O_CREAT__);
-			do_write(fd, src, 156311);
+			i32_t fd = do_open(file_name, __O_CREAT__);
+			do_write(fd, src, size);
 			iread(&inode, fd);
 			for(i = 0;i < byte2sectors(size);i++){
 				write_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, src, 1);

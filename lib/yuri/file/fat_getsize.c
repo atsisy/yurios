@@ -21,7 +21,7 @@ u32_t fat_getsize(char *file_name){
 			s[y] = ' ';
 	}
 	y = 0;
-	for(x = 4;y < 11 && file_name[x] != 0;x++){
+	for(x = 0;y < 11 && file_name[x] != 0;x++){
 		if(file_name[x] == '.' && y <= 8){
 			y = 8;
 		}else{
