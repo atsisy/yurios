@@ -40,8 +40,8 @@ struct MOUSE_INFO {
 *マウスカーソルの構造体
 */
 struct MOUSE_CURSOR {
-      u16_t x;
-      u16_t y;
+      i16_t x;
+      i16_t y;
 };
 
 /*
@@ -51,8 +51,8 @@ struct Layer {
 	u8_t *data;		//レイヤーのデータ
 	u16_t width;	//レイヤーの幅
 	u16_t height;	//レイヤーの高さ
-	u16_t display_x;	//レイヤーがディスプレイのどこにいるか
-	u16_t display_y;	//レイヤーがディスプレイのどこにいるか
+	i16_t display_x;	//レイヤーがディスプレイのどこにいるか
+	i16_t display_y;	//レイヤーがディスプレイのどこにいるか
 	i16_t position;	//レイヤーの表面からの順番
 	u32_t invisible;	//透明色
 	u32_t flags;	//フラグ
