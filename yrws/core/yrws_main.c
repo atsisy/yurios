@@ -5,11 +5,13 @@
 static void init_yrws(void);
 void erase_cursor(void);
 void init_mscursor(struct Layer *layer);
+void draw_clock();
 
 struct YRWS_MASTER Yrws_Master;
 struct QUEUE *mouse_queue;
 struct Layer *mouse_cursor_layer;
 struct Layer *wall_paper;
+struct Layer *task_bar;
 /*
 struct MOUSE_CURSOR cursor;
 struct Layer_Master *LAYER_MASTER;
@@ -147,7 +149,7 @@ static void init_yrws_master(void){
  */
 static void init_yrws(void){
 
-      u8_t *wp_buffer, *mc_buffer;
+      u8_t *wp_buffer, *mc_buffer, *bar_buffer;
 
 	init_yrws_master();
 	
@@ -155,10 +157,13 @@ static void init_yrws(void){
       wall_paper = layer_alloc(Yrws_Master.LAYER_MASTER);
       //マウスカーソルのレイヤーを確保
       mouse_cursor_layer = layer_alloc(Yrws_Master.LAYER_MASTER);
+	//タスクバーのレイヤー確保
+	task_bar = layer_alloc(Yrws_Master.LAYER_MASTER);
 
       //壁紙のレイヤーの描画情報を格納するバッファを確保
       wp_buffer = (u8_t *)memory_alloc_4k(memman, binfo->scrnx * binfo->scrny);
       mc_buffer = (u8_t *)memory_alloc(memman, 128);
+	bar_buffer = (u8_t *)memory_alloc(memman, binfo->scrnx << 4);
 
       /*
       *壁紙レイヤーの情報をセット
@@ -174,17 +179,27 @@ static void init_yrws(void){
       modify_layer(mouse_cursor_layer, 8, 16, 255);
       init_mscursor(mouse_cursor_layer);        //マウスカーソルの描画
 
+	/*
+	 *タスクバーレイヤーの情報をセット
+	 */
+	layer_chbuf(task_bar, bar_buffer);
+	modify_layer(task_bar, binfo->scrnx, 16, 0xff);
+	boxfill8(task_bar->data, task_bar->width, __RGB256COL__(36, 49, 61), 0, 0, task_bar->width, task_bar->height);
+	draw_clock();
+
       /*
       *レイヤーを移動
       */
       move_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0);
       move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
+	move_layer(Yrws_Master.LAYER_MASTER, task_bar, 0, 0);
 
       /*
       *レイヤーの位置を調整
       */
       layer_ch_position(Yrws_Master.LAYER_MASTER, wall_paper, 0);
       layer_ch_position(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, 1);
+	layer_ch_position(Yrws_Master.LAYER_MASTER, task_bar, 3);
 
       /*
       *レイヤーのタイプ
@@ -193,4 +208,11 @@ static void init_yrws(void){
       wall_paper->flags |= __SYSTEM_LAYER__;
 
       redraw_all_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
+}
+
+void draw_clock(){
+	char time[5];
+	zeroclear_8array(time, 5);
+	sprintf(time, "%d:%d", do_gettime(__HOUR__), do_gettime(__MINUTE__));
+	putfonts8_asc(task_bar->data, task_bar->width, task_bar->width-48, 0, __RGB256COL__(255, 255, 255), time);
 }
