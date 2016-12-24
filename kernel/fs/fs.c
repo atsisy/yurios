@@ -78,7 +78,7 @@ void filesystem_zeroclear(){
 		/*
 		 *ファイル名の先頭がヌル文字のとき空と定義する
 		 */
-		if(!inode.file_name[0]){   //NULL文字
+		if(!inode.file_name[0] || blocks_info[i].exist == __USED_BLOCK__){   //NULL文字
 			blocks_info[i].exist = __UNUSED_BLOCK__;
 			if(i % 100 == 0){
 				boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);

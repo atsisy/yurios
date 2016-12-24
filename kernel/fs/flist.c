@@ -11,7 +11,7 @@ void file_list(char *option) {
 	u32_t i;
 	struct i_node inode;
 	char inode_id[24];
-	for(i = 0;i < __FILE_OBJECT_ZONE__;i++){
+	for(i = 0;i < __INODE_LIMIT__;i++){
 		if(blocks_info[i].exist){
 			
 			iread(&inode, i);
