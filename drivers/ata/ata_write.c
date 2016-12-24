@@ -93,7 +93,7 @@ i32_t dout_pio(u8_t command, struct ATA_DEVICE *device, void *buffer, i32_t coun
  *引数
  *i32_t device
  *=>デバイス選択
- * *u16_t count
+ * *i32_t count
  *=>書き込むセクタ数
  *void *buffer
  *=>書き込むデータのバッファへのポインタ

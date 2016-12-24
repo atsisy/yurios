@@ -49,7 +49,9 @@ size_t do_write(int fd, char *buf, int count){
 		 *inode情報を取得
 		 */
 		iread(&inode, fd);
+
 		
+
 		/*
 		 *書き込むセクタを取得し書き込む
 		 */
