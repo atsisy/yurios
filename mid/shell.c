@@ -351,6 +351,7 @@ void shell_master(void){
 				blocks_info[i].exist = __UNUSED_BLOCK__;
 			*/
 			filesystem_zeroclear();
+			goto skip_write_history;
 		}else if(strcmp(command, "date")){
 			char time[32];
 			sprintf(time, "%d:%d %d/%d %d", do_gettime(__HOUR__), do_gettime(__MINUTE__), do_gettime(__MONTH__),
@@ -405,6 +406,8 @@ void shell_master(void){
 		*historyに追加
 		*/
 		add_history(command);
+
+	skip_write_history:
 		
 		put_char('%');
 

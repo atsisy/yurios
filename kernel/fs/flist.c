@@ -11,11 +11,11 @@ static char *yrfs_file_info(char *info, struct i_node *inode);
  */
 void file_list(char *option) {
 	u32_t i;
-	struct i_node *inode = memory_alloc(memman, sizeof(struct i_node));
+	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
 	char *str = (char *)memory_alloc(memman, 270);
 	
 	for(i = 0;i < __INODE_LIMIT__;i++){
-		if(blocks_info[i].exist){
+		if(blocks_info[i].exist == __USED_BLOCK__){
 			iread(inode, i);
 			zeroclear_8array(str, 270);
 			puts(yrfs_file_info(str, inode));

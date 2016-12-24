@@ -17,7 +17,7 @@ struct block_info *blocks_info;
  *=======================================================================================
  */
 void init_yrfs() {
-	u32_t i, param_y;
+	u32_t i, param_y, n;
 	struct i_node inode;
 
 	puts("Start Initializing yurifs...");
@@ -41,7 +41,7 @@ void init_yrfs() {
 			}
 
 		}else{
-			u32_t n = inode.begin_address.sector;
+			n = inode.begin_address.sector;
 
 			blocks_info[i].exist = __USED_BLOCK__;
 			for(;n < inode.end_address.sector;n++){
@@ -78,8 +78,7 @@ void filesystem_zeroclear(){
 		/*
 		 *ファイル名の先頭がヌル文字のとき空と定義する
 		 */
-		if(!inode.file_name[0] || blocks_info[i].exist == __USED_BLOCK__){   //NULL文字
-			blocks_info[i].exist = __UNUSED_BLOCK__;
+		if(blocks_info[i].exist == __UNUSED_BLOCK__){   //NULL文字
 			if(i % 100 == 0){
 				boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
 				print_value(i/100, 0, param_y);
@@ -91,7 +90,7 @@ void filesystem_zeroclear(){
 			write_ata_sector(&ATA_DEVICE0, n, zero, 1);
 			blocks_info[i].exist = __UNUSED_BLOCK__;
 			blocks_info[n].exist = __UNUSED_BLOCK__;
-		
+
 			if(i % 100 == 0){
 				boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
 				print_value(i/100, 0, param_y);
