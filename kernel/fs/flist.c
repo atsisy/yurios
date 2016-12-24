@@ -26,6 +26,12 @@ void file_list(char *option) {
 	memory_free(memman, (u32_t)inode, sizeof(struct i_node));
 }
 
+/*
+ *=======================================================================================
+ *yrfs_file_info関数
+ *inode情報を表示可能な形式で返す関数
+ *=======================================================================================
+ */
 static char *yrfs_file_info(char *info, struct i_node *inode){
 	sprintf(info, "%s size:%d inode:%d", inode->file_name, inode->size, inode->id);
 	return info;

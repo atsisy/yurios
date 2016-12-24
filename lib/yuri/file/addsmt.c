@@ -1,5 +1,6 @@
 #include "../../../include/sh.h"
 #include "../../../include/yrfs.h"
+#include "../../../include/string.h"
 
 
 /*
@@ -39,6 +40,6 @@ void fadd(int fd, char *buffer) {
 	}
 
 
-	do_write(fd, rw_buf, 20);
+	do_write(fd, rw_buf, strlen(buffer));
 
 }
