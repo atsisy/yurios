@@ -8,7 +8,9 @@ void main(void){
 	read(stdin, a, 5);
 
 	puts(a);
+
       exit();
 
+	return;
 }
 
