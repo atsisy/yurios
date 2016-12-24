@@ -1,10 +1,10 @@
 DST = ../../dst
-OBJS = $(DST)/fs.o $(DST)/open.o $(DST)/wdata.o $(DST)/inode.o \
- $(DST)/seek.o $(DST)/stat.o $(DST)/close.o $(DST)/find.o \
- $(DST)/flist.o $(DST)/byte2sector.o
+OBJS = fs.o open.o wdata.o inode.o seek.o stat.o close.o find.o flist.o byte2sector.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD FS DIRECTORY'
+	@ld -melf_i386 -r $(OBJS) -o $(DST)/yrfs.o
+	@rm -f *.o
 
-$(DST)/%.o: %.c
-	@$(CC) $*.c $(BINOPT) -o $(DST)/$*.o
+%.o: %.c
+	@$(CC) $*.c $(BINOPT) -o $*.o

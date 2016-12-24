@@ -3,10 +3,8 @@ OBJS = dst/start.o dst/core.o dst/default_font.o dst/graphic.o	\
 	dst/memory.o dst/timer.o dst/mtask.o dst/shell.o \
 	dst/yurilib.o dst/history.o dst/string.o  dst/sh_cmd.o \
 	dst/basis.o dst/sys_call.o dst/ata_init.o dst/ata_write.o \
-	dst/ata_read.o dst/ata_back.o dst/prepare_wr.o dst/display.o \
-	dst/open.o dst/fs.o dst/inode.o dst/wdata.o dst/shfunc.o \
-	dst/cpuinfo.o dst/seek.o dst/stat.o dst/close.o dst/find.o \
-	dst/read.o dst/write.o dst/sleep.o dst/flist.o dst/get_clock.o \
+	dst/ata_read.o dst/ata_back.o dst/prepare_wr.o dst/display.o dst/shfunc.o dst/cpuinfo.o dst/yrfs.o \
+	dst/read.o dst/write.o dst/sleep.o dst/get_clock.o \
 	dst/set_clock.o dst/mouse.o dst/yrws.o dst/addsmt.o dst/mem_read.o
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
