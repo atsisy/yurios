@@ -15,49 +15,61 @@ void uchar4tou32(u8_t *data, u32_t *u32);
 struct YURI_IMAGE *load_yim(char *file_name){
 
 	struct YURI_IMAGE *image = (struct YURI_IMAGE *)memory_alloc(memman, sizeof(struct YURI_IMAGE));
-	u8_t *data = (u8_t *)memory_alloc_4k(memman, 200000), *data_p;
+	u8_t *data = NULL, *data_p = NULL;
+	u8_t *header = (u8_t *)memory_alloc(memman, 512);
+	
 	i32_t fd = do_open(file_name, __O_RDONLY__);
-	u32_t i, size;
+	u32_t i, size = 0;
 	struct i_node inode;
 
 	if(fd == -1){
 		return NULL;
 	}
 
-	data_p = data;
 	iread(&inode, fd);
-	
-	for(i = 0;i < byte2sectors(156311);i++){
-		read_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, data_p, 1);
-		data_p += 512;
-	}
 
+	/*
+	 *ヘッダ読み込み
+	 */
+	read_ata_sector(&ATA_DEVICE0, inode.begin_address.sector, header, 1);
+	
 	/*
 	 *シグネチャを確認
 	 */
-      if(data[0] == 'y' && data[1] == 'i' && data[2] == 'm'){
+      if(header[0] == 'y' && header[1] == 'i' && header[2] == 'm'){
             //シグネチャを読み飛ばす
-		data += 3;
+		header += 3;
 		//幅を読み取る
-		uchar4tou32(data, &image->width);
+		uchar4tou32(header, &image->width);
 		//幅を読み飛ばす
-		data += 4;
+		header += 4;
 		//高さを読み取る
-		uchar4tou32(data, &image->height);
+		uchar4tou32(header, &image->height);
 		//高さを読み飛ばす
-		data += 4;
+		header += 4;
 		//画素数を計算
 		size = image->height * image->width;
+
+		//画像データ読み込みバッファ
+		data = (u8_t *)memory_alloc_4k(memman, size);
 		//画像データのバッファを確保
 		image->data = (u8_t *)memory_alloc_4k(memman, size);
+
+		data_p = data;
+
+		for(i = 0;i < byte2sectors(size);i++){
+			read_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, data, 1);
+			data += 512;
+		}
 
 		/*
 		 *画素データを読み取る
 		 */
 	      for(i = 0;i < size;i++){
-			image->data[i] = data[i];
+			image->data[i] = data_p[i];
 		}
-      }
+		memory_free(memman, (u32_t)data_p, size);
+	}
 
 	return image;
 }
