@@ -160,9 +160,9 @@ off_t do_seek(int fd, off_t offset, int whence);
 u32_t do_stat(int fd, u32_t *box);
 i32_t do_close(i32_t fd);
 
-
 void uchar4tou32(u8_t *data, u32_t *u32);
 
+u32_t mark_used_sign(u32_t start, u32_t end);
 /*
  *=======================================================================================
  *extern関係

@@ -404,7 +404,7 @@ void shell_master(void){
 		 /*
 		*historyに追加
 		*/
-		//add_history(command);
+		add_history(command);
 		
 		put_char('%');
 
