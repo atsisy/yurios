@@ -231,7 +231,6 @@ void shell_master(void){
 	char command[1024];
 
 	struct Process *me = task_now();	//自分自身を指すプロセス構造体
-	struct Process *child_proc;				//シェルから生成されるプロセスを指すためのプロセス構造体
 
 	int shell_buf[128];								//シェルに来るシグナルや割り込み情報をためておくバッファ
 
@@ -324,7 +323,6 @@ void shell_master(void){
 			iread(&inode, fd);
 			
 			char *src = (char *)memory_alloc(memman, 256);
-			char *src2 = (char *)memory_alloc(memman, 256);
 			
 			read_mem2hd("cat YURI_DOC.TXT", src, 256);
 			

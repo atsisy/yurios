@@ -26,8 +26,8 @@ void Main(void) {
 	//cyls...0xff0 leds...0x0ff1 vmode...0x0ff2 reserve...0x0ff3
 	//scrnx...0x0ff4 scrny...0x0ff6 vram.自動..0x0ff8
 	//シフト演算は高速化が図れるので積極的に使っていこう
-	memman = (struct MEMMAN *) MEMMAN_ADDR;
-	binfo  = (struct BOOTINFO *) ADR_BOOTINFO;
+	memman = (struct MEMMAN *)MEMMAN_ADDR;
+	binfo  = (struct BOOTINFO *)ADR_BOOTINFO;
 	struct QUEUE keycmd;
 	struct TIMER *timer, *timer2, *timer3, *timer_ts;
 
@@ -136,7 +136,7 @@ void task_b_main(void){
 
 	struct QUEUE fifo;
 	struct TIMER *timer_ts;
-	int i, fifo_buf[128], count = 0;
+	int i = 0, fifo_buf[128], count = 0;
 	char s[11];
 
 	queue_init(&fifo, 128, fifo_buf, 0);

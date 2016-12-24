@@ -22,7 +22,7 @@ void init_yrfs() {
 
 	puts("Start Initializing yurifs...");
 
-	blocks_info = (struct blocks_info *)memory_alloc_4k(memman, __BLOCKS_LIMIT__);
+	blocks_info = (struct block_info *)memory_alloc_4k(memman, __BLOCKS_LIMIT__);
 
 	puts("alloc blocks info structure...");
 

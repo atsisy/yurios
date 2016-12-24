@@ -24,7 +24,6 @@ size_t do_write(int fd, char *buf, int count){
 	 *サイズを保持しておく変数
 	 */
 	int size = 0;
-	struct i_node inode;
 
 	switch(fd){
 		/*

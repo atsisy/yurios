@@ -112,7 +112,7 @@ type_next_file:
 		p = (char *)(ADR_DISKIMG + 0x003e00);
 		p += (finfo[x].clustno*512);
 		
-		u32_t i, x, y, width, height;
+		u32_t x, y, width, height;
 
 		/*
 		 *高さと幅を取得

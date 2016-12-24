@@ -77,7 +77,7 @@ void command_history(void){
 	}
 
 	//開放
-	memory_free(memman, str, 1024);
+	memory_free(memman, (u32_t)str, 1024);
 }
 
 /*

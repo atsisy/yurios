@@ -11,7 +11,7 @@
  */
 void init_mscursor(struct Layer *layer){
       u32_t i;
-      char point, *vram = layer->data;
+      u8_t point, *vram = layer->data;
       static char MOUSE_CURSOR_IMAGE[16] = {
             0x00, 0x80, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc, 0xfe, 0xff, 0xff, 0x18, 0x18, 0x18, 0x0c, 0x0c, 0x06
       };

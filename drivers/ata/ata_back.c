@@ -48,10 +48,10 @@ void analyze_identify_data(struct ATA_DEVICE *device) {
 	info->establish_head_num     = identify[3];
 	info->establish_sector_num   = identify[6];
 
-	info->is_support_iordy = identify[49] & 0x0800;
+	info->is_support_iordy = (i8_t)(identify[49] & 0x0800);
 
 	if (identify[53] & 2) {
-		info->support_pio_mode = identify[64] & 0x007F;
+		info->support_pio_mode = identify[64] & 0x007f;
 	} else {
 		info->support_pio_mode = 0;
 	}
