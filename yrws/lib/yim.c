@@ -26,7 +26,8 @@ struct YURI_IMAGE *load_yim(char *file_name){
 
 	data_p = data;
 	iread(&inode, fd);
-	for(i = 0;i < 156311/512;i++){
+	
+	for(i = 0;i < byte2sectors(156311);i++){
 		read_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, data_p, 1);
 		data_p += 512;
 	}
@@ -68,7 +69,8 @@ struct YURI_IMAGE *load_yim(char *file_name){
  *=======================================================================================
  */
 void draw_yim(struct YURI_WINDOW *window, struct YURI_IMAGE *image, i16_t x, i16_t y){
-	u16_t cx, cy, i = 0;
+	u16_t cx, cy;
+	u32_t i = 0;
 
 	/*
 	 *ウィンドウのラベルバー部分を加算

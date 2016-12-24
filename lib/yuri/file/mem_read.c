@@ -123,8 +123,15 @@ type_next_file:
 		/*
 		 *画像データをコピ〜
 		 */
+		/*
 		for(i = 0;i < (width * height)+11;i++){
 			buffer[i] = p[i];
+		}
+		*/
+		for(y = 0;y < height;y++){
+			for(x = 0;x < width;x++){
+				buffer[y*width+x] = p[y*width+x];
+			}
 		}
 
 		//デバッグ用（画像を直に表示）

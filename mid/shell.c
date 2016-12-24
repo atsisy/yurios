@@ -367,6 +367,7 @@ void shell_master(void){
 			yrsw_main();
 		}else if(strcmp(command, "WriteImage")){
 			char *src = (char *)memory_alloc_4k(memman, 200000);
+			char *p = src;
 	
 			/*
 			 *読み込み
@@ -376,14 +377,14 @@ void shell_master(void){
 			read_yim("cat yuri.yim", src, 256);
 
 			i32_t fd = do_open("yuri.yim", __O_CREAT__);
-			do_write(fd, src, 160000);
+			do_write(fd, src, 156311);
 			iread(&inode, fd);
-			for(i = 0;i < 156311/512;i++){
+			for(i = 0;i < byte2sectors(156311);i++){
 				write_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, src, 1);
 				src += 512;
 			}
 
-			memory_free_4k(memman, (u32_t)src, 200000);
+			memory_free_4k(memman, (u32_t)p, 200000);
 			
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
