@@ -382,7 +382,8 @@ void shell_master(void){
 				src += 512;
 			}
 
-			memory_free_4k(memman, src, 200000);
+			memory_free_4k(memman, (u32_t)src, 200000);
+			
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*
@@ -498,7 +499,7 @@ void scroll(struct BOOTINFO *binfo, int height){
 	/*
 	 *スクロールに必要なパラメータの取得、計算
 	 */
-	int i, textzone_x = binfo->scrnx-151, scrnx = binfo->scrnx, scrny = binfo->scrny;
+	int i, scrnx = binfo->scrnx, scrny = binfo->scrny;
 	int scrnxy = (scrnx * scrny) - (scrnx*height);
 	int copy_from = scrnx * height;
 
@@ -544,23 +545,38 @@ void multi_shellscroll(struct BOOTINFO *binfo, int height, int top, int under){
  *外部アプリケーションを実行するための関数
  */
 int do_shell_app(int *fat, char *command){
-	struct MEMMAN *memman = (struct MEMMAN *)MEMMAN_ADDR;
+	
 	struct FileInfo *finfo;
 	struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
-	char *file_name, *p, *q;
+	char file_name[13], *p, *q;
 	struct Process *me = task_now();
 	int i, seg_size, data_size, esp, dathrb;
 
+	zeroclear_8array(file_name, 13);
+
+	/*
+	 *ファイル名をコピー
+	 */
 	for(i = 0;i < 13;i++){
+		/*
+		 *文字じゃない場合ブレーク
+		 *asciiコード表を参照
+		 */
 		if(command[i] <= ' '){
 			break;
 		}
 		file_name[i] = command[i];
 	}
+
+	//最後にNULL文字
 	file_name[i] = '\0';
 	finfo = file_search(file_name, (struct FileInfo *)(ADR_DISKIMG+0x002600), 224);	//なんかバイナリエディタで確認したら0x2600から始まってた
+
+	/*
+	 *拡張子ありの場合
+	 */
 	if(finfo == 0 && file_name[i-1] != '.'){
-		//ただのファイル名では見つからなかったため.ylつきで検索する
+		//ただのファイル名では見つからなかったため.yxつきで検索する
 		file_name[i] = '.';
 		file_name[i+1] = 'y';
 		file_name[i+2] = 'x';
@@ -568,24 +584,59 @@ int do_shell_app(int *fat, char *command){
 		finfo = file_search(file_name, (struct FileInfo *)(ADR_DISKIMG+0x002600), 224);
 	}
 
-	if(finfo != 0){	//ファイルを発見した場合
-		/* ファイルが見つかった場合 */
+	/*
+	 *ファイルを発見したか？
+	 */
+	if(finfo != 0){
+		/*
+		 *ファイルを発見した
+		 */
+
+		/*
+		 *ファイルをロード
+		 */
 		p = (char *) memory_alloc_4k(memman, finfo->size);
 		loadfile(finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
 
-		if (finfo->size >= 36 && strcmp(p + 4, "yrex") == 1 && *p == 0x00){
-			seg_size 	= *((int *) (p + 0x0000));
-			esp        	= *((int *) (p + 0x000c));
-			data_size = *((int *) (p + 0x0010));
-			dathrb 		= *((int *) (p + 0x0014));
-			q = (char *) memory_alloc_4k(memman, seg_size);
+		/*
+		 *ロードしたファイルが正式なものかチェックする
+		 */
+		if(finfo->size >= 36 && strcmp(p + 4, "yrex") == 1 && *p == 0x00){
+                  //ヘッダ解析
+
+			/*
+			 *OSが用意するアプリ用のデータセグメントのサイズ
+			 */
+			seg_size = *((int *)(p + 0x0000));
+			/*
+			 *espの初期値
+			 */
+			esp = *((int *)(p + 0x000c));
+			/*
+			 *データセクションの大きさ
+			 */
+			data_size = *((int *)(p + 0x0010));
+			/*
+			 *データ部分の始まり位置
+			 */
+			dathrb = *((int *)(p + 0x0014));
+			
+			q = (char *)memory_alloc_4k(memman, seg_size);
 			*((int *)0xfe8) = (int)q;
-			set_segmdesc(gdt + 1003, finfo->size - 1, (int) p, AR_CODE32_ER+0x60);
-			set_segmdesc(gdt + 1004, seg_size - 1,    (int) q, AR_DATA32_RW+0x60);
-			for (i = 0; i < data_size; i++){
+			
+			set_segmdesc(gdt + 1003, finfo->size - 1, (int)p, AR_CODE32_ER+0x60);
+			set_segmdesc(gdt + 1004, seg_size - 1,    (int)q, AR_DATA32_RW+0x60);
+
+			/*
+			 *データ領域をメモリにデータセグメントにコピー
+			 */
+			for(i = 0; i < data_size; i++){
 				q[esp+i] = p[dathrb+i];
 			}
+
+			
 			start_app(0x1b, 1003 * 8, esp, 1004 * 8, &(me->tss.esp0));
+			
 			memory_free_4k(memman, (int)q, seg_size);
 		}else{
 			print("yuri executable file format error.");
