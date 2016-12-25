@@ -44,7 +44,7 @@ void init_yrfs() {
 			n = inode.begin_address.sector;
 
 			blocks_info[i].exist = __USED_BLOCK__;
-			for(;n < inode.end_address.sector;n++){
+			for(;n < byte2sectors(inode.size);n++){
 				blocks_info[n].exist = __USED_BLOCK__;
 			}
 			if(i % 100 == 0){

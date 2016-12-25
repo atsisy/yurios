@@ -15,8 +15,9 @@ void bar_clock_proc(void){
 	/*
 	 *変数宣言
 	 */
+	struct Process *me = task_now();
       //確保
-	struct Timer_Interrupt *timer_intr = alloc_TimerIntr(task_now(), 875123);
+	struct Timer_Interrupt *timer_intr = alloc_TimerIntr(me, 875123);
 	i8_t hour = do_gettime(__HOUR__), minute = do_gettime(__MINUTE__), itiji = 0;
 	bool redraw_flag = false;
 
@@ -27,15 +28,18 @@ void bar_clock_proc(void){
 	TimerIntr_SetTime(timer_intr, 20000);
 
 	while(1){
-		if(!TimerIntr_came(timer_intr)){
+		if(!queue_size(timer_intr->queue)){
 			/*
 			 *割り込みは来ていなかった
 			 */
-			io_stihlt();
+			task_sleep(me);
+			io_sti();
 		}else{
 			/*
 			 *割り込みが来た
 			 */
+			queue_pop(timer_intr->queue);
+			io_sti();
 
 			/*
 			 *時刻が変わっていたら更新
@@ -61,13 +65,4 @@ void bar_clock_proc(void){
 			TimerIntr_SetTime(timer_intr, 20000);
 		}
 	}
-}
-
-void draw_clock(i8_t hour, i8_t minute){
-	char time[5];
-	zeroclear_8array(time, 5);
-	sprintf(time, "%d:%d", hour, minute);
-	boxfill8(task_bar->data, task_bar->width, __RGB256COL__(36, 49, 61), task_bar->width-48, 0, task_bar->width, 16);
-	putfonts8_asc(task_bar->data, task_bar->width, task_bar->width-48, 0, __RGB256COL__(255, 255, 255), time);
-	redraw_all_layer(Yrws_Master.LAYER_MASTER, task_bar, 0, 0, task_bar->width, 16);
 }

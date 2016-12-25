@@ -16,7 +16,7 @@ void boot_sub_procs(u32_t flags){
 		yrws_subs->bar_clock->tss.fs = 1 * 8;
 		yrws_subs->bar_clock->tss.gs = 1 * 8;
 
-		task_run(yrws_subs->bar_clock, 2, 2);
+		task_run(yrws_subs->bar_clock, 2, 3);
 	}
 	
 }

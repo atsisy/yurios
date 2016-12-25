@@ -25,8 +25,8 @@ void yrsw_main(){
       puts("Starting...");
 
       /*
-      *マウスのキューを設定
-      */
+	 *マウスのキューを設定
+	 */
       mouse_queue = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
       queue_init(mouse_queue, 512, mouse_buf, me);
 
@@ -34,17 +34,21 @@ void yrsw_main(){
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
       init_yrws();
-	struct YURI_WINDOW *window = create_window("YURI OS", Yrws_Master.cursor.x, Yrws_Master.cursor.y, 500, 500);
+	struct YURI_WINDOW *window = create_window("YURI OS", 200, 200, 500, 500);
 
 	struct YURI_IMAGE *image = load_yim("an.yim");
-	draw_yim(window, image, 10, 10);
+
+	if(image != NULL){
+		//draw_yim(window, image, 10, 10);
+	}
+
 
 	boot_sub_procs(__TASK_BAR_CLOCK__);
 
       while(1){
             /*
-            *マウスのキューはからか?
-            */
+		 *マウスのキューはからか?
+		 */
             if(!queue_size(mouse_queue)){
 			/*
 			 *割り込み来ないから寝る
@@ -53,35 +57,35 @@ void yrsw_main(){
 			io_sti();
             }else{
                   /*
-                  *何らかの割り込みが来た
-                  */
+			 *何らかの割り込みが来た
+			 */
 			data = queue_pop(mouse_queue);
 			io_sti();
 
 			if(decode_mdata(data) != 0){
 				/*
-                        *データが3バイト揃ったので表示
-                        */
+				 *データが3バイト揃ったので表示
+				 */
                         if((Yrws_Master.mouse_info.button & 0x01) != 0){
 					/*
-                              *左ボタン
-                              */
+					 *左ボタン
+					 */
                               //move_layer(Yrws_Master.LAYER_MASTER, window, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
 				}
 				if((Yrws_Master.mouse_info.button & 0x02) != 0){
 				      /*
-                              *右ボタン
-                              */
+					 *右ボタン
+					 */
 				}
 				if((Yrws_Master.mouse_info.button & 0x04) != 0){
 					/*
-                              *中央ボタン
-                              */
+					 *中央ボタン
+					 */
 				}
 
 				/*
-                        *マウスカーソルの移動
-                        */
+				 *マウスカーソルの移動
+				 */
 				Yrws_Master.cursor.x += Yrws_Master.mouse_info.x;
 				Yrws_Master.cursor.y += Yrws_Master.mouse_info.y;
 
@@ -105,9 +109,9 @@ void yrsw_main(){
 
                         if(__MOUSE_DRAGGING__){
                               if(
-                              Yrws_Master.LAYER_MASTER->layers[Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x]].flags & __WINDOW_LAYER__
-                              ||
-                              Yrws_Master.flags & __MOUSE_CARRYING_WINDOW__){
+						Yrws_Master.LAYER_MASTER->layers[Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x]].flags & __WINDOW_LAYER__
+						||
+						Yrws_Master.flags & __MOUSE_CARRYING_WINDOW__){
                                     move_layer(Yrws_Master.LAYER_MASTER, window->layer, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
                                     Yrws_Master.flags |= __MOUSE_CARRYING_WINDOW__;
                               }
@@ -198,14 +202,27 @@ static void init_yrws(void){
       *レイヤーの位置を調整
       */
       layer_ch_position(Yrws_Master.LAYER_MASTER, wall_paper, 0);
-      layer_ch_position(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, 1);
+      layer_ch_position(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, 2);
 	layer_ch_position(Yrws_Master.LAYER_MASTER, task_bar, 3);
 
       /*
       *レイヤーのタイプ
       */
       wall_paper->flags |= __SYSTEM_LAYER__;
-      wall_paper->flags |= __SYSTEM_LAYER__;
+      mouse_cursor_layer->flags |= __SYSTEM_LAYER__;
 
       redraw_all_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
+}
+
+void draw_clock(i8_t hour, i8_t minute){
+	
+	char time[6];
+	zeroclear_8array(time, 6);
+	sprintf(time, "%d:%d", hour, minute);
+	//boxfill8(task_bar->data, task_bar->width, __RGB256COL__(36, 49, 61), task_bar->width-48, 0, task_bar->width, 16);
+
+	putfonts8_asc(task_bar->data, task_bar->width, task_bar->width-48, 0, __RGB256COL__(36, 49, 61), "      ");
+	putfonts8_asc(task_bar->data, task_bar->width, task_bar->width-48, 0, __RGB256COL__(255, 255, 255), time);
+	redraw_all_layer(Yrws_Master.LAYER_MASTER, task_bar, 0, 0, task_bar->width, 16);
+	
 }

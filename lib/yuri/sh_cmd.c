@@ -82,7 +82,7 @@ void command_history(void){
 
 /*
  *=======================================================================================
- *command_ls関数
+ *command_ls関数inode.begin_address.sector+i
  *lsコマンドを実行する関数
  *=======================================================================================
  */
@@ -238,6 +238,7 @@ void command_writeyim(char *file_name){
 	iread(&inode, fd);
 	for(i = 0;i < byte2sectors(size);i++){
 		write_ata_sector(&ATA_DEVICE0, inode.begin_address.sector+i, src, 1);
+		blocks_info[inode.begin_address.sector+i].exist = __USED_BLOCK__;
 		src += 512;
 	}
 
