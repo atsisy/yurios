@@ -1,5 +1,5 @@
 DST = ../dst
-OBJS = $(DST)/history.o $(DST)/shell.o  $(DST)/shfunc.o
+OBJS = $(DST)/history.o $(DST)/shell.o  $(DST)/shfunc.o $(DST)/type_prompt.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD MID DIRECTORY'

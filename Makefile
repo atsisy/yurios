@@ -1,6 +1,6 @@
 OBJS = dst/kernel_kernel.o dst/keyboard.o	dst/timer.o dst/shell.o \
 	dst/yurilib.o dst/history.o dst/string.o dst/sh_cmd.o \
-	dst/basis.o dst/ata_init.o dst/ata_write.o \
+	dst/basis.o dst/ata_init.o dst/ata_write.o dst/type_prompt.o \
 	dst/ata_read.o dst/ata_back.o dst/prepare_wr.o dst/display.o dst/shfunc.o dst/yrfs.o \
 	dst/read.o dst/write.o dst/sleep.o dst/get_clock.o dst/fat_getsize.o \
 	dst/set_clock.o dst/mouse.o dst/yrws.o dst/addsmt.o dst/mem_read.o
