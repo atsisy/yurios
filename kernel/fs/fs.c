@@ -85,11 +85,14 @@ void filesystem_zeroclear(){
 			}
 
 		}else{
-			u32_t n = inode.begin_address.sector;
+			u32_t n = inode.begin_address.sector, j;
 			write_ata_sector(&ATA_DEVICE0, i, zero, 1);
-			write_ata_sector(&ATA_DEVICE0, n, zero, 1);
 			blocks_info[i].exist = __UNUSED_BLOCK__;
 			blocks_info[n].exist = __UNUSED_BLOCK__;
+
+			for(j = 0;j < byte2sectors(inode.size);j++, n++){
+				write_ata_sector(&ATA_DEVICE0, n, zero, 1);
+			}
 
 			if(i % 100 == 0){
 				boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 16, param_y+16);
