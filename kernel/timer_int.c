@@ -50,3 +50,24 @@ void free_TimerIntr(struct Timer_Interrupt *timer_intr){
 	memory_free(memman, (u32_t)timer_intr, sizeof(struct Timer_Interrupt));
 
 }
+
+/*
+ *=======================================================================================
+ *TimerIntr_SetTime関数
+ *Timer_Interrupt構造体のタイマに時間をセットする関数
+ *引数
+ *struct Timer_Interrupt *timer_intr
+ *=>時間をセットしたいTimer_Interrupt構造体
+ *i32_t time_limit
+ *タイムリミット
+ *返り値
+ *セットした時間
+ *=======================================================================================
+ */
+i32_t TimerIntr_SetTime(struct Timer_Interrupt *timer_intr, i32_t time_limit){
+
+	//タイムリミットを設定
+	timer_settime(timer_intr->timer, time_limit);
+
+	return time_limit;
+}
