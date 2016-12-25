@@ -39,7 +39,7 @@ void yrsw_main(){
 	struct YURI_IMAGE *image = load_yim("an.yim");
 
 	if(image != NULL){
-		//draw_yim(window, image, 10, 10);
+		draw_yim(window, image, 10, 10);
 	}
 
 

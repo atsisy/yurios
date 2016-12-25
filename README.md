@@ -24,6 +24,9 @@ YuriはCとアセンブリ(NASM)で開発しています。
 #### CUIモード
 ![Imgur](http://i.imgur.com/02xXbaP.png)
 
+#### GUIモード
+![Imgur](http://i.imgur.com/83mc2xg.png)
+
 ##Building
 
 Yuriのディレクトリに入って以下のコマンドを打ってください。
