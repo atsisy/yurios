@@ -5,7 +5,6 @@
 static void init_yrws(void);
 void erase_cursor(void);
 void init_mscursor(struct Layer *layer);
-void draw_clock();
 
 struct YRWS_MASTER Yrws_Master;
 struct QUEUE *mouse_queue;
@@ -185,7 +184,6 @@ static void init_yrws(void){
 	layer_chbuf(task_bar, bar_buffer);
 	modify_layer(task_bar, binfo->scrnx, 16, 0xff);
 	boxfill8(task_bar->data, task_bar->width, __RGB256COL__(36, 49, 61), 0, 0, task_bar->width, task_bar->height);
-	draw_clock();
 
       /*
       *レイヤーを移動
@@ -208,13 +206,4 @@ static void init_yrws(void){
       wall_paper->flags |= __SYSTEM_LAYER__;
 
       redraw_all_layer(Yrws_Master.LAYER_MASTER, wall_paper, 0, 0, wall_paper->width, wall_paper->height);
-}
-
-void draw_clock(){
-	char time[5];
-	zeroclear_8array(time, 5);
-	sprintf(time, "%d:%d", do_gettime(__HOUR__), do_gettime(__MINUTE__));
-	boxfill8(task_bar->data, task_bar->width, __RGB256COL__(36, 49, 61), task_bar->width-48, 0, task_bar->width, 16);
-	putfonts8_asc(task_bar->data, task_bar->width, task_bar->width-48, 0, __RGB256COL__(255, 255, 255), time);
-	redraw_all_layer(Yrws_Master.LAYER_MASTER, task_bar, 0, 0, task_bar->width, 16);
 }

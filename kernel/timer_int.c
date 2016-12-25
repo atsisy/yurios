@@ -71,3 +71,13 @@ i32_t TimerIntr_SetTime(struct Timer_Interrupt *timer_intr, i32_t time_limit){
 
 	return time_limit;
 }
+
+/*
+ *=======================================================================================
+ *TimerIntr_came関数
+ *割り込みが来ているかどうか判定する関数
+ *=======================================================================================
+ */
+bool TimerIntr_came(struct Timer_Interrupt *timer_intr){
+	return queue_size(timer_intr->queue);
+}

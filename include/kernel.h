@@ -186,4 +186,14 @@ void zeroclear_8array(i8_t *array, u32_t length);
 void zeroclear_16array(i16_t *array, u32_t length);
 void zeroclear_32array(i32_t *array, u32_t length);
 
+/*
+ *=======================================================================================
+ *Timer_Interrupt構造体関係
+ *=======================================================================================
+ */
+struct Timer_Interrupt *alloc_TimerIntr(struct Process *proc, i32_t identifier);
+void free_TimerIntr(struct Timer_Interrupt *timer_intr);
+i32_t TimerIntr_SetTime(struct Timer_Interrupt *timer_intr, i32_t time_limit);
+bool TimerIntr_came(struct Timer_Interrupt *timer_intr);
+
 #endif
