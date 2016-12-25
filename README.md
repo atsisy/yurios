@@ -25,7 +25,7 @@ An open source 32bit operating systems!
 ![Imgur](http://i.imgur.com/02xXbaP.png)
 
 #### GUIモード
-![Imgur](http://i.imgur.com/83mc2xg.png)
+![Imgur](http://i.imgur.com/nS7hXqB.png)
 
 ##Building
 
