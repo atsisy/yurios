@@ -65,6 +65,10 @@ struct YURI_IMAGE *load_yim(char *file_name){
 		/*
 		 *画素データを読み取る
 		 */
+
+		//ヘッダは飛ばす
+		data_p += 11;
+
 	      for(i = 0;i < size;i++){
 			image->data[i] = data_p[i];
 		}
