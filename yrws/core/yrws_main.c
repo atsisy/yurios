@@ -39,6 +39,8 @@ void yrsw_main(){
 	struct YURI_IMAGE *image = load_yim("an.yim");
 	draw_yim(window, image, 10, 10);
 
+	boot_sub_procs(0);
+
       while(1){
             /*
             *マウスのキューはからか?
