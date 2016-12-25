@@ -85,13 +85,23 @@ void filesystem_zeroclear(){
 			}
 
 		}else{
+			/*
+			 *有効なinode書き込みを検知
+			 */
 			u32_t n = inode.begin_address.sector, j;
+
+			/*
+			 *まずinodeを削除
+			 */
 			write_ata_sector(&ATA_DEVICE0, i, zero, 1);
 			blocks_info[i].exist = __UNUSED_BLOCK__;
-			blocks_info[n].exist = __UNUSED_BLOCK__;
 
+			/*
+			 *ファイル本体を削除
+			 */
 			for(j = 0;j < byte2sectors(inode.size);j++, n++){
 				write_ata_sector(&ATA_DEVICE0, n, zero, 1);
+				blocks_info[n].exist = __UNUSED_BLOCK__;
 			}
 
 			if(i % 100 == 0){
