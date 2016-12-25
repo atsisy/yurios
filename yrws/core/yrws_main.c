@@ -34,9 +34,9 @@ void yrsw_main(){
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
       init_yrws();
-	struct YURI_WINDOW *window = create_window("YURI OS", 200, 200, 500, 500);
+	struct YURI_WINDOW *window = create_window("Image View", 200, 200, 500, 500);
 
-	struct YURI_IMAGE *image = load_yim("an.yim");
+	struct YURI_IMAGE *image = load_yim("yuri.yim");
 
 	if(image != NULL){
 		draw_yim(window, image, 10, 10);
