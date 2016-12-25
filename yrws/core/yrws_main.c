@@ -39,7 +39,7 @@ void yrsw_main(){
 	struct YURI_IMAGE *image = load_yim("an.yim");
 	draw_yim(window, image, 10, 10);
 
-	boot_sub_procs(0);
+	boot_sub_procs(__TASK_BAR_CLOCK__);
 
       while(1){
             /*
