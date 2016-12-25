@@ -1,7 +1,7 @@
 #ifndef __YRWS_H__
 #define __YRWS_H__
 
-#include "types.h"
+#include "kernel.h"
 
 /*
 *デフォルトの背景色
@@ -116,6 +116,9 @@ struct YURI_IMAGE{
 	u8_t *data;   //画像データ
 };
 
+struct YRWS_SUBPROCS{
+	struct Process bar_clock;
+};
 /*
 *マウスを初期化する関数
 */
