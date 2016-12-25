@@ -1,16 +1,17 @@
 DST = ../dst
-OBJS = $(DST)/start.o $(DST)/graphic.o $(DST)/dsctbl.o \
-	$(DST)/int.o  $(DST)/fifo.o $(DST)/memory.o $(DST)/mtask.o \
-	$(DST)/sys_call.o $(DST)/default_font.o $(DST)/core.o $(DST)/cpuinfo.o
+OBJS = start.o graphic.o dsctbl.o int.o fifo.o memory.o mtask.o \
+	sys_call.o default_font.o core.o cpuinfo.o timer_int.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD KERNEL DIRECTORY'
+	@ld -melf_i386 -r $(OBJS) -o $(DST)/kernel_kernel.o
 	cd fs && make all
 	cd sysc && make all
 	cd time && make all
+	rm -f *.o
 
-$(DST)/%.o: %.c
-	@$(CC) $*.c $(BINOPT) -o $(DST)/$*.o
+%.o: %.c
+	@$(CC) $*.c $(BINOPT) -o $*.o
 
-$(DST)/%.o: %.asm
-	@nasm -f elf $*.asm -o $(DST)/$*.o
+%.o: %.asm
+	@nasm -f elf $*.asm -o $*.o
