@@ -71,7 +71,7 @@ void command_history(void){
 
 	if((fd = do_open("history", __O_RDONLY__)) != -1){
 		do_read(fd, str, 2);
-		print(str); //改行はすでに入っている
+		puts(str);
 	}else{
 		puts("ERROR");
 	}
