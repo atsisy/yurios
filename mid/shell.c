@@ -366,6 +366,8 @@ void shell_master(void){
 			char file_name[256];
 			cut_string(command, file_name, 9);
 			command_writeyim(file_name);
+		}else if(strcmp(command, "os")){
+			puts("YuriOS");
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*
