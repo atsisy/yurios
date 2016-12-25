@@ -373,9 +373,7 @@ void shell_master(void){
 			 *もしくはそんなコマンドねーよ的な
 			 */
 			print("Sorry. I Could not recognize '");
-			length += 30;
 			print(copied_str);
-			length += strlen(copied_str);
 			puts("'.");
 		}
 
