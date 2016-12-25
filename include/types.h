@@ -159,6 +159,8 @@ struct PROCESS_MASTER {
 	struct Process ALL_PROCESSES[MAX_TASKS];
 };
 
+
+#define __TIMER_INTERRUPT_BUFFER_SIZE__ 8
 /*
  *=======================================================================================
  *時間割り込みに特化した割り込み管理構造体
@@ -167,7 +169,7 @@ struct PROCESS_MASTER {
 struct Timer_Interrupt {
 	struct QUEUE *queue;  //使用するキュー
 	struct TIMER *timer;  //使用するタイマ
-	i32_t intr_buf[8];    //バッファ
+	i32_t intr_buf[__TIMER_INTERRUPT_BUFFER_SIZE__];    //バッファ
 };
 
 #endif
