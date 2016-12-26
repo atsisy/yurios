@@ -8,9 +8,9 @@
 #include "../../../include/yuri/string.h"
 
 int main(void) {
-	char code[1024];
-	char identifier[24];
-	char arg[256];
+	static char code[1024];
+	static char identifier[24];
+	static char arg[256];
 
 	while(1){
 		read(stdin, code, 1024);
@@ -20,7 +20,8 @@ int main(void) {
 		if(strcmp(identifier, "quit")){
 			break;
 		}else if(strcmp(identifier, "print")){
-			puts(cut_string(code, arg, 6));
+			cut_string(code, arg, 5);
+			puts(arg);
 		}else{
 			puts("Unknown identifier.");
 		}
