@@ -114,6 +114,10 @@ void task_run(struct Process *task, int level, int priority);
 void task_sleep(struct Process *task);
 struct Process *task_now(void);
 void task_remove(struct Process *task);
+void task_switchsub(void);
+u32_t issue_pid();
+void task_add(struct Process *task);
+
 
 
 extern short input_y;
