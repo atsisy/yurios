@@ -134,7 +134,7 @@ struct Process {
 	int level, priority;
 	struct QUEUE irq;
 	struct TSS32 tss;
-	int pid;
+	u32_t pid;
 	struct Process *parent;
 	char proc_name[64];
 };
@@ -157,6 +157,8 @@ struct PROCESS_MASTER {
 	 *プロセスを直に保持する配列
 	 */
 	struct Process ALL_PROCESSES[MAX_TASKS];
+
+	u32_t top_pid;
 };
 
 

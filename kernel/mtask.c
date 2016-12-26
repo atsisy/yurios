@@ -9,6 +9,8 @@
 struct PROCESS_MASTER *process_master;
 struct TIMER *task_timer;
 
+u32_t issue_pid();
+
 /*
  *=======================================================================================
  *task_switchsub関数
@@ -108,6 +110,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	 *プロセスマスター（マンション本体兼管理人（笑））を確保
 	 */
 	process_master = (struct PROCESS_MASTER *)memory_alloc_4k(memman, sizeof(struct PROCESS_MASTER));
+	process_master->top_pid = 0;
 
 	/*
 	 *マンションの入居者名簿（フロアは関係ない）を初期化
@@ -136,6 +139,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	task->priority = 2;
 	task->level = 0;
 	task_add(task);
+	task->pid = 0;
 	task_switchsub();
 	load_tr(task->sel);
 	task_timer = timer_alloc();
@@ -219,6 +223,8 @@ struct Process *task_alloc(char *p_name){
 			new_process->tss.gs = 0;
 			new_process->tss.idtr = 0;
 			new_process->tss.iomap = 0x40000000;
+
+			new_process->pid = issue_pid();
 
 			/*
 			 *新しく入居できたプロセスへのポインタを返す
@@ -472,4 +478,15 @@ void task_sleep(struct Process *task){
 	 *完了
 	 */
 	return;
+}
+
+/*
+ *=======================================================================================
+ *issue_pid関数
+ *プロセスIDを発行する関数
+ *=======================================================================================
+ */
+u32_t issue_pid(){
+	process_master->top_pid++;
+	return process_master->top_pid - 1;
 }
