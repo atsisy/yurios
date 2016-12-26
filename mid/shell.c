@@ -183,19 +183,19 @@ void shell_master(void){
 			fd = do_open("yuri_doc.txt", __O_RDONLY__);
 			fadd(fd, "\nSATORI");
 			/*
-			do_read(fd, src2, 1);
+			  do_read(fd, src2, 1);
 
-			puts(src2);
+			  puts(src2);
 			*/
 		}else if(strcmp(command, "fszeroclear")){
 			/*
-			u32_t i;
-			u8_t zero[512] = { 0 };
-			for(i = 0;i < __BLOCKS_LIMIT__;i++)
-				write_ata_sector(&ATA_DEVICE0, i, zero, 1);
+			  u32_t i;
+			  u8_t zero[512] = { 0 };
+			  for(i = 0;i < __BLOCKS_LIMIT__;i++)
+			  write_ata_sector(&ATA_DEVICE0, i, zero, 1);
 			
-			for(i = 0;i < __INODE_LIMIT__;i++)
-				blocks_info[i].exist = __UNUSED_BLOCK__;
+			  for(i = 0;i < __INODE_LIMIT__;i++)
+			  blocks_info[i].exist = __UNUSED_BLOCK__;
 			*/
 			filesystem_zeroclear();
 			goto skip_write_history;
@@ -208,6 +208,34 @@ void shell_master(void){
 			file_list(NULL);
 		}else if(strcmp(command, "lscpu")){
 			command_lscpu();
+		}else if(strcmp(command, "fork")){
+
+			int a = 10;
+
+			struct Process *child;
+			child = task_alloc("child");
+			child->tss.esp = memory_alloc_4k(memman, 64 * 1024) + 64 * 1024 - 8;
+			child->tss.es = 1 * 8;
+			child->tss.cs = 2 * 8;
+			child->tss.ss = 1 * 8;
+			child->tss.ds = 1 * 8;
+			child->tss.fs = 1 * 8;
+			child->tss.gs = 1 * 8;
+			child->tss.eip = (int)load_eip();
+
+
+			if(queue_pop(&task_now()->irq)){
+				puts(task_now()->proc_name);
+			}else{
+				i32_t *buf = (i32_t *)memory_alloc(memman, 12);
+				queue_init(&child->irq, 3, buf, NULL);
+				queue_push(&child->irq, 10);
+				task_run(child, 2, 2);
+				puts(task_now()->proc_name);
+			}
+
+
+
 		}else if(strcmp(part, "show")){
 			command_show(command);
 		}else if(strcmp(command, "yrws")){
@@ -233,9 +261,9 @@ void shell_master(void){
 		 *次のコマンドを受け付けるための準備
 		 */
 
-		 /*
-		*historyに追加
-		*/
+		/*
+		 *historyに追加
+		 */
 		add_history(command);
 
 	skip_write_history:
