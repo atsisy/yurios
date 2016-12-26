@@ -17,7 +17,8 @@ i32_t do_close(i32_t fd) {
 	/*
 	 *オフセットを初期化
 	 */
-	inode.begin_address.offset = 0;
+	inode.seek_address.offset = 0;
+	inode.seek_address.sector = 0;
 
 	/*
 	 *新しいデータを書き込み

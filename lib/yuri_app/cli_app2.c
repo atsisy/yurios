@@ -7,8 +7,7 @@ int main(void){
 	char str[256];
 	char wr[256] = "YURI\nOS";
 
-	fd = open("b.txt", O_CREAT);
-	//fd = open("b.txt", O_RDONLY);
+	fd = open("b.txt", O_CREAT | O_RDONLY);
 
 	write(fd, wr, 256);
 

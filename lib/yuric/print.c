@@ -29,17 +29,16 @@ void getline(int fd, char *line) {
 	p = 0;
 
 	stat(fd, box);
+	i = box[4];
 
 	while(1){
 		read(fd, buffer, 512);
-		for(i = box[4];i < 512; i++, p++ ){
+		for(;i < 512; i++, p++ ){
 			switch(buffer[i]){
 				//改行
 			case 0x0a:
 			case '\0':
 				line[p] = '\0';
-				free(box);
-				free(buffer);
 				seek(fd, i+1, SEEK_CUR);
 				return;
 			default:
