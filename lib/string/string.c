@@ -15,7 +15,7 @@ int strcmp(const char *s, const char *t){
 	return 1;
 }
 
-int strlen(char *str){
+int strlen(const char *str){
 	u32_t count = 0;
       while(*str){
 		str++;
@@ -42,13 +42,14 @@ void cut_string(char *str, char *dst, int start_point){
 	return;
 }
 
-void strcpy(char *copied_str, char *str, int length){
-	int i;
-	for(i = 0;i < length;i++){
-		copied_str[i] = str[i];
+char *strcpy(char *dst, const char *src){
+	while(*src){
+		*dst = *src;
+		dst++;
+		src++;
 	}
-	copied_str[i] = '\0';
-	return;
+	*dst = '\0';
+	return dst;
 }
 
 char *strcat(char *s1, const char *s2) {

@@ -57,7 +57,7 @@ struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t disp
       redraw_all_layer(Yrws_Master.LAYER_MASTER, window, 0, 0, binfo->scrny, binfo->scrny);
 
       yr_window->layer = window;
-      strcpy(yr_window->window_name, window_name, 10);
+      strcpy(yr_window->window_name, window_name);
 
       return yr_window;
       

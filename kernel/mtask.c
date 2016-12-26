@@ -198,7 +198,7 @@ struct Process *task_alloc(char *p_name){
 			/*
 			 *プロセスに名前をつける
 			 */
-			strcpy(new_process->proc_name, p_name, strlen(p_name));
+			strcpy(new_process->proc_name, p_name);
 
 			/*
 			 *プロセスを確保

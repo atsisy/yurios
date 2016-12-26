@@ -82,8 +82,6 @@ void shell_master(void){
 
 	char command[1024];
 
-	print_value(load_eip(), 500, 500);
-
 	struct Process *me = task_now();	//自分自身を指すプロセス構造体
 
 	int shell_buf[128];								//シェルに来るシグナルや割り込み情報をためておくバッファ
@@ -123,7 +121,7 @@ void shell_master(void){
     			continue;
 		}
 
-		strcpy(copied_str, command, strlen(command)+1);
+		strcpy(copied_str, command);
 
 		/*
 		 *コマンド打ったあと一個下の行を渡す

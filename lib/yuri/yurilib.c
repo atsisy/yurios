@@ -244,7 +244,7 @@ void int2dec(char *str, int value) {
  */
 void int2str(char *str, int value) {
 	char *p = (char *)value;
-	strcpy(str, p, strlen(p));
+	strcpy(str, p);
 }
 
 int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax) {
