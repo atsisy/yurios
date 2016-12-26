@@ -42,7 +42,7 @@ void task_add(struct Process *task){
 	 */
 	struct PROCESS_LEVEL_FLOOR *floor = &process_master->PROCESS_APARTMENT[task->level];
 	/*
-	 *目的のフロアの一番近い部屋に入居させる
+	 *目的のフロアの一番近い部屋に入居させる0
 	 *(誰かが退去したとき、全員スライドさせて詰めるので以下のコードでOK)
 	 */
 	floor->ROOMS[floor->THIS_FLOOR_PROCESSES] = task;
@@ -120,6 +120,7 @@ struct Process *task_alloc(char *p_name){
 			new_process->tss.iomap = 0x40000000;
 
 			new_process->pid = issue_pid();
+			
 
 			/*
 			 *新しく入居できたプロセスへのポインタを返す

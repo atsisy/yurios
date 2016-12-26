@@ -49,7 +49,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	task->priority = 2;
 	task->level = 0;
 	task_add(task);
-	task->pid = 0;
+	task->pid = issue_pid();
 	task_switchsub();
 	load_tr(task->sel);
 	task_timer = timer_alloc();
@@ -58,7 +58,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	/*
 	 *アイドルタスク（番兵役）を確保
 	 */
-	idle = task_alloc("system process");
+	idle = task_alloc("idle process");
 	idle->tss.esp = memory_alloc_4k(memman, 64*1024) + 64 * 1024;
 	idle->tss.eip = (int)&task_idle;
 	idle->tss.es = 1 * 8;
@@ -67,6 +67,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	idle->tss.ds = 1 * 8;
 	idle->tss.fs = 1 * 8;
 	idle->tss.gs = 1 * 8;
+	idle->pid = issue_pid();
 	/*
 	 *GOGO
 	 */

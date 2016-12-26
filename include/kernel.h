@@ -163,6 +163,8 @@ u16_t do_gettime(char flag);
  */
 void do_sleep(unsigned int timeout);
 
+u32_t do_fork(void);
+
 void cpu_vendor(u32_t *ebx, u32_t *ecx, u32_t *edx);
 void cpu_cache_sub(u32_t *ebx, u32_t *ecx, u32_t *edx);
 

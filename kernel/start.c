@@ -31,7 +31,7 @@ void Main(void) {
 	struct QUEUE keycmd;
 	struct TIMER *timer, *timer2, *timer3, *timer_ts;
 
-	int fifobuf[128], keycmd_buf[32];
+	i32_t fifobuf[128], keycmd_buf[32], *kernel_buf = (i32_t *)memory_alloc(memman, sizeof(i32_t) << 8);
 
 	static char keytable0[0x80] = {
 		0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '^', 0, 0,
@@ -98,6 +98,7 @@ void Main(void) {
 	memory_free(memman, 0x00400000, memtotal-0x00400000);
 
 	yuri_kernel = task_init(memman, "init_process");
+	queue_init(&yuri_kernel->irq, 256, kernel_buf, yuri_kernel);
 	fifo.task = yuri_kernel;
 	task_run(yuri_kernel, 1, 2);
 

@@ -1,5 +1,5 @@
 DST = ../../dst
-OBJS =  $(DST)/read.o $(DST)/write.o $(DST)/sleep.o
+OBJS =  $(DST)/read.o $(DST)/write.o $(DST)/sleep.o $(DST)/fork.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD SYSC DIRECTORY'

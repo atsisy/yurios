@@ -7,7 +7,6 @@
 
 int do_open(char *pathname, u32_t flags);
 void put_char(char ch);
-u32_t load_eip(void);
 
 int length, indent, MAX_SCROLL;
 short input_y;
@@ -209,33 +208,13 @@ void shell_master(void){
 		}else if(strcmp(command, "lscpu")){
 			command_lscpu();
 		}else if(strcmp(command, "fork")){
-
-			int a = 10;
-
-			struct Process *child;
-			child = task_alloc("child");
-			child->tss.esp = memory_alloc_4k(memman, 64 * 1024) + 64 * 1024 - 8;
-			child->tss.es = 1 * 8;
-			child->tss.cs = 2 * 8;
-			child->tss.ss = 1 * 8;
-			child->tss.ds = 1 * 8;
-			child->tss.fs = 1 * 8;
-			child->tss.gs = 1 * 8;
-			child->tss.eip = (int)load_eip();
-
-
-			if(queue_pop(&task_now()->irq)){
-				puts(task_now()->proc_name);
+			/*
+			if(do_fork() == 0){
+				puts("child");
 			}else{
-				i32_t *buf = (i32_t *)memory_alloc(memman, 12);
-				queue_init(&child->irq, 3, buf, NULL);
-				queue_push(&child->irq, 10);
-				task_run(child, 2, 2);
-				puts(task_now()->proc_name);
+				puts("parent");
 			}
-
-
-
+			*/
 		}else if(strcmp(command, "ps")){
 			extern struct PROCESS_MASTER *process_master;
 			u32_t i;
