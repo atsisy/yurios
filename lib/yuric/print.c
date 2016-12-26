@@ -23,11 +23,8 @@ void puts(char *string){
 void getline(int fd, char *line) {
 
 	u32_t  i, p;
-
-	malloc_init();
-
-	u32_t *box = (u32_t *)malloc(78*sizeof(u32_t));
-	char *buffer = (char *)malloc(256*sizeof(char));
+	static u32_t box[128];
+	static char buffer[256];
 
 	p = 0;
 
