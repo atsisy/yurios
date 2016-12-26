@@ -7,6 +7,7 @@
 
 int do_open(char *pathname, u32_t flags);
 void put_char(char ch);
+u32_t load_eip(void);
 
 int length, indent, MAX_SCROLL;
 short input_y;
@@ -81,13 +82,13 @@ void shell_master(void){
 
 	char command[1024];
 
+	print_value(load_eip(), 500, 500);
+
 	struct Process *me = task_now();	//自分自身を指すプロセス構造体
 
 	int shell_buf[128];								//シェルに来るシグナルや割り込み情報をためておくバッファ
 
 	history_init();
-
-	zeroclear_8array(command, 1024);
 
 	queue_init(&(me->irq), 128, shell_buf, me);	//シェル用FIFOを初期化
 

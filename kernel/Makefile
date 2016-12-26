@@ -1,6 +1,6 @@
 DST = ../dst
 OBJS = start.o graphic.o dsctbl.o int.o fifo.o memory.o mtask.o \
-	sys_call.o default_font.o core.o cpuinfo.o timer_int.o
+	sys_call.o default_font.o core.o cpuinfo.o timer_int.o register.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD KERNEL DIRECTORY'
