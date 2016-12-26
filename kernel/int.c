@@ -63,9 +63,16 @@ int *zzdiv_handler(int *esp){
  */
 int *general_exp_handler(int *esp){
 
+  char error_code[256];
   struct Process *proc = task_now();
   puts("Segmentation fault");  //異常終了することをシェルに出力
   puts("general protected exception.");
+  
+  zeroclear_8array(error_code, 256);
+  sprintf(error_code, "eip = 0x%x", esp[11]);
+
+  puts(error_code);
+
   return &(proc->tss.esp0);      //異常終了実行
 
 }
@@ -79,8 +86,16 @@ int *general_exp_handler(int *esp){
  */
 int *stack_exp_handler(int *esp){
 
+  char error_code[256];
   struct Process *proc = task_now();
   puts("Segmentation fault");  //異常終了することをシェルに出力
   puts("stack exception.");
+
+  zeroclear_8array(error_code, 256);
+  sprintf(error_code, "eip = 0x%x", esp[11]);
+
+  puts(error_code);
+  
+  
   return &(proc->tss.esp0);      //異常終了実行
 }

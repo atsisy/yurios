@@ -97,7 +97,7 @@ void Main(void) {
 	memory_free(memman, 0x00001000, 0x0009e000);
 	memory_free(memman, 0x00400000, memtotal-0x00400000);
 
-	yuri_kernel = task_init(memman, "init_process");
+	yuri_kernel = task_init(memman, "yuri kernel");
 	queue_init(&yuri_kernel->irq, 256, kernel_buf, yuri_kernel);
 	fifo.task = yuri_kernel;
 	task_run(yuri_kernel, 1, 2);
