@@ -236,6 +236,17 @@ void shell_master(void){
 
 
 
+		}else if(strcmp(command, "ps")){
+			extern struct PROCESS_MASTER *process_master;
+			u32_t i;
+			char p_info[36];
+			for(i = 0;i < MAX_TASKS;i++){
+				if(process_master->ALL_PROCESSES[i].status == RUNNING_PROCESS){
+					zeroclear_8array(p_info, 36);
+					sprintf(p_info, "PID:%d %s", process_master->ALL_PROCESSES[i].pid, process_master->ALL_PROCESSES[i].proc_name);
+					puts(p_info);
+				}
+			}
 		}else if(strcmp(part, "show")){
 			command_show(command);
 		}else if(strcmp(command, "yrws")){
@@ -245,7 +256,7 @@ void shell_master(void){
 			cut_string(command, file_name, 9);
 			command_writeyim(file_name);
 		}else if(strcmp(command, "os")){
-			puts("YuriOS Version 0.1.0a\nRelease in 12/25, 2016");
+			puts("YuriOS Version 0.1.0b\nRelease in x/x, 201x");
 		}else if(do_shell_app(fat, copied_str) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*
