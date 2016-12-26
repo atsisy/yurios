@@ -167,6 +167,7 @@ void ntype_prompt(char *dst, int buffer_limit){
 	 *直前に受け取った1文字だけを保持しておく変数
 	 */
 	char input_char;
+	u16_t index = 0;
 
 	struct QUEUE keycmd;
 	int keycmd_buf[32];
@@ -188,6 +189,9 @@ void ntype_prompt(char *dst, int buffer_limit){
 			io_sti();
 			if(i >= 256 && i <= 511) { //キーボードからの割り込みだったー！！
 
+				if(buffer_limit <= index)
+					continue;
+				
 				if(i == 256+0x2e && key_ctrl == 1){	//Ctrl+Cなので強制終了処理
 					io_cli();	//強制終了中にプロセスが変わると面倒なことになるので、割り込み禁止にする
 					/*
@@ -198,11 +202,18 @@ void ntype_prompt(char *dst, int buffer_limit){
 				io_cli();
 
 				if(i  == 0x1c + 256){ //Enterキーの処理
-				      
+				      dst[index] = '\0';
+					increase_length();
+					erase_a_alphabet();
+					indent_shell();
 					return;
 				}else if(i == 256 + 0x0e){	//BackSpaceキーの処理
 					if(length >= 2){	//">"これを消さないようにする
-						
+						dst[index] = '\0';
+						increase_length();
+						erase_a_alphabet();
+						erase_a_alphabet();
+						index--;
 					}
 				}else if (i < 256 + 0x80){
 					if(key_shift == 0){
@@ -215,16 +226,24 @@ void ntype_prompt(char *dst, int buffer_limit){
 						    ((key_leds & 4) != 0 && key_shift != 0)) {
 							input_char += 0x20;	/* 大文字を小文字に変換 */
 						}
-						
+						dst[index] = input_char;
+						index++;
+						put_char(input_char);
 					}else if(i == 256 + 0x39){	//スペースキーをおした時の処理
-						
+						dst[index] = ' ';
+						index++;
+						put_char(' ');
 					}else if('!' <= input_char && input_char <= '~'){
-						
+						dst[index] = input_char;
+						put_char(input_char);
+						index++;
 					}
 				}
 
 				if(i == 256 + 0x0f){	//Tabキーの処理
-          				
+          				/*
+					 *自由に設定
+					 */
 				}
 				
 				if(i == 256 + 0x2a){	//左shiftの処理(おした時)

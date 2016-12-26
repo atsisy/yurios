@@ -14,6 +14,7 @@ void print_value(int value, int x, int y);
 void put_char(char ch);
 
 void type_prompt(char *dst, int buffer_limit);
+void ntype_prompt(char *dst, int buffer_limit);
 
 void indent_shell(void);
 void increase_length(void);
