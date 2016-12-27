@@ -7,11 +7,14 @@
 #include "../../../include/yuri/stdio.h"
 #include "../../../include/yuri/string.h"
 
-void print(char *code);
+void print_sc(char *code);
 
 int main(void) {
 	static char code[1024];
 	static char identifier[24];
+
+	static int times = 0;
+	static char times_flag = 0;
 
 	while(1){
 		read(stdin, code, 1024);
@@ -21,7 +24,14 @@ int main(void) {
 		if(strcmp(identifier, "quit")){
 			break;
 		}else if(strcmp(identifier, "print")){
-			print(code);
+			if(times_flag){
+				while(times){
+					print_sc(code);
+					times--;
+				}
+			}else{
+				print_sc(code);
+			}
 		}else{
 			puts("Unknown identifier.");
 		}
@@ -31,8 +41,7 @@ int main(void) {
 	exit();
 }
 
-void print(char *code){
-	static char arg[256];
-	cut_string(code, arg, 5);
-	puts(arg);
+void print_sc(char *code){
+	code += 6;
+	puts(code);
 }
