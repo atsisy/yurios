@@ -23,12 +23,11 @@ void yrsh_interpreter(char *command){
 			 *空きメモリ容量を表示するコマンド
 			 */
 			command_memory();
-
-		}else if(strcmp(part, "echo")){
+		}else if(strcmp(part, "print")){
 			/*
 			 *UNIXコマンドのechoコマンド的なやつ
 			 */
-			command_echo(command);
+			command_print(command);
 		}else if(strcmp(part, "history")){
 			/*
 			 *そのまんまhistoryコマンド

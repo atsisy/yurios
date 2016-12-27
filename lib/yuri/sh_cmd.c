@@ -20,7 +20,7 @@ u8_t *read_yim(char *file_name, char *buffer, u32_t length);
  *=>シェルに入力されたそのままの文字列
  *=======================================================================================
  */
-void command_echo(char *inputed_command){
+void command_print(char *inputed_command){
 	/*
 	 *文字列を表示するべき文字列だけにカット
 	 */

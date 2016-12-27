@@ -20,7 +20,7 @@ void indent_shell(void);
 void increase_length(void);
 void erase_a_alphabet(void);
 
-void command_echo(char *inputed_command);
+void command_print(char *inputed_command);
 void command_memory(void);
 void command_history(void);
 void command_ls(void);
