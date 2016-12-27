@@ -1,8 +1,10 @@
 DST = ../dst
-OBJS = $(DST)/history.o $(DST)/shell.o  $(DST)/shfunc.o $(DST)/type_prompt.o $(DST)/interp.o
+OBJS = history.o shell.o shfunc.o type_prompt.o interp.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD MID DIRECTORY'
-
-$(DST)/%.o: %.c
-	@$(CC) $*.c $(BINOPT) -o $(DST)/$*.o
+	@ld -melf_i386 -r $(OBJS) -o $(DST)/yrsh.o
+	@rm -f *.o
+	
+%.o: %.c
+	@$(CC) $*.c $(BINOPT) -o $*.o
