@@ -5,5 +5,5 @@ yuli.img
 .directory
 *.yx
 .clang_complete
-*.sh
+all_merge.sh
 *.yim
