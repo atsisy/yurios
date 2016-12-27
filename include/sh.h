@@ -60,6 +60,8 @@ int dec_digit(int value, int n);
 size_t do_write(int fd, char *buf, int count);
 size_t do_read(int fd, char *buf, int count);
 
+void load_yrs(struct YRS_SRC *yrs_src);
+
 int *system_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax);
 
 //一時的にここにおいておく。

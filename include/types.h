@@ -174,4 +174,10 @@ struct Timer_Interrupt {
 	i32_t intr_buf[__TIMER_INTERRUPT_BUFFER_SIZE__];    //バッファ
 };
 
+struct YRS_SRC {
+	char *source;
+	char *values;
+	i32_t fd;
+};
+
 #endif
