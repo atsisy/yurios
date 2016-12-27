@@ -15,7 +15,7 @@ all:
 	cd drivers && make all
 	cd boot && make all
 	cd kernel && make all
-	cd mid && make all
+	cd yrsh && make all
 	cd lib && make all
 	cd yrws && make all
 	ld -melf_i386 -o dst/boot.bin --script=ls/kernel.ls $(OBJS)
