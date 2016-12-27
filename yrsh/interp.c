@@ -120,6 +120,15 @@ void yrsh_interpreter(char *command){
 			command_writeyim(file_name);
 		}else if(strcmp(command, "os")){
 			puts("YuriOS Version 0.1.0b\nRelease in x/x, 201x");
+		}else if(strcmp(part, "yrss")){
+			char *buf = (char *)memory_alloc(memman, 512);
+			read_mem2hd("cat ex.sh", buf, 512);
+			int fd = do_open("ex.sh", __O_CREAT__ | __O_RDONLY__);
+			do_write(fd, buf, 510);
+			do_close(fd);
+			struct YRS_SRC *src = yrs_src_init("ex.sh");
+			//puts(src->source);
+			yrsh_interpreter(src->source);
 		}else if(do_shell_app(fat, command) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*
