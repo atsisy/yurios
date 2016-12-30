@@ -1,8 +1,8 @@
-DST = ../../dst
-OBJS = $(DST)/mouse.o
+DRIVERS = ..
+OBJS = $(DRIVERS)/mouse.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD DRIVERS/MOUSE DIRECTORY'
 
-$(DST)/%.o: %.c
-	$(CC) $*.c $(BINOPT) -o $(DST)/$*.o
+$(DRIVERS)/%.o: %.c
+	$(CC) $*.c $(BINOPT) -o $(DRIVERS)/$*.o

@@ -7,6 +7,8 @@
 int do_open(char *pathname, u32_t flags);
 
 void yrsw_main();
+void getline(char *all, char *line);
+void gline(int fd, char *line);
 
 void yrsh_interpreter(char *command){
 
@@ -121,15 +123,31 @@ void yrsh_interpreter(char *command){
 		}else if(strcmp(command, "os")){
 			puts("YuriOS Version 0.1.0b\nRelease in x/x, 201x");
 		}else if(strcmp(part, "yrss")){
+
+
 			char file_name[36];
+			char n[36] = { 0 };
 			cut_string(command, file_name, 5);
 			char *buf = (char *)memory_alloc(memman, 512);
 			read_mem2hd("cat ex.sh", buf, 512);
 			int fd = do_open("ex.sh", __O_CREAT__ | __O_RDONLY__);
 			do_write(fd, buf, 510);
 			do_close(fd);
-			struct YRS_SRC *src = yrs_src_init(file_name);
-			yrsh_interpreter(src->source);
+
+			
+			//struct YRS_SRC *src = yrs_src_init(file_name);
+
+			//getline(buf, n);
+			gline(fd, n);
+
+			yrsh_interpreter(n);
+
+			zeroclear_8array(n, 36);
+
+			gline(fd, n);
+
+			yrsh_interpreter(n);
+
 		}else if(do_shell_app(fat, command) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
 			/*
@@ -143,4 +161,55 @@ void yrsh_interpreter(char *command){
 
             memory_free_4k(memman, (u32_t)fat, 4 * 2880);
             memory_free(memman, (u32_t)part, 1024);
+}
+
+/*
+ *=======================================================================================
+ *getline関数
+ *改行で区切ってファイルの中身を返す
+ *=======================================================================================
+ */
+void getline(char *all, char *line) {
+
+	while(*all != '\n' && *all != '\0'){
+		*line = *all;
+		line++;
+		all++;
+	}
+
+}
+
+/*
+ *=======================================================================================
+ *getline関数
+ *改行で区切ってファイルの中身を返す
+ *=======================================================================================
+ */
+void gline(int fd, char *line) {
+
+	u32_t  i, p;
+	static u32_t box[128];
+	static char buffer[256];
+
+	p = 0;
+
+	do_stat(fd, box);
+	i = box[4];
+
+	while(1){
+		do_read(fd, buffer, 512);
+		for(;i < 512; i++, p++ ){
+			switch(buffer[i]){
+				//改行
+			case 0x0a:
+			case '\0':
+				line[p] = '\0';
+				do_seek(fd, i+1, __SEEK_CUR__);
+				return;
+			default:
+				line[p] = buffer[i];
+			}
+		}
+	}
+
 }
