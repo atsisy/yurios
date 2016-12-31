@@ -9,6 +9,7 @@ all: $(OBJS) Makefile
 	cd sysc && make all
 	cd time && make all
 	cd proc && make all
+	cd cxx && make all
 	rm -f *.o
 
 %.o: %.c

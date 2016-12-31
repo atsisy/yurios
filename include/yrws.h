@@ -146,7 +146,7 @@ void map_layers(struct Layer_Master *master, i16_t start_x, i16_t start_y, i16_t
 /*
  *yuri window systemのAPI的な
  */
-bool puttext(struct Layer *window, char *text, u16_t x, u16_t y, char color);
+char puttext(struct Layer *window, char *text, u16_t x, u16_t y, char color);
 
 struct YURI_WINDOW *create_window(char *window_name, u16_t display_x, u16_t display_y, u16_t width, u16_t height);
 

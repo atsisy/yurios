@@ -19,7 +19,7 @@ void bar_clock_proc(void){
       //確保
 	struct Timer_Interrupt *timer_intr = alloc_TimerIntr(me, 875123);
 	i8_t hour = do_gettime(__HOUR__), minute = do_gettime(__MINUTE__), itiji = 0;
-	bool redraw_flag = false;
+	char redraw_flag = false;
 
 	//描画
 	draw_clock(hour, minute);

@@ -83,6 +83,10 @@ struct QUEUE *now_keybuf(void);
 
 //memory.c
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern unsigned int memtotal;
 unsigned int memtest(unsigned int start, unsigned int end);
 void memory_init(struct MEMMAN *man);
@@ -93,6 +97,10 @@ unsigned int memory_alloc_4k(struct MEMMAN *man, unsigned int size);
 int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
 char *read_vram(char *vram, short scrnx, int x1, int x2, int y);
 void write_vram(char *vram, char *new_vram, short scrnx, int x1, int x2, int y);
+
+#ifdef __cplusplus
+}
+#endif
 
 //timer.c
 
@@ -117,7 +125,6 @@ void task_remove(struct Process *task);
 void task_switchsub(void);
 u32_t issue_pid();
 void task_add(struct Process *task);
-
 
 
 extern short input_y;
@@ -200,6 +207,6 @@ void zeroclear_32array(i32_t *array, u32_t length);
 struct Timer_Interrupt *alloc_TimerIntr(struct Process *proc, i32_t identifier);
 void free_TimerIntr(struct Timer_Interrupt *timer_intr);
 i32_t TimerIntr_SetTime(struct Timer_Interrupt *timer_intr, i32_t time_limit);
-bool TimerIntr_came(struct Timer_Interrupt *timer_intr);
+char TimerIntr_came(struct Timer_Interrupt *timer_intr);
 
 #endif
