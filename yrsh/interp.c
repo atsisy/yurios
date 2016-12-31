@@ -125,19 +125,11 @@ void yrsh_interpreter(char *command){
 		}else if(strcmp(command, "os")){
 			puts("YuriOS Version 0.1.0b\nRelease in x/x, 201x");
 		}else if(strcmp(part, "rm")){
-			struct i_node *inode = (struct inode *)memory_alloc(memman, sizeof(struct i_node));
+			
 			char file_name[128];
 			cut_string(command, file_name, 3);
 
-			i32_t fd = do_open(file_name, __O_RDONLY__);
-			iread(inode, fd);
-
-			char zero[512] = { 0 };
-
-			do_write(fd, zero, 512);
-			write_ata_sector(&ATA_DEVICE0, fd, zero, 1);
-			blocks_info[fd].exist = __UNUSED_BLOCK__;
-			
+			command_rm(file_name);
 		}else if(strcmp(part, "yrs")){
 
 
