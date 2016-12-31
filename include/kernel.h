@@ -83,10 +83,6 @@ struct QUEUE *now_keybuf(void);
 
 //memory.c
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern unsigned int memtotal;
 unsigned int memtest(unsigned int start, unsigned int end);
 void memory_init(struct MEMMAN *man);
@@ -97,10 +93,6 @@ unsigned int memory_alloc_4k(struct MEMMAN *man, unsigned int size);
 int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
 char *read_vram(char *vram, short scrnx, int x1, int x2, int y);
 void write_vram(char *vram, char *new_vram, short scrnx, int x1, int x2, int y);
-
-#ifdef __cplusplus
-}
-#endif
 
 //timer.c
 
