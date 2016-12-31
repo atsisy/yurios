@@ -125,11 +125,20 @@ void yrsh_interpreter(char *command){
 		}else if(strcmp(command, "os")){
 			puts("YuriOS Version 0.1.0b\nRelease in x/x, 201x");
 		}else if(strcmp(part, "rm")){
-			
+			/*
+			 *=======================================================================================
+			 *rmコマンド
+			 *=======================================================================================
+			 */
 			char file_name[128];
 			cut_string(command, file_name, 3);
 
 			command_rm(file_name);
+		}else if(strcmp(part, "touch")){
+			char file_name[128];
+			cut_string(command, file_name, 6);
+			do_open(file_name, __O_CREAT__);
+			
 		}else if(strcmp(part, "yrs")){
 
 
