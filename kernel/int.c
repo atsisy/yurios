@@ -10,31 +10,31 @@
  *=======================================================================================
  */
 void init_pic(void){
-    /*
+	/*
         PIC0_IMR => マスターPIC
         PIC1_IMR => スレーブPIC
-    */
+	*/
 
-    //IMRレジスタの初期化
-    io_out8(PIC0_IMR, 0xff); //0xff=>(1111 1111)2で、すべての割り込みが目隠しされる 1だと目隠し
-    io_out8(PIC1_IMR, 0xff); //0xff=>(1111 1111)2で、すべての割り込みが目隠しされる
+	//IMRレジスタの初期化
+	io_out8(PIC0_IMR, 0xff); //0xff=>(1111 1111)2で、すべての割り込みが目隠しされる 1だと目隠し
+	io_out8(PIC1_IMR, 0xff); //0xff=>(1111 1111)2で、すべての割り込みが目隠しされる
 
-    //PIC0(マスタPIC)のICWレジスタ初期化
-    io_out8(PIC0_ICW1, 0x11);   //エッジトリガモード
-    io_out8(PIC0_ICW2, 0x20);   //IRQ0~7は、INT20~27で受ける PIC0はIRQ0~7
-    io_out8(PIC0_ICW3, 1 << 2); //PIC1(スレーブPIC)はIRQ2にて接続
-    io_out8(PIC0_ICW4, 0x01);   //ノンバッファモード
+	//PIC0(マスタPIC)のICWレジスタ初期化
+	io_out8(PIC0_ICW1, 0x11);   //エッジトリガモード
+	io_out8(PIC0_ICW2, 0x20);   //IRQ0~7は、INT20~27で受ける PIC0はIRQ0~7
+	io_out8(PIC0_ICW3, 1 << 2); //PIC1(スレーブPIC)はIRQ2にて接続
+	io_out8(PIC0_ICW4, 0x01);   //ノンバッファモード
 
-    //PIC1(マスタPIC)のICWレジスタ初期化
-    io_out8(PIC1_ICW1, 0x11);   //エッジトリガモード
-    io_out8(PIC1_ICW2, 0x28);   //IRQ8~15はINT28~2fで受ける PIC1はIRQ8~15
-    io_out8(PIC1_ICW3, 2);      //PIC1(スレーブPIC)はマスタPICのIRQ2に接続
-    io_out8(PIC1_ICW4, 0x01);   //ノンバッファモード
+	//PIC1(マスタPIC)のICWレジスタ初期化
+	io_out8(PIC1_ICW1, 0x11);   //エッジトリガモード
+	io_out8(PIC1_ICW2, 0x28);   //IRQ8~15はINT28~2fで受ける PIC1はIRQ8~15
+	io_out8(PIC1_ICW3, 2);      //PIC1(スレーブPIC)はマスタPICのIRQ2に接続
+	io_out8(PIC1_ICW4, 0x01);   //ノンバッファモード
 
-    io_out8(PIC0_IMR, 0xfb);    //11111011 PIC1以外すべて禁止
-    io_out8(PIC1_IMR, 0xff);    //11111111 すべての割り込みを受け付けない
+	io_out8(PIC0_IMR, 0xfb);    //11111011 PIC1以外すべて禁止
+	io_out8(PIC1_IMR, 0xff);    //11111111 すべての割り込みを受け付けない
 
-    return;
+	return;
 }
 
 /*
@@ -63,17 +63,17 @@ int *zzdiv_handler(int *esp){
  */
 int *general_exp_handler(int *esp){
 
-  char error_code[256];
-  struct Process *proc = task_now();
-  puts("Segmentation fault");  //異常終了することをシェルに出力
-  puts("general protected exception.");
+	char error_code[256];
+	struct Process *proc = task_now();
+	puts("Segmentation fault");  //異常終了することをシェルに出力
+	puts("general protected exception.");
   
-  zeroclear_8array(error_code, 256);
-  sprintf(error_code, "eip = 0x%x", esp[11]);
+	zeroclear_8array(error_code, 256);
+	sprintf(error_code, "eip = 0x%x", esp[11]);
 
-  puts(error_code);
+	puts(error_code);
 
-  return &(proc->tss.esp0);      //異常終了実行
+	return &(proc->tss.esp0);      //異常終了実行
 
 }
 
@@ -86,16 +86,16 @@ int *general_exp_handler(int *esp){
  */
 int *stack_exp_handler(int *esp){
 
-  char error_code[256];
-  struct Process *proc = task_now();
-  puts("Segmentation fault");  //異常終了することをシェルに出力
-  puts("stack exception.");
+	char error_code[256];
+	struct Process *proc = task_now();
+	puts("Segmentation fault");  //異常終了することをシェルに出力
+	puts("stack exception.");
 
-  zeroclear_8array(error_code, 256);
-  sprintf(error_code, "eip = 0x%x", esp[11]);
+	zeroclear_8array(error_code, 256);
+	sprintf(error_code, "eip = 0x%x", esp[11]);
 
-  puts(error_code);
+	puts(error_code);
   
   
-  return &(proc->tss.esp0);      //異常終了実行
+	return &(proc->tss.esp0);      //異常終了実行
 }

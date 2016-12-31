@@ -23,7 +23,7 @@ u32_t yrfs_write(u32_t fd, char *buffer, u32_t bytes){
 	/*
 	 *書き込む
 	 */
-	write_ata_sector(&ATA_DEVICE0, inode->seek_address.sector, buffer, byte2sectors(bytes));
+	write_ata_sector(&ATA_DEVICE0, inode->begin_address.sector + inode->seek_address.sector , buffer, byte2sectors(bytes));
 
 	/*
 	 *inodeを更新

@@ -53,7 +53,7 @@ struct i_node icreat(char *file_name) {
 	*最初はbegin_addressと同じ
 	*/
 	inode.seek_address.offset = 0;
-	inode.seek_address.sector = i;
+	inode.seek_address.sector = 0;
 
 	/*
 	 *ファイルにはまだ何も書き込まれていないはずなので開始も終了も同じ
