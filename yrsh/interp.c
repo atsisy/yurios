@@ -116,6 +116,8 @@ void yrsh_interpreter(char *command){
 			command_show(command);
 		}else if(strcmp(command, "yrws")){
 			yrsw_main();
+		}else if(strcmp(command, "end")){
+			puts("finish");
 		}else if(strcmp(part, "writeyim")){
 			char file_name[256];
 			cut_string(command, file_name, 9);
@@ -129,24 +131,36 @@ void yrsh_interpreter(char *command){
 			char n[36] = { 0 };
 			cut_string(command, file_name, 5);
 			char *buf = (char *)memory_alloc(memman, 512);
+			
 			read_mem2hd("cat ex.sh", buf, 512);
 			int fd = do_open("ex.sh", __O_CREAT__ | __O_RDONLY__);
+			
 			do_write(fd, buf, 510);
 			do_close(fd);
-
 			
 			//struct YRS_SRC *src = yrs_src_init(file_name);
 
 			//getline(buf, n);
+			
+			fd = do_open("ex.sh", __O_CREAT__ | __O_RDONLY__);
 			gline(fd, n);
-
-			yrsh_interpreter(n);
-
+			puts(n);
 			zeroclear_8array(n, 36);
-
 			gline(fd, n);
-
-			yrsh_interpreter(n);
+			puts(n);
+			zeroclear_8array(n, 36);
+			gline(fd, n);
+			puts(n);
+			/*
+			while(!strcmp(n, "end")){
+				yrsh_interpreter(n);
+				zeroclear_8array(n, 32);
+				gline(fd, n);
+				puts(n);
+			}
+			*/
+			
+			do_close(fd);
 
 		}else if(do_shell_app(fat, command) == 0){
 			//対応するコマンドではなく、さらにアプリケーションでもない場合
@@ -188,13 +202,15 @@ void getline(char *all, char *line) {
 void gline(int fd, char *line) {
 
 	u32_t  i, p;
-	static u32_t box[128];
-	static char buffer[256];
+	u32_t *box = (u32_t *)memory_alloc(memman, sizeof(u32_t) * 128);
+	char *buffer = (char *)memory_alloc(memman, 1024);
 
 	p = 0;
 
 	do_stat(fd, box);
 	i = box[4];
+
+	//print_value(i, 500, 100+(i << 2));
 
 	while(1){
 		do_read(fd, buffer, 512);
@@ -204,7 +220,10 @@ void gline(int fd, char *line) {
 			case 0x0a:
 			case '\0':
 				line[p] = '\0';
-				do_seek(fd, i+1, __SEEK_CUR__);
+				do_seek(fd, i+1, __SEEK_SET__);
+
+				memory_free(memman, (u32_t)box, sizeof(u32_t) * 128);
+				memory_free(memman, (u32_t)buffer, 1024);
 				return;
 			default:
 				line[p] = buffer[i];
