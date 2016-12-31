@@ -264,3 +264,21 @@ void command_rm(char *file_name){
 	write_ata_sector(&ATA_DEVICE0, fd, zero, 1);
 	blocks_info[fd].exist = __UNUSED_BLOCK__;
 }
+
+/*
+ *=======================================================================================
+ *command_touch関数
+ *ファイルを作成するコマンドの内部関数
+ *=======================================================================================
+ */
+void command_touch(char *file_name){
+	/*
+	 *作成
+	 */
+	i32_t fd = do_open(file_name, __O_CREAT__);
+
+	/*
+	 *クローズ
+	 */
+	do_close(fd);
+}

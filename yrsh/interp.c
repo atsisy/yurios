@@ -137,8 +137,8 @@ void yrsh_interpreter(char *command){
 		}else if(strcmp(part, "touch")){
 			char file_name[128];
 			cut_string(command, file_name, 6);
-			do_open(file_name, __O_CREAT__);
 			
+			command_touch(file_name);
 		}else if(strcmp(part, "yrs")){
 
 
