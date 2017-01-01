@@ -5,8 +5,8 @@
 #include "../include/yrfs.h"
 
 int do_open(char *pathname, u32_t flags);
-i32_t fae(i32_t function, char *command, u32_t flag);
-void command_cp(char *command);
+i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag);
+void command_cp(int argc, char *command);
 
 void yrsw_main();
 void getline(char *all, char *line);
@@ -117,7 +117,7 @@ void yrsh_interpreter(char *command){
 		}else if(strcmp(part, "show")){
 			command_show(command);
 		}else if(strcmp(part, "cp")){
-			fae((i32_t)command_cp, command, 0);
+			fae((i32_t)command_cp, 1, command, 0);
 			puts("p end");
 		}else if(strcmp(command, "yrws")){
 			yrsw_main();

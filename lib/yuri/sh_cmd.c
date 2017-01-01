@@ -289,8 +289,9 @@ void command_touch(char *file_name){
  *ファイルをコピーするコマンドの内部関数
  *=======================================================================================
  */
-void command_cp(char *command){
+void command_cp(int argc, char *command){
 	puts(command);
+	print_value(argc, 500, 500);
 	struct Process *me = task_now();
 	puts("cp");
 	queue_push(me->parent->irq, 875);
@@ -305,7 +306,7 @@ void command_cp(char *command){
  *プロセスの生成、起動を行う関数
  *=======================================================================================
  */
-i32_t fae(i32_t function, char *command, u32_t flag){
+i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 
 	i32_t i;
 	struct Process *parent = task_now();
@@ -324,7 +325,8 @@ i32_t fae(i32_t function, char *command, u32_t flag){
 	child->tss.gs = 1 * 8;
 	child->tss.eip = function;
 
-	*((char **)(child->tss.esp + 4)) = command;
+	*((char **)(child->tss.esp + 8)) = command;
+	*((u32_t *)(child->tss.esp + 4)) = argc;
 
 	child->parent = parent;
 
