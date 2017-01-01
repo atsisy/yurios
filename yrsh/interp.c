@@ -5,6 +5,8 @@
 #include "../include/yrfs.h"
 
 int do_open(char *pathname, u32_t flags);
+i32_t fae(i32_t function, u32_t flag);
+void command_cp();
 
 void yrsw_main();
 void getline(char *all, char *line);
@@ -114,6 +116,9 @@ void yrsh_interpreter(char *command){
 			}
 		}else if(strcmp(part, "show")){
 			command_show(command);
+		}else if(strcmp(part, "cp")){
+			fae((i32_t)command_cp, 0);
+			puts("p end");
 		}else if(strcmp(command, "yrws")){
 			yrsw_main();
 		}else if(strcmp(command, "end")){
@@ -137,7 +142,7 @@ void yrsh_interpreter(char *command){
 		}else if(strcmp(part, "touch")){
 			char file_name[128];
 			cut_string(command, file_name, 6);
-			
+
 			command_touch(file_name);
 		}else if(strcmp(part, "yrs")){
 
@@ -145,18 +150,17 @@ void yrsh_interpreter(char *command){
 			char file_name[36];
 			char n[36] = { 0 };
 			cut_string(command, file_name, 4);
-			char *buf = (char *)memory_alloc(memman, 512);
 			int fd;
 			fd = do_open(file_name, __O_RDONLY__);
 			gline(fd, n);
-		    
+
 			while(!strcmp(n, "end")){
 				yrsh_interpreter(n);
 				zeroclear_8array(n, 32);
 				gline(fd, n);
 			}
-		
-			
+
+
 			do_close(fd);
 
 		}else if(do_shell_app(fat, command) == 0){

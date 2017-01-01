@@ -24,7 +24,7 @@ void type_prompt(char *dst, int buffer_limit){
 
 	for(;;){
 
-		if(!queue_size(&(proc->irq))){
+		if(!queue_size(proc->irq)){
 			/*
 			 *割り込み来ないから寝る
 			 */
@@ -34,7 +34,7 @@ void type_prompt(char *dst, int buffer_limit){
 			/*
 			 *割り込みきたー
 			 */
-			i = queue_pop(&(proc->irq));   //なんの割り込みか確認
+			i = queue_pop(proc->irq);   //なんの割り込みか確認
 			io_sti();
 			if(i >= 256 && i <= 511) { //キーボードからの割り込みだったー！！
 
@@ -175,7 +175,7 @@ void ntype_prompt(char *dst, int buffer_limit){
 
 	for(;;){
 
-		if(!queue_size(&(proc->irq))){
+		if(!queue_size(proc->irq)){
 			/*
 			 *割り込み来ないから寝る
 			 */
@@ -185,7 +185,7 @@ void ntype_prompt(char *dst, int buffer_limit){
 			/*
 			 *割り込みきたー
 			 */
-			i = queue_pop(&(proc->irq));   //なんの割り込みか確認
+			i = queue_pop(proc->irq);   //なんの割り込みか確認
 			io_sti();
 			if(i >= 256 && i <= 511) { //キーボードからの割り込みだったー！！
 

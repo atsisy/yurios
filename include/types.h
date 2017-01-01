@@ -130,7 +130,7 @@ struct Process {
 	int sel;        //selはGDTの番号のこと
 	int status;     //プロセスの状態
 	int level, priority;
-	struct QUEUE irq;
+	struct QUEUE *irq;
 	struct TSS32 tss;
 	u32_t pid;
 	struct Process *parent;

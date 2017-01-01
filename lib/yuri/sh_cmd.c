@@ -282,3 +282,59 @@ void command_touch(char *file_name){
 	 */
 	do_close(fd);
 }
+
+/*
+ *=======================================================================================
+ *command_cp関数
+ *ファイルをコピーするコマンドの内部関数
+ *=======================================================================================
+ */
+void command_cp(){
+	struct Process *me = task_now();
+	puts("cp");
+	queue_push(me->parent->irq, 875);
+	while(1){
+		task_sleep(me);
+	}
+}
+
+i32_t fae(i32_t function, u32_t flag){
+
+	i32_t i;
+	struct Process *parent = task_now();
+
+	struct Process *child;
+	child = task_alloc(parent->proc_name);
+	i32_t *buf = (i32_t *)memory_alloc(memman, 40);
+	queue_init(child->irq, 10, buf, NULL);
+
+	child->tss.esp = memory_alloc_4k(memman, 64 * 1024) + 64 * 1024 - 8;
+	child->tss.es = 1 * 8;
+	child->tss.cs = 2 * 8;
+	child->tss.ss = 1 * 8;
+	child->tss.ds = 1 * 8;
+	child->tss.fs = 1 * 8;
+	child->tss.gs = 1 * 8;
+	child->tss.eip = function;
+
+	child->parent = parent;
+
+	task_run(child, 3, 2);
+
+	for(;;){
+		if(!queue_size(parent->irq)){
+			task_sleep(parent);
+			io_sti();
+		}else{
+			i = queue_pop(parent->irq);
+			if(i == 875){
+				break;
+			}
+		}
+	}
+
+	task_remove(child);
+	
+	return 0;
+
+}

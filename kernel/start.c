@@ -30,7 +30,7 @@ void Main(void) {
 	binfo  = (struct BOOTINFO *)ADR_BOOTINFO;
 	struct QUEUE keycmd;
 	struct TIMER *timer, *timer2, *timer3, *timer_ts;
-
+	
 	i32_t fifobuf[128], keycmd_buf[32], *kernel_buf = (i32_t *)memory_alloc(memman, sizeof(i32_t) << 8);
 
 	static char keytable0[0x80] = {
@@ -98,7 +98,8 @@ void Main(void) {
 	memory_free(memman, 0x00400000, memtotal-0x00400000);
 
 	yuri_kernel = task_init(memman, "yuri kernel");
-	queue_init(&yuri_kernel->irq, 256, kernel_buf, yuri_kernel);
+	yuri_kernel->irq = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
+	queue_init(yuri_kernel->irq, 256, kernel_buf, yuri_kernel);
 	fifo.task = yuri_kernel;
 	task_run(yuri_kernel, 1, 2);
 

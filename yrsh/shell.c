@@ -87,13 +87,13 @@ void shell_master(void){
 
 	history_init();
 
-	queue_init(&(me->irq), 128, shell_buf, me);	//シェル用FIFOを初期化
+	queue_init(me->irq, 128, shell_buf, me);	//シェル用FIFOを初期化
 
 	/*
 	  キーボードドライバが情報を流し込んでくるキーバッファを
 	  シェルのバッファ(me->irq)に変更する
 	*/
-	ch_keybuf(&(me->irq));
+	ch_keybuf(me->irq);
 
 	for(;;){
 		io_cli();
@@ -127,8 +127,6 @@ void shell_master(void){
 		 */
 		add_history(command);
 
-	skip_write_history:
-		
 		put_char('%');
 
 		/*

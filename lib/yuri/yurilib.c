@@ -366,7 +366,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 
 		for(;;){
 			io_cli();
-			if(queue_size(&me->irq) == 0){
+			if(queue_size(me->irq) == 0){
 				if(eax != 0){
 					task_sleep(me);	/* FIFOが空なので寝て待つ */
 				}else{
@@ -375,7 +375,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 					return 0;
 				}
 			}else{
-				i = queue_pop(&me->irq);
+				i = queue_pop(me->irq);
 				io_sti();
 				if('A' <= keys1[i-256] && 'Z' >= keys1[0-511]){ /* キーボードデータ（タスクA経由） */
 					registers[7] = keys1[i - 256];
