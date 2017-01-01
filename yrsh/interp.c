@@ -6,7 +6,7 @@
 
 int do_open(char *pathname, u32_t flags);
 i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag);
-void command_cp(int argc, char *command);
+void command_cp(int argc, char **argv);
 
 void yrsw_main();
 void getline(char *all, char *line);

@@ -289,8 +289,8 @@ void command_touch(char *file_name){
  *ファイルをコピーするコマンドの内部関数
  *=======================================================================================
  */
-void command_cp(int argc, char *command){
-	puts(command);
+void command_cp(int argc, char **argv){
+	puts(argv[1]);
 	print_value(argc, 500, 500);
 	struct Process *me = task_now();
 	puts("cp");
@@ -309,6 +309,7 @@ void command_cp(int argc, char *command){
 i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 
 	i32_t i;
+	char **argv = extend(command);
 	struct Process *parent = task_now();
 
 	struct Process *child;
@@ -325,7 +326,7 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 	child->tss.gs = 1 * 8;
 	child->tss.eip = function;
 
-	*((char **)(child->tss.esp + 8)) = command;
+	*((char ***)(child->tss.esp + 8)) = argv;
 	*((u32_t *)(child->tss.esp + 4)) = argc;
 
 	child->parent = parent;
@@ -348,4 +349,31 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 	
 	return 0;
 
+}
+
+
+char **extend(char *line){
+	i32_t space_count = 1, i, n;
+	char **argv;
+	
+	for(i = 0;line[i] != '\0';i++){
+		if(line[i] == ' '){
+			space_count++;
+		}
+	}
+
+	argv = (char **)memory_alloc(memman, sizeof(char *) * space_count);
+
+	for(n = 0;n < space_count;n++){
+		for(i = 0;line[i] != ' ';){
+			i++;
+		}
+		argv[n] = (char *)memory_alloc(memman, i);
+		for(i = 0;line[i] != ' ';i++){
+			argv[n][i] = line[i];
+		}
+		line += i+1;
+	}
+
+	return argv;
 }

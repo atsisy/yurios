@@ -201,4 +201,6 @@ void free_TimerIntr(struct Timer_Interrupt *timer_intr);
 i32_t TimerIntr_SetTime(struct Timer_Interrupt *timer_intr, i32_t time_limit);
 char TimerIntr_came(struct Timer_Interrupt *timer_intr);
 
+char **extend(char *line);
+
 #endif
