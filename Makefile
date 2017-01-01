@@ -2,7 +2,7 @@ OBJS = dst/kernel_kernel.o dst/drivers.o	dst/timer.o dst/yrsh.o \
 	dst/yurilib.o dst/string.o dst/sh_cmd.o dst/proc.o \
 	dst/basis.o dst/fork.o dst/display.o dst/yrfs.o dst/ope_new.o \
 	dst/read.o dst/write.o dst/sleep.o dst/get_clock.o dst/fat_getsize.o \
-	dst/set_clock.o dst/yrws.o dst/addsmt.o dst/mem_read.o
+	dst/set_clock.o dst/yrws.o dst/addsmt.o dst/mem_read.o dst/end.o
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
 CC = gcc -O0 -m32 -c -Wa,--32
