@@ -295,9 +295,7 @@ void command_cp(int argc, char **argv){
 	struct Process *me = task_now();
 	puts("cp");
 	queue_push(me->parent->irq, 875);
-	while(1){
-		task_sleep(me);
-	}
+	end();
 }
 
 /*
