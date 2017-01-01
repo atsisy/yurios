@@ -290,10 +290,15 @@ void command_touch(char *file_name){
  *=======================================================================================
  */
 void command_cp(int argc, char **argv){
-	puts(argv[1]);
-	print_value(argc, 500, 500);
+	puts(argv[2]);
+	char *buffer = (char *)memory_alloc(memman, 512);
+	int fd = do_open(argv[1], __O_RDONLY__);
+	do_read(fd, buffer, 512);
+	int fd2 = do_open(argv[2], __O_CREAT__);
+	do_write(fd2, buffer, 512);
+	do_close(fd);
+	do_close(fd2);
 	struct Process *me = task_now();
-	puts("cp");
 	queue_push(me->parent->irq, 875);
 	end();
 }
@@ -366,7 +371,7 @@ char **extend(char *line){
 		for(i = 0;line[i] != ' ';){
 			i++;
 		}
-		argv[n] = (char *)memory_alloc(memman, i);
+		argv[n] = (char *)memory_alloc(memman, i+1);
 		for(i = 0;line[i] != ' ';i++){
 			argv[n][i] = line[i];
 		}
