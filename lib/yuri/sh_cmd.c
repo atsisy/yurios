@@ -334,7 +334,8 @@ void command_cp(int argc, char **argv){
 i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 
 	i32_t i;
-	char **argv = extend(command);
+
+	char **argv = !command ? extend(command) : NULL;
 	struct Process *parent = task_now();
 
 	struct Process *child;
@@ -359,6 +360,7 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 	task_run(child, 3, 2);
 
 	for(;;){
+		break;
 		if(!queue_size(parent->irq)){
 			task_sleep(parent);
 			io_sti();
@@ -371,7 +373,7 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 	}
 
 	task_remove(child);
-	
+
 	return 0;
 
 }

@@ -4,7 +4,9 @@
 
 static void init_yrws(void);
 void erase_cursor(void);
+i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag);
 void init_mscursor(struct Layer *layer);
+int tt_main();
 
 struct YRWS_MASTER Yrws_Master;
 struct QUEUE *mouse_queue;
@@ -34,6 +36,8 @@ void yrsw_main(){
       io_out8(PIC1_IMR, 0xef); // マウスを許可(11101111)
 
       init_yrws();
+
+	/*
 	struct YURI_WINDOW *window = create_window("Image View", 200, 200, 500, 500);
 
 	struct YURI_IMAGE *image = load_yim("yuri.yim");
@@ -41,6 +45,8 @@ void yrsw_main(){
 	if(image != NULL){
 		draw_yim(window, image, 10, 10);
 	}
+	*/
+	fae((u32_t)tt_main, 0, NULL, 0);
 
 
 	boot_sub_procs(__TASK_BAR_CLOCK__);
@@ -106,7 +112,7 @@ void yrsw_main(){
 					Yrws_Master.cursor.y = binfo->scrny - 1;
 
                         move_layer(Yrws_Master.LAYER_MASTER, mouse_cursor_layer, Yrws_Master.cursor.x, Yrws_Master.cursor.y);
-
+/*
                         if(__MOUSE_DRAGGING__){
                               if(
 						Yrws_Master.LAYER_MASTER->layers[Yrws_Master.LAYER_MASTER->layers_map[Yrws_Master.cursor.y * Yrws_Master.screen_width + Yrws_Master.cursor.x]].flags & __WINDOW_LAYER__
@@ -115,7 +121,7 @@ void yrsw_main(){
                                     move_layer(Yrws_Master.LAYER_MASTER, window->layer, Yrws_Master.cursor.x-80, Yrws_Master.cursor.y-8);
                                     Yrws_Master.flags |= __MOUSE_CARRYING_WINDOW__;
                               }
-                        }
+					}*/
 			}
             }
       }
