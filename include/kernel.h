@@ -203,5 +203,6 @@ char TimerIntr_came(struct Timer_Interrupt *timer_intr);
 
 char **extend(char *line);
 void end(void);
+void kernel_send(struct Process *proc, u32_t msg);
 
 #endif

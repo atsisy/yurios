@@ -1,5 +1,5 @@
 DST = ../../dst
-OBJS = mtask.o init.o tp_switch.o
+OBJS = mtask.o init.o tp_switch.o send.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD KERNEL/PROC DIRECTORY'

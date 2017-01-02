@@ -317,7 +317,7 @@ void command_cp(int argc, char **argv){
 
 	//親プロセスに終了したことを知らせる
 	struct Process *me = task_now();
-	queue_push(me->parent->irq, 875);
+	kernel_send(me->parent, __SIG_KILL_ME__);
 
 	/*
 	 *キルされるのを待つ
@@ -364,7 +364,7 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 			io_sti();
 		}else{
 			i = queue_pop(parent->irq);
-			if(i == 875){
+			if(i == __SIG_KILL_ME__){
 				break;
 			}
 		}
