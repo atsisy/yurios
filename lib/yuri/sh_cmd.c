@@ -290,18 +290,38 @@ void command_touch(char *file_name){
  *=======================================================================================
  */
 void command_cp(int argc, char **argv){
-	puts(argv[2]);
+	/*
+	 *ファイル名をコピー
+	 */
 	char new_filename[64];
 	strcpy(new_filename, argv[2]);
+
+	/*
+	 *ファイル用のバッファを確保
+	 */
 	char *buffer = (char *)memory_alloc(memman, 512);
+
+	//オープン
 	int fd = do_open(argv[1], __O_RDONLY__);
+	//読み込み
 	do_read(fd, buffer, 512);
+
+	//ファイル作成
 	int fd2 = do_open(new_filename, __O_CREAT__);
+	//書き込み
 	do_write(fd2, buffer, 512);
+
+	//クローズ
 	do_close(fd);
 	do_close(fd2);
+
+	//親プロセスに終了したことを知らせる
 	struct Process *me = task_now();
 	queue_push(me->parent->irq, 875);
+
+	/*
+	 *キルされるのを待つ
+	 */
 	end();
 }
 
