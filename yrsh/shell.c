@@ -333,6 +333,10 @@ int do_shell_app(int *fat, char *command){
 			 *espの初期値
 			 */
 			esp = *((int *)(p + 0x000c));
+
+			//*((char ***)(esp + 8)) = argv;
+			*((u32_t *)(esp + 4)) = 875;
+			
 			/*
 			 *データセクションの大きさ
 			 */

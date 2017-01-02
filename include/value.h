@@ -114,4 +114,12 @@
 #define __KEYCMD_MOUSE__ 0xd4
 #define __ENABLE_MOUSE__ 0xf4
 
+/*
+ *プロセス間通信
+ */
+#define __SIG_KILL_ME__ 0x01
+#define __SIG_KILL_YOU__ 0x02
+#define __SIG_SLEEP__ 0x04
+#define __SIG_PING__ 0x08
+
 #endif
