@@ -46,7 +46,7 @@ void yrsw_main(){
 		draw_yim(window, image, 10, 10);
 	}
 	*/
-	fae((u32_t)tt_main, 0, NULL, 0);
+	//fae((u32_t)tt_main, 0, NULL, 0);
 
 
 	boot_sub_procs(__TASK_BAR_CLOCK__);
