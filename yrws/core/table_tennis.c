@@ -12,32 +12,32 @@ char KeyTable[26];
  */
 
 int tt_main(){
-	boxfill8(binfo->vram, binfo->scrnx, 0, 40, 40, 300, 300);
+	
 	i32_t i;
-	struct QUEUE *queue = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
+	struct QUEUE *irq_queue = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
 	struct Process *me = task_now();
 
 	struct YURI_WINDOW *window = create_window("tennis", 50, 50, 600, 600);
 
 	struct TIMER *timer = timer_alloc();
+	
+	queue_init(irq_queue, 128, (i32_t *)memory_alloc(memman, sizeof(i32_t) * 128), me);
 	/*
 	 *タイムリミットになったら10が割り込んでくる
 	 */
-	timer_init(timer, queue, 10);
+	timer_init(timer, irq_queue, 10);
 
-	i32_t *key_buffer = (i32_t *)memory_alloc(memman, sizeof(i32_t) * 128);
-	queue_init(queue, 128, key_buffer, NULL);
-	ch_keybuf(queue);
+	ch_keybuf(irq_queue);
 
-	timer_settime(timer, 1000 / 60);
+	timer_settime(timer, 1000 / 30);
 
 	while(1){
-		if(!queue_size(queue)){
+		if(!queue_size(irq_queue)){
 			//キューが空っぽだから寝る
 			task_sleep(me);
 			io_sti();
 		}else{
-			i = queue_pop(queue);
+			i = queue_pop(irq_queue);
 			/*
 			 *キーボードからの割り込み
 			 */
@@ -56,9 +56,10 @@ int tt_main(){
 			}else if(i == 10){
 				if(KeyTable['A' - 0x41]){
 					puttext(window->layer, "a pushed", 20, 20, 20);
+					redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, binfo->scrny, binfo->scrny);
 				}
-
-				timer_settime(timer, 1000 / 60);
+				
+				timer_settime(timer, 1000 / 30);
 			}
 		}
 	}

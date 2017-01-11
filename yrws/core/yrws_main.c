@@ -46,7 +46,20 @@ void yrsw_main(){
 		draw_yim(window, image, 10, 10);
 	}
 	*/
+	
 	//fae((u32_t)tt_main, 0, NULL, 0);
+	struct Process *child = task_alloc("aaaaa");
+	child->tss.esp = memory_alloc_4k(memman, 64 * 1024) + 64 * 1024 - 8;
+	child->tss.es = 1 * 8;
+	child->tss.cs = 2 * 8;
+	child->tss.ss = 1 * 8;
+	child->tss.ds = 1 * 8;
+	child->tss.fs = 1 * 8;
+	child->tss.gs = 1 * 8;
+	child->tss.eip = (u32_t)tt_main;
+	
+	task_run(child, 2, 2);
+
 
 
 	boot_sub_procs(__TASK_BAR_CLOCK__);
