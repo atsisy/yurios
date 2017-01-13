@@ -77,8 +77,7 @@ int tt_main(){
 }
 
 void InitGame(struct YURI_WINDOW *window){
-	boxfill8(window->layer->data, window->layer->width, 0, 0, 16, window->layer->width, window->layer->height);
-	redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, 700, 700);
+      BackGroundColor(window, __RGB256COL__(0, 0, 0));
 }
 
 char isAlphabet(char code){
