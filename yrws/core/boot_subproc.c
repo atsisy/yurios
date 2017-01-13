@@ -1,6 +1,14 @@
 #include "../../include/kernel.h"
 #include "../../include/yrws.h"
 
+/*
+ *=======================================================================================
+ *boot_sub_proc関数
+ *ゆりウィンドウシステム内のサブプロセスを起動する関数
+ *u32_t flags
+ *起動するサブプロセスのフラグ
+ *=======================================================================================
+ */
 void boot_sub_procs(u32_t flags){
 	
 	struct YRWS_SUBPROCS *yrws_subs = (struct YRWS_SUBPROCS *)memory_alloc(memman, sizeof(struct YRWS_SUBPROCS));

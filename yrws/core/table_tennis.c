@@ -124,6 +124,9 @@ int tt_main(){
 					}
 				}
 
+				/*
+				 *キー判定
+				 */
 				if(isKeyPushed('W')){
 					if(Player->y > 5){
 						EraseMyRacket(window, Player->y);
@@ -185,11 +188,21 @@ void EraseBall(struct YURI_WINDOW *window){
 }
 
 void InitGame(struct YURI_WINDOW *window){
+	/*
+	 *背景描画
+	 */
       BackGroundColor(window, __RGB256COL__(0, 0, 0));
+
+	/*
+	 *メモリ確保
+	 */
 	Player = (struct Point *)memory_alloc(memman, sizeof(struct Point));
 	Enemy = (struct Point *)memory_alloc(memman, sizeof(struct Point));
 	ball = (struct Ball *)memory_alloc(memman, sizeof(struct Ball));
 
+	/*
+	 *初期値設定
+	 */
 	Player->x = window->layer->width - RACKET_BACK - RACKET_WIDTH;
 	Player->y = (window->layer->height >> 1) - (RACKET_HEIGHT >> 1);
 	Enemy->x = RACKET_BACK;
@@ -202,6 +215,12 @@ void InitGame(struct YURI_WINDOW *window){
 	DrawMyRacket(window, Player->y);
 	DrawEnRacket(window, Enemy->y);
 	DrawBall(window);
+}
+
+void DestroyGame(void){
+	memory_free(memman, (u32_t)Player, sizeof(struct Point));
+	memory_free(memman, (u32_t)Enemy, sizeof(struct Point));
+	memory_free(memman, (u32_t)ball, sizeof(struct Ball));
 }
 
 char isAlphabet(char code){
