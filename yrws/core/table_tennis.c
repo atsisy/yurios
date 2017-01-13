@@ -3,6 +3,7 @@
 #include "../../include/sh.h"
 
 char isAlphabet(char code);
+char isKeyPushed(char code);
 
 char KeyTable[26];
 
@@ -62,7 +63,7 @@ int tt_main(){
 					KeyTable[keys0[i - 0x80] - 0x41] = 0;
 				}
 			}else if(i == 10){
-				if(KeyTable['A' - 0x41]){
+				if(isKeyPushed('A')){
 					puttext(window->layer, "a pushed", 20, 20, 20);
 					redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, binfo->scrny, binfo->scrny);
 				}
@@ -74,4 +75,8 @@ int tt_main(){
 
 char isAlphabet(char code){
 	return (code >= 0 && code <= 25) ? 1 : 0;
+}
+
+char isKeyPushed(char code){
+	return KeyTable[code - 0x41] ? 1 : 0;
 }
