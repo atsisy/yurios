@@ -4,6 +4,7 @@
 
 char isAlphabet(char code);
 char isKeyPushed(char code);
+void InitGame(struct YURI_WINDOW *window);
 
 char KeyTable[26];
 
@@ -31,6 +32,10 @@ int tt_main(){
 	ch_keybuf(irq_queue);
 
 	timer_settime(timer, 1000 / 30);
+
+	InitGame(window);
+
+	DrawRect(window, 100, 100, 30, 30, __RGB256COL__(255, 255, 255));
 
 	while(1){
 		if(!queue_size(irq_queue)){
@@ -69,6 +74,11 @@ int tt_main(){
 			}
 		}
 	}
+}
+
+void InitGame(struct YURI_WINDOW *window){
+	boxfill8(window->layer->data, window->layer->width, 0, 0, 16, window->layer->width, window->layer->height);
+	redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, 700, 700);
 }
 
 char isAlphabet(char code){
