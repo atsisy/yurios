@@ -42,15 +42,23 @@ int tt_main(){
 			 *キーボードからの割り込み
 			 */
 			if(i >= 256 && i <= 511){
-				if(isAlphabet(keys0[i] - 0x41)){
+				/*
+				 *キーコードに直す
+				 */
+				i -= 256;
+				if(i >= 0x01 && i <= 0x58){
 					/*
 					 *キーを押し込んだ
 					 */
+					puttext(window->layer, "push", 20, 20, 20);
+					redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, binfo->scrny, binfo->scrny);
 					KeyTable[keys0[i] - 0x41] = 1;
 				}else if(isAlphabet(keys0[i - 0x80] - 0x41)){
 					/*
 					 *キー離した
 					 */
+					puttext(window->layer, "release", 20, 40, 20);
+					redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, binfo->scrny, binfo->scrny);
 					KeyTable[keys0[i - 0x80] - 0x41] = 0;
 				}
 			}else if(i == 10){
@@ -58,7 +66,6 @@ int tt_main(){
 					puttext(window->layer, "a pushed", 20, 20, 20);
 					redraw_all_layer(Yrws_Master.LAYER_MASTER, window->layer, 0, 0, binfo->scrny, binfo->scrny);
 				}
-				
 				timer_settime(timer, 1000 / 30);
 			}
 		}
