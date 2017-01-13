@@ -75,6 +75,21 @@ void yrsh_interpreter(char *command){
 
 			  puts(src2);
 			*/
+		}else if(strcmp(part, "fwrite")){
+			char *fname = (char *)memory_alloc(memman, 32);
+			cut_string(command, fname, 7);
+			struct i_node inode;
+			int fd = do_open(fname, __O_CREAT__);
+			iread(&inode, fd);
+			
+			char *src = (char *)memory_alloc(memman, 256);
+			
+			read_mem2hd("cat ex.sh", src, 256);
+			
+			do_write(fd, src, 1);
+			
+			memory_free(memman, (u32_t)src, 256);
+
 		}else if(strcmp(command, "fszeroclear")){
 			/*
 			  u32_t i;
@@ -127,7 +142,7 @@ void yrsh_interpreter(char *command){
 			cut_string(command, file_name, 9);
 			command_writeyim(file_name);
 		}else if(strcmp(command, "os")){
-			puts("YuriOS Version 0.1.0b\nRelease in x/x, 201x");
+			puts("YuriOS Version 0.1.0b\nRelease in 1/x, 2017");
 		}else if(strcmp(part, "rm")){
 			/*
 			 *=======================================================================================
