@@ -62,7 +62,7 @@ void yrsh_interpreter(char *command){
 			
 			char *src = (char *)memory_alloc(memman, 256);
 			
-			read_mem2hd("cat YURI_DOC.TXT", src, 256);
+			read_mem2hd("YURI_DOC.TXT", src, 256);
 			
 			do_write(fd, src, 1);
 			
@@ -84,7 +84,7 @@ void yrsh_interpreter(char *command){
 			
 			char *src = (char *)memory_alloc(memman, 256);
 			
-			read_mem2hd("cat ex.sh", src, 256);
+			read_mem2hd(fname, src, 256);
 			
 			do_write(fd, src, 1);
 			
