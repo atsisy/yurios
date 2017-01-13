@@ -25,7 +25,7 @@ void command_print(char *inputed_command){
 	 *文字列を表示するべき文字列だけにカット
 	 */
 	char str[1024];
-	cut_string(inputed_command, str, 5);
+	cut_string(inputed_command, str, 6);
 
 	/*
 	 *カットした文字列を表示
