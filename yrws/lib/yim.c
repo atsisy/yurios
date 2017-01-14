@@ -3,6 +3,7 @@
 #include "../../include/yrws.h"
 #include "../../include/yrfs.h"
 #include "../../include/sh.h"
+#include "../../include/sysc.h"
 
 void uchar4tou32(u8_t *data, u32_t *u32);
 

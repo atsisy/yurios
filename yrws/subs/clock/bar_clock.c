@@ -1,6 +1,7 @@
 #include "../../../include/kernel.h"
 #include "../../../include/yrws.h"
 #include "../../../include/sh.h"
+#include "../../../include/sysc.h"
 
 extern struct Layer *task_bar;
 
