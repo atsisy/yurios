@@ -1,6 +1,7 @@
 #include "../../../include/sh.h"
 #include "../../../include/yrfs.h"
 #include "../../../include/string.h"
+#include "../../../include/sysc.h"
 
 
 /*

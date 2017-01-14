@@ -19,6 +19,8 @@ typedef char  i8_t;
 typedef short i16_t;
 typedef int   i32_t;
 
+typedef unsigned int off_t;
+
 #define TRUE  1
 #define true  1
 #define FALSE 0

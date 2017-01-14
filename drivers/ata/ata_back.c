@@ -1,6 +1,7 @@
 #include "../../include/kernel.h"
 #include "../../include/ata.h"
 #include "../../include/sh.h"
+#include "../../include/sysc.h"
 
 i32_t send_non_data(i8_t command, struct ATA_DEVICE *device, u8_t check_flag);
 void refer_device(struct ATA_DEVICE *device);

@@ -4,6 +4,7 @@
 #include "../../include/value.h"
 #include "../../include/yrfs.h"
 #include "../../include/ata.h"
+#include "../../include/sysc.h"
 
 u8_t *read_yim(char *file_name, char *buffer, u32_t length);
 

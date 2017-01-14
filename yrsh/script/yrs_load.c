@@ -1,6 +1,6 @@
 #include "../../include/yrfs.h"
-#include "../../include/kernel.h"
 #include "../../include/sh.h"
+#include "../../include/sysc.h"
 
 void load_yrs(struct YRS_SRC *yrs_src){
       //inode構造体を宣言

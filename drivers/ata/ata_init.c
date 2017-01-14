@@ -7,6 +7,7 @@
 #include "../../include/ata.h"
 #include "../../include/types.h"
 #include "../../include/sh.h"
+#include "../../include/sysc.h"
 
 struct ATA_DEVICE ATA_DEVICE0 = {
 	.base_prt = 0x01F0,

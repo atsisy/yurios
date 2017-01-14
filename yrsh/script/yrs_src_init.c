@@ -1,6 +1,7 @@
 #include "../../include/yrfs.h"
 #include "../../include/kernel.h"
 #include "../../include/sh.h"
+#include "../../include/sysc.h"
 
 struct YRS_SRC *yrs_src_init(char *file_name){
       struct YRS_SRC *src_file = (struct YRS_SRC *)memory_alloc(memman, sizeof(struct YRS_SRC));

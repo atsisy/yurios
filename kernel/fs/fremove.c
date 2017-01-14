@@ -2,6 +2,7 @@
 #include "../../include/yrfs.h"
 #include "../../include/sh.h"
 #include "../../include/ata.h"
+#include "../../include/sysc.h"
 
 /*
  *=======================================================================================

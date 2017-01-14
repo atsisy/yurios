@@ -1,6 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/sh.h"
 #include "../include/yrfs.h"
+#include "../include/sysc.h"
 
 i32_t history_fd;
 

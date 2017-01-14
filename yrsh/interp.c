@@ -3,6 +3,7 @@
 #include "../include/ata.h"
 #include "../include/kernel.h"
 #include "../include/yrfs.h"
+#include "../include/sysc.h"
 
 int do_open(char *pathname, u32_t flags);
 i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag);
@@ -71,7 +72,7 @@ void yrsh_interpreter(char *command){
 			fd = do_open("yuri_doc.txt", __O_RDONLY__);
 			fadd(fd, "\nSATORI");
 			/*
-			  do_read(fd, src2, 1);
+ｖ			  do_read(fd, src2, 1);
 
 			  puts(src2);
 			*/

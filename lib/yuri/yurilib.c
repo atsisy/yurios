@@ -1,12 +1,11 @@
 #include "../../include/kernel.h"
 #include "../../include/sh.h"
 #include "../../include/string.h"
-#include "../../include/value.h"
+#include "../../include/sysc.h"
 #include "../../include/yrfs.h"
 
 void readfat(int *fat, unsigned char *img);
 void loadfat(int clustno, int size, char *buf, int *fat, char *img);
-int do_get_key();
 
 void readfat(int *fat, unsigned char *img){	//FATの圧縮を解く
 	int i, j = 0;

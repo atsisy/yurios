@@ -148,21 +148,6 @@ void create_process(int (*function)(char *), int level, int priority);
 /*
  *t_clock.c
  */
-/*
- *=======================================================================================
- *do_gettime関数
- *現在時刻をRCTにアクセスして得る関数
- *フラグによって何を返すか決める
- *=======================================================================================
- */
-u16_t do_gettime(char flag);
-
-/*
- *OS側のシステムコール実装
- */
-void do_sleep(unsigned int timeout);
-
-u32_t do_fork(void);
 
 void cpu_vendor(u32_t *ebx, u32_t *ecx, u32_t *edx);
 void cpu_cache_sub(u32_t *ebx, u32_t *ecx, u32_t *edx);

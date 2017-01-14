@@ -36,8 +36,6 @@
 
 #define __BLOCKS_LIMIT__ 2097152
 
-typedef unsigned int off_t;
-
 /*
  *=======================================================================================
  *ブロックの情報を保持しておく構造体
@@ -170,11 +168,6 @@ u32_t byte2sectors(u32_t bytes);
 
 void filesystem_zeroclear();
 void file_list(char *option);
-
-int do_open(char *pathname, u32_t flags);
-off_t do_seek(int fd, off_t offset, int whence);
-u32_t do_stat(int fd, u32_t *box);
-i32_t do_close(i32_t fd);
 
 void uchar4tou32(u8_t *data, u32_t *u32);
 
