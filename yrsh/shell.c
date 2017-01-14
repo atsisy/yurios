@@ -216,7 +216,7 @@ void ylsh_cursor(void) {
 /*
  *コマンドを何度か打ってこれ以上下へいけなくなったときにシェルの画面をスクロールする関数
  */
-void scroll(struct BOOTINFO *binfo, int height){
+void scroll(int height){
 	/*
 	 *スクロールに必要なパラメータの取得、計算
 	 */

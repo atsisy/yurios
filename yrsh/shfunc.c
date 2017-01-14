@@ -18,7 +18,7 @@ void indent_shell(void){
 	if(indent > MAX_SCROLL-2){
 		switch(shell_mode){
 		case 0:	//SINGLEモード
-			scroll(binfo, 32);
+			scroll(32);
 			break;
 		case 1:     //デュアルモード
 			multi_shellscroll(binfo, 32, 0, MAX_SCROLL-1);

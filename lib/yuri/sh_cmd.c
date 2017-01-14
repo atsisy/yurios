@@ -52,7 +52,7 @@ void command_memory(void){
 	print(s);
 
 	if(indent > MAX_SCROLL)
-		scroll(binfo, 16);
+		scroll(16);
 
 	indent_shell();
 	sprintf(s, "free:%dKB", memory_total(memman) / 1024);
