@@ -5,7 +5,7 @@ YURIEXE = main.o
 
 all: $(YURIEXE) Makefile
 	@echo 'BUILD YURISCRIPT DIRECTORY'
-	@ld -melf_i386 -o $(APP)/yrs.yx --script=$(LINKPATH)/app.ls main.o $(DST)/libyuri.a
+	@ld -melf_i386 -o $(APP)/yrs.yx --script=$(LINKPATH)/app.lds main.o $(DST)/libyuri.a
 	@mv *.o $(DST)
 
 %.o: %.c
