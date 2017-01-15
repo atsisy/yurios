@@ -17,7 +17,7 @@ all:
 	cd yrsh && make all
 	cd lib && make all
 	cd yrws && make all
-	ld -melf_i386 -o dst/boot.bin --script=ls/kernel.ls $(OBJS)
+	ld -melf_i386 -o dst/boot.bin --script=ls/kernel.lds $(OBJS)
 	cat dst/asmhead.bin dst/boot.bin > dst/yuli.sys
 	mformat -f 1440 -C -B dst/ipl.bin -i yuli.img ::
 	mcopy dst/yuli.sys -i yuli.img ::
