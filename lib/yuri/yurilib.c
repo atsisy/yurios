@@ -246,6 +246,32 @@ void int2str(char *str, int value) {
 	strcpy(str, p);
 }
 
+/*
+ *=======================================================================================
+ *memcpy関数
+ *指定しただけ、メモリの内容をコピーする関数
+ *引数
+ *void *s1
+ *コピー
+ *const void *s2
+ *コピー先
+ *size_t size
+ *コピーするサイズ
+ *=======================================================================================
+ */
+void *memcpy(void *s1, const void *s2, size_t size){
+	char *ss1 = s1;
+	const char *ss2 = s2;
+
+	if(size != 0){
+		register const char *t = ss2 + size;
+		do{
+			*ss1++ = *ss2++;
+		}while (ss2 != t);
+	}
+	return s1;
+}
+
 int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax) {
 
 	struct Process *me = task_now();
