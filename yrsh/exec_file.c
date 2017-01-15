@@ -84,7 +84,8 @@ int do_shell_app(int *fat, char *command){
 			 *データセクションの大きさ
 			 */
 			data_size = *((int *)(p + 0x0010));
-			/*
+
+                  /*
 			 *データ部分の始まり位置
 			 */
 			dathrb = *((int *)(p + 0x0014));
@@ -120,17 +121,15 @@ int do_shell_app(int *fat, char *command){
 
 void start_elf_app(struct Process *proc, void *text, int text_size, void *data, int data_size, int eip, int cs, int esp, int ds){
       int i;
-      
+	struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
+	
 	proc->cs_base = (int)text;
-	proc->ds_base = (int)data;
+	*((int *)0xfe8) = (int)data;
 
-	set_segmdesc(proc->ldt + 0, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
-	set_segmdesc(proc->ldt + 1, data_size - 1, (int) data, AR_DATA32_RW + 0x60);
+	set_segmdesc(gdt + 1003, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
+	set_segmdesc(gdt + 1004, data_size - 1, (int) data, AR_DATA32_RW + 0x60);
 
 	start_app(eip, cs, esp, ds, &(proc->tss.esp0));
-
-      
-
 }
 
 /*
@@ -140,12 +139,11 @@ void start_elf_app(struct Process *proc, void *text, int text_size, void *data, 
  *=======================================================================================
  */
 int exec_elf_app(int *fat, char *command){
-	
+
 	struct FileInfo *finfo;
-	struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
 	char file_name[13], *p, *q;
 	struct Process *me = task_now();
-	int i, seg_size, data_size, esp, dathrb;
+	int i, seg_size, data_size, esp, data, app_size;
 
 	zeroclear_8array(file_name, 13);
 
@@ -160,12 +158,16 @@ int exec_elf_app(int *fat, char *command){
 		if(command[i] <= ' '){
 			break;
 		}
+
+		//コピー
 		file_name[i] = command[i];
 	}
 
 	//最後にNULL文字
 	file_name[i] = '\0';
-	finfo = file_search(file_name, (struct FileInfo *)(ADR_DISKIMG+0x002600), 224);	//なんかバイナリエディタで確認したら0x2600から始まってた
+
+	//なんかバイナリエディタで確認したら0x2600から始まってた
+	finfo = file_search(file_name, (struct FileInfo *)(ADR_DISKIMG+0x002600), 224);
 
 	/*
 	 *拡張子ありの場合
@@ -187,6 +189,9 @@ int exec_elf_app(int *fat, char *command){
 		 *ファイルを発見した
 		 */
 
+		//アプリケーションのサイズをコピー
+		app_size = finfo->size;
+
 		/*
 		 *ファイルをロード
 		 */
@@ -203,7 +208,8 @@ int exec_elf_app(int *fat, char *command){
 			 *OSが用意するアプリ用のデータセグメントのサイズ
 			 */
 			seg_size = *((int *)(p + 0x0000));
-			/*
+
+                  /*
 			 *espの初期値
 			 */
 			esp = *((int *)(p + 0x000c));
@@ -215,26 +221,17 @@ int exec_elf_app(int *fat, char *command){
 			 *データセクションの大きさ
 			 */
 			data_size = *((int *)(p + 0x0010));
-			/*
+
+                  /*
 			 *データ部分の始まり位置
 			 */
-			dathrb = *((int *)(p + 0x0014));
+			data = *((int *)(p + 0x0014));
 
 			q = (char *)memory_alloc_4k(memman, seg_size);
-			*((int *)0xfe8) = (int)q;
+		      memcpy(q + esp, p + data, data_size);
+			start_elf_app(me, p, app_size, q, seg_size, 0x1b, 0 * 8 + 4, esp, 1 * 8 + 4);
 
-			set_segmdesc(gdt + 1003, finfo->size - 1, (int)p, AR_CODE32_ER+0x60);
-			set_segmdesc(gdt + 1004, seg_size - 1,    (int)q, AR_DATA32_RW+0x60);
-
-			/*
-			 *データ領域をメモリにデータセグメントにコピー
-			 */
-			for(i = 0; i < data_size; i++){
-				q[esp+i] = p[dathrb+i];
-			}
-
-			start_app(0x1b, 1003 * 8, esp, 1004 * 8, &(me->tss.esp0));
-
+			//メモリを開放
 			memory_free_4k(memman, (int)q, seg_size);
 		}else{
 			print("yuri executable file format error.");
