@@ -119,11 +119,36 @@ int do_shell_app(int *fat, char *command){
 	return 0;
 }
 
+/*
+ *=======================================================================================
+ *start_elf_app関数
+ *新しいELF形式の実行ファイルを実行する関数
+ *引数
+ *struct Process *proc
+ *今のプロセス
+ *void *text
+ *メモリにマップした機械語の開始位置
+ *int text_size
+ *機械語のサイズ
+ *void *data
+ *メモリにマップされたデータ領域の開始位置
+ *int data_size
+ *データ領域のサイズ
+ *int eip
+ *eip
+ *int cs
+ *cs
+ *int esp
+ *esp
+ *int ds
+ *ds
+ *=======================================================================================
+ */
 void start_elf_app(struct Process *proc, void *text, int text_size, void *data, int data_size, int eip, int cs, int esp, int ds){
       int i;
 	struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
 	
-	proc->cs_base = (int)text;
+	proc->cs_val = (int)text;
 	*((int *)0xfe8) = (int)data;
 
 	set_segmdesc(gdt + 1003, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
