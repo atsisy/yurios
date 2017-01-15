@@ -10,7 +10,8 @@ export BINOPT
 export CC
 
 all:
-	make clean
+	mkdir -p dst
+	mkdir -p application
 	cd drivers && make all
 	cd boot && make all
 	cd kernel && make all
@@ -36,4 +37,5 @@ clean :
 	rm -f ./application/*.yx
 
 time:
+	make clean
 	time make all
