@@ -137,6 +137,8 @@ struct Process {
 	u32_t pid;
 	struct Process *parent;
 	char proc_name[64];
+	u32_t cs_val;
+	u32_t ds_val;
 };
 
 struct PROCESS_LEVEL_FLOOR{
