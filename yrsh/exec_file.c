@@ -145,7 +145,6 @@ int do_shell_app(int *fat, char *command){
  *=======================================================================================
  */
 void start_elf_app(struct Process *proc, void *text, int text_size, void *data, int data_size, int eip, int cs, int esp, int ds){
-      int i;
 	struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
 	
 	proc->cs_val = (int)text;

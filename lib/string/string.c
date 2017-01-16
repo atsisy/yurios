@@ -24,13 +24,18 @@ int strlen(const char *str){
 	return count;
 }
 
-void string_getNext(char *str, char *dst){
+char *string_getNext(char *str, char *dst){
 	int i;
+
+	if(!*str)
+		return NULL;
+
 	for(i = 0;str[i] != ' ' && str[i] != '\0';i++){
 		dst[i] = str[i];
 	}
 	dst[i] = '\0';
-	return;
+
+	return dst;
 }
 
 void cut_string(char *str, char *dst, int start_point){
