@@ -98,3 +98,22 @@ void *memcpy(void *s1, const void *s2, size_t size){
 	}
 	return s1;
 }
+
+/*
+ *=======================================================================================
+ *RemoveHeadSpaces関数
+ *文字列の最初のスペースを削除する関数
+ *=======================================================================================
+ */
+char *RemoveHeadSpaces(char *str){
+	u8_t count = 0, i, length = strlen(str);
+	while(str[count] == ' '){
+		count++;
+	}
+
+	for(i = 0;i < length; i++){
+		str[i] = str[i + count];
+	}
+
+	return str;
+}
