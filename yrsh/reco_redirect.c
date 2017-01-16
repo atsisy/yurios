@@ -21,6 +21,7 @@ u8_t ShRecoRedirect(char *line){
 			puts("Redirect!!");
 			return 1;
 		}
+		line += strlen(word) + 1;
 	}
 
 	return 0;

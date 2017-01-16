@@ -1,5 +1,5 @@
 DST = ../dst
-OBJS = history.o shell.o shfunc.o type_prompt.o interp.o exec_file.o
+OBJS = history.o shell.o shfunc.o type_prompt.o interp.o exec_file.o reco_redirect.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YRSH DIRECTORY'
