@@ -26,3 +26,22 @@ u8_t ShRecoRedirect(char *line){
 
 	return 0;
 }
+
+/*
+ *=======================================================================================
+ *Redirect関数
+ *リダイレクトを処理する関数
+ *=======================================================================================
+ */
+void Redirect(char *line){
+	/*
+	 *上流コマンド、下流コマンド、中継バッファの確保
+	 */
+	char *parent = (char *)memory_alloc(memman, 128);
+	char *child = (char *)memory_alloc(memman, 128);
+	char *buffer = (char *)memory_alloc_4k(memman, 1024 * 24);
+
+	memory_free(memman, (u32_t)parent, 128);
+	memory_free(memman, (u32_t)child, 128);
+	memory_free_4k(memman, (u32_t)buffer, 1024 * 24);
+}
