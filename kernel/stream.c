@@ -90,7 +90,7 @@ void WriteOutputStream(char *str){
  *出力ストリームの書き込み位置を0にリセットする関数
  *=======================================================================================
  */
-void ResetOutputWritePoint(){
+static void ResetOutputWritePoint(){
 	output_write_point = 0;
 }
 
@@ -100,6 +100,28 @@ void ResetOutputWritePoint(){
  *入力ストリームの書き込み位置を0にリセットする関数
  *=======================================================================================
  */
-void ResetInputWritePoint(){
+static void ResetInputWritePoint(){
 	input_write_point = 0;
+}
+
+/*
+ *=======================================================================================
+ *ResetOutputStream関数
+ *出力ストリームを初期化する関数
+ *=======================================================================================
+ */
+void ResetOutputStream(){
+	ResetOutputWritePoint();
+	zeroclear_8array(OutputStream, __OUTPUT_STREAM_SIZE__);
+}
+
+/*
+ *=======================================================================================
+ *ResetInputStream関数
+ *出力ストリームを初期化する関数
+ *=======================================================================================
+ */
+void ResetInputStream(){
+	ResetInputWritePoint();
+	zeroclear_8array(InputStream, __INPUT_STREAM_SIZE__);
 }

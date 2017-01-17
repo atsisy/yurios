@@ -147,7 +147,7 @@ void putfonts8_asc(u8_t *vram, int xsize, int x, int y, char c, char *s){
 	/*
 	 *標準出力ストリームに記録
 	 */
-	strcpy(GetOutputStream(), s);
+	WriteOutputStream(s);
 
 	for(;*s != 0x00;s++){
 		/*
