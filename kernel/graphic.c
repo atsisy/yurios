@@ -1,5 +1,5 @@
 #include "../include/kernel.h"
-#include "../include/value.h"
+#include "../include/string.h"
 #include "../include/sh.h"
 
 /*
@@ -144,6 +144,8 @@ void putfont8(u8_t *vram, int xsize, int x, int y, char c, char *font){
  */
 void putfonts8_asc(u8_t *vram, int xsize, int x, int y, char c, char *s){
 
+	
+	//strcpy(, const char *str)
 	for(;*s != 0x00;s++){
 		/*
 		*改行文字がきたら改行する

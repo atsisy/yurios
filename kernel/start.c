@@ -103,6 +103,7 @@ void Main(void) {
 	fifo.task = yuri_kernel;
 	task_run(yuri_kernel, 1, 2);
 
+	//副作用的な初期化関数を一度に実行
 	init();
 
       /*
