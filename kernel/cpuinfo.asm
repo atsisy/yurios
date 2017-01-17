@@ -5,6 +5,7 @@
 global cpu_vendor
 global cpu_geneinfo_sub
 global cpu_cache_sub
+global cpu_brand_string
 
 ;;; CPUベンダと拡張性を調べるアセンブリ関数
 ;;; void cpu_vendor(u32_t *ebx, u32_t *ecx, u32_t *edx);
@@ -91,3 +92,47 @@ cpu_cache_sub:
     pop ecx
     pop ebx
     ret
+
+;;; CPUのブランドストリングを取得する関数
+;;; i32_t cpu_brand_string(char *string);
+cpu_brand_string:
+    	;;バックアップ
+	push ebx
+	push ecx
+	push edx
+	push esi
+  ;; CPUIDの拡張命令に対応しているか判定
+  mov eax, 0x01
+  ;; CPUIDを実行
+  cpuid
+  and eax, 0x80000000
+  jz not_support
+  ;; 以下ブランドストリング取得の拡張CPUID命令に対応している場合
+  ;; CPUID実行後、EAXレジスタにCPUID拡張機能の最大インデックスがセットされる
+
+  ;; プロセッサブランドストリングに対応しているかどうか
+  sub eax, 0x80000004
+  jz not_support
+  ;; プロセッサブランドストリングに対応している
+  mov eax, 0x80000002
+  cpuid
+  mov esi, eax
+  mov eax, [esp+20]
+  mov [eax], esi
+  mov [eax+4], ebx
+  mov [eax+8], ecx
+  mov [eax+12], edx
+  mov eax, 1
+  jmp cpuid_end
+
+not_support:
+  ;; ブランドストリング取得の拡張CPUID命令に対応していない
+  mov eax, -1
+  jmp cpuid_end
+
+cpuid_end:
+  pop esi
+	pop edx
+	pop ecx
+	pop ebx
+	ret

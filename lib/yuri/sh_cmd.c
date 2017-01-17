@@ -188,6 +188,13 @@ void command_lscpu(void) {
 	sprintf(vendor, "L3 cache:%d", edx);
 	puts(vendor);
 
+	/*
+	//ブランドストリング
+	zeroclear_8array(vendor, 13);
+	cpu_brand_string(vendor);
+
+	puts(vendor);
+	*/
 }
 
 /*

@@ -41,6 +41,7 @@ void farcall(int eip, int cs);
 void load_tr(int tr);
 void asm_put_char(void);
 void asm_sys_call(void);
+i32_t cpu_brand_string(char *string);
 void run_app(int eip, int cs, int esp, int ds, int *tss_esp0);	//アプリケーション起動
 void start_app(int eip, int cs, int esp, int ds, int *tss_esp0);
 
