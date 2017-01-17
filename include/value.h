@@ -122,4 +122,10 @@
 #define __SIG_SLEEP__ 0x04
 #define __SIG_PING__ 0x08
 
+/*
+ *ストリームの定数
+ */
+#define __INPUT_STREAM_SIZE__  4092
+#define __OUTPUT_STREAM_SIZE__ 4092
+
 #endif
