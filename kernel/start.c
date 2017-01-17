@@ -104,6 +104,7 @@ void Main(void) {
 	task_run(yuri_kernel, 1, 2);
 
 	shell_init();
+	InitStreams();
 	INITIALIZE_ATA_DEVICE();
 	init_yrfs();
 
