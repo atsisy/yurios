@@ -1,11 +1,18 @@
 #include "../include/kernel.h"
 #include "../include/sh.h"
+#include "../include/string.h"
 
 /*
  *ストリームのバッファ
  */
 char *InputStream;
 char *OutputStream;
+
+/*
+ *ストリームの書き込み位置
+ */
+int input_write_point;
+int output_write_point;
 
 /*
  *=======================================================================================
@@ -15,12 +22,19 @@ char *OutputStream;
  */
 void InitStreams(){
 	puts("Initialize Streams.");
+
 	/*
 	 *メモリを確保
 	 *確保するメモリ量はvalue.hに記述
 	 */
 	InputStream = (char *)memory_alloc_4k(memman, __INPUT_STREAM_SIZE__);
 	InputStream = (char *)memory_alloc_4k(memman, __OUTPUT_STREAM_SIZE__);
+
+	/*
+	 *書き込み位置をリセット
+	 */
+	output_write_point = input_write_point = 0;
+
 	puts("Complete initializing Streams.");
 }
 
@@ -42,4 +56,30 @@ char *GetOutputStream(){
  */
 char *GetInputStream(){
 	return InputStream;
+}
+
+/*
+ *=======================================================================================
+ *WriteOutputStream関数
+ *出力ストリームに書き込む関数
+ *=======================================================================================
+ */
+void WriteOutputStream(char *str){
+
+	/*
+	 *オーバーフローしそうなら元に戻す
+	 */
+	if(output_write_point > __OUTPUT_STREAM_SIZE__ - 0xff)
+		output_write_point = 0;
+
+	/*
+	 *コピー
+	 */
+	strcpy(OutputStream + output_write_point, str);
+
+	/*
+	 *書き込み位置をすすめる
+	 */
+	output_write_point += (strlen(str) + 1);
+
 }
