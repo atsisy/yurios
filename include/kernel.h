@@ -200,5 +200,7 @@ void InitStreams();
 char *GetOutputStream();
 char *GetInputStream();
 void WriteOutputStream(char *str);
+void ResetInputStream();
+void ResetOutputStream();
 
 #endif

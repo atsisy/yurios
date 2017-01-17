@@ -28,7 +28,13 @@ void InitStreams(){
 	 *確保するメモリ量はvalue.hに記述
 	 */
 	InputStream = (char *)memory_alloc_4k(memman, __INPUT_STREAM_SIZE__);
-	InputStream = (char *)memory_alloc_4k(memman, __OUTPUT_STREAM_SIZE__);
+	OutputStream = (char *)memory_alloc_4k(memman, __OUTPUT_STREAM_SIZE__);
+
+	/*
+	 *バッファを0クリア
+	 */
+	zeroclear_8array(InputStream, __INPUT_STREAM_SIZE__);
+	zeroclear_8array(OutputStream, __OUTPUT_STREAM_SIZE__);
 
 	/*
 	 *書き込み位置をリセット

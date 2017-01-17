@@ -123,10 +123,9 @@ void shell_master(void){
 		 */
 
 		//出力ストリームを初期化
-		
-		/*
-		 *historyに追加
-		 */
+		ResetOutputStream();
+
+		//historyに追加
 		add_history(command);
 
 		put_char('%');
