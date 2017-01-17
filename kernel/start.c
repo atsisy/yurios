@@ -6,6 +6,7 @@
 #include "../include/yrws.h"
 
 void init_yrfs();
+static void init();
 
 /*
  *カウンタのスレッド
@@ -89,7 +90,6 @@ void Main(void) {
 
 
 	init_keyboard(&fifo, 256);
-
 	init_palette();
 
 	memory_init(memman);
@@ -103,10 +103,7 @@ void Main(void) {
 	fifo.task = yuri_kernel;
 	task_run(yuri_kernel, 1, 2);
 
-	shell_init();
-	InitStreams();
-	INITIALIZE_ATA_DEVICE();
-	init_yrfs();
+	init();
 
       /*
 	 *最初のメッセージを描画
@@ -162,4 +159,11 @@ void task_b_main(void){
 			io_sti();
 		}
 	}
+}
+
+static void init(){
+	shell_init();
+	InitStreams();
+	INITIALIZE_ATA_DEVICE();
+	init_yrfs();
 }
