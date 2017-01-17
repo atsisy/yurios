@@ -197,5 +197,7 @@ void kernel_send(struct Process *proc, u32_t msg);
  *=======================================================================================
  */
 void InitStreams();
+char *GetOutputStream();
+char *GetInputStream();
 
 #endif
