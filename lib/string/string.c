@@ -135,3 +135,25 @@ char *RemoveHeadSpaces(char *str){
 
 	return str;
 }
+
+/*
+ *=======================================================================================
+ *SearchStringFirst関数
+ *文字列中に指定したアルファベットが初めて出現する先頭からの文字数を返す関数
+ *引数
+ *char *str
+ *文字列
+ *char alphabet
+ *検索するアルファベット
+ *=======================================================================================
+ */
+i32_t SearchStringFirst(char *str, char alphabet){
+	int i = 0;
+	do{
+		if(str[i] == alphabet)
+			return i+1;
+		i++;
+	}while(str[i]);
+
+	return -1;
+}
