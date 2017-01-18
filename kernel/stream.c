@@ -92,6 +92,32 @@ void WriteOutputStream(char *str){
 
 /*
  *=======================================================================================
+ *WriteErrorStream関数
+ *エラーストリームに書き込む関数
+ *=======================================================================================
+ */
+void WriteErrorStream(char *str){
+
+	/*
+	 *オーバーフローしそうなら元に戻す
+	 */
+	if(ErrorStream->write_point > __ERROR_STREAM_SIZE__ - 0xff)
+		ErrorStream->write_point = 0;
+
+	/*
+	 *コピー
+	 */
+	strcpy(ErrorStream->buffer + ErrorStream->write_point, str);
+
+	/*
+	 *書き込み位置をすすめる
+	 */
+	ErrorStream->write_point += (strlen(str) + 1);
+
+}
+
+/*
+ *=======================================================================================
  *ResetOutputWritePoint関数
  *出力ストリームの書き込み位置を0にリセットする関数
  *=======================================================================================
@@ -108,6 +134,16 @@ static void ResetOutputWritePoint(){
  */
 static void ResetInputWritePoint(){
 	InputStream->write_point = 0;
+}
+
+/*
+ *=======================================================================================
+ *ResetErrorWritePoint関数
+ *エラーストリームの書き込み位置を0にリセットする関数
+ *=======================================================================================
+ */
+static void ResetErrorWritePoint(){
+	ErrorStream->write_point = 0;
 }
 
 /*
@@ -130,4 +166,15 @@ void ResetOutputStream(){
 void ResetInputStream(){
 	ResetInputWritePoint();
 	zeroclear_8array(InputStream->buffer, __INPUT_STREAM_SIZE__);
+}
+
+/*
+ *=======================================================================================
+ *ResetErrorStream関数
+ *エラーストリームを初期化する関数
+ *=======================================================================================
+ */
+void ResetErrorStream(){
+	ResetErrorWritePoint();
+	zeroclear_8array(ErrorStream->buffer, __ERROR_STREAM_SIZE__);
 }
