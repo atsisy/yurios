@@ -79,7 +79,7 @@ void shell_init(void){
  */
 void shell_master(void){
 
-	char command[1024];
+	char *command = (char *)memory_alloc(memman, 1024 << 2);
 
 	struct Process *me = task_now();	//自分自身を指すプロセス構造体
 

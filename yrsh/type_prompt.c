@@ -173,6 +173,8 @@ void ntype_prompt(char *dst, int buffer_limit){
 	int keycmd_buf[32];
 	queue_init(&keycmd, 32, keycmd_buf, 0);
 
+	//dstを0クリア
+	zeroclear_8array(dst, 1024 << 2);
 	for(;;){
 
 		if(!queue_size(proc->irq)){

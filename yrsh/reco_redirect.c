@@ -18,7 +18,6 @@ u8_t ShRecoRedirect(char *line){
 	 */
 	while(string_getNext(line, word)){
 		if(strcmp(word, ">")){
-			puts("Redirect!!");
 			return 1;
 		}
 		line += strlen(word) + 1;

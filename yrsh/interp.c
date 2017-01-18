@@ -27,8 +27,9 @@ void yrsh_interpreter(char *command){
 		char *red_pare = (char *)memory_alloc(memman, n - 1);
 		memcpy(red_pare, command, n - 2);
 		yrsh_interpreter(red_pare);
-		RedirectCreateFile(command + n);
+		RedirectCreateFile(command + n + 1);
 		memory_free(memman, (u32_t)red_pare, n - 1);
+		goto intp_finish;
 	}
 
 	/*
@@ -195,6 +196,8 @@ void yrsh_interpreter(char *command){
 		print(command);
 		puts("'.");
 	}
+
+intp_finish:
 
 	memory_free_4k(memman, (u32_t)fat, 4 * 2880);
 	memory_free(memman, (u32_t)part, 1024);
