@@ -20,7 +20,16 @@ void yrsh_interpreter(char *command){
       char *part = (char *)memory_alloc(memman, 1024);
       string_getNext(command, part);	//受け取ったコマンドを分割して先頭の文字列のみを取り出す
 
-	ShRecoRedirect(command);
+	/*
+	 *リダイレクト処理
+	 */
+	if(ShRecoRedirect(command)){
+		int n = SearchStringFirst(command, '>');
+		char *red_pare = (char *)memory_alloc(memman, n - 1);
+		memcpy(red_pare, command, n - 2);
+		yrsh_interpreter(red_pare);
+		memory_free(memman, (u32_t)red_pare, n - 1);
+	}
 
 	/*
 	 *コマンドに合わせて処理を実行する
