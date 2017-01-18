@@ -23,12 +23,7 @@ void yrsh_interpreter(char *command){
 	 *リダイレクト処理
 	 */
 	if(ShRecoRedirect(command)){
-		int n = SearchStringFirst(command, '>');
-		char *red_pare = (char *)memory_alloc(memman, n - 1);
-		memcpy(red_pare, command, n - 2);
-		yrsh_interpreter(red_pare);
-		RedirectCreateFile(command + n + 1);
-		memory_free(memman, (u32_t)red_pare, n - 1);
+		Redirect(command);
 		goto intp_finish;
 	}
 

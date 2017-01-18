@@ -1,6 +1,8 @@
 #include "../include/sh.h"
 #include "../include/string.h"
 
+void yrsh_interpreter(char *command);
+
 /*
  *=======================================================================================
  *ShRecoRedirect関数
@@ -30,17 +32,33 @@ u8_t ShRecoRedirect(char *line){
  *=======================================================================================
  *Redirect関数
  *リダイレクトを処理する関数
+ *引数
+ *char *command
+ *シェルに打ち込まれたコマンド
  *=======================================================================================
  */
-void Redirect(char *line){
+void Redirect(char *command){
 	/*
-	 *上流コマンド、下流コマンド、中継バッファの確保
+	 * > までの文字オフセットを計算
 	 */
-	char *parent = (char *)memory_alloc(memman, 128);
-	char *child = (char *)memory_alloc(memman, 128);
-	char *buffer = (char *)memory_alloc_4k(memman, 1024 * 24);
+      int offset = SearchStringFirst(command, '>');
 
-	memory_free(memman, (u32_t)parent, 128);
-	memory_free(memman, (u32_t)child, 128);
-	memory_free_4k(memman, (u32_t)buffer, 1024 * 24);
+	/*
+	 *計算したオフセットからコマンド用バッファを確保
+	 */
+	char *red_pare = (char *)memory_alloc(memman, offset - 1);
+
+	/*
+	 *計算したオフセットからコマンドを切り取り
+	 */
+	memcpy(red_pare, command, offset - 2);
+
+	//インタプリタに投げる
+	yrsh_interpreter(red_pare);
+
+	//後方のファイル名のファイルに対しリダイレクト処理
+	RedirectCreateFile(command + offset + 1);
+
+	//メモリ解放
+	memory_free(memman, (u32_t)red_pare, offset - 1);
 }
