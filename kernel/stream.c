@@ -7,6 +7,7 @@
  */
 struct Stream *InputStream;
 struct Stream *OutputStream;
+struct Stream *ErrorStream;
 
 /*
  *=======================================================================================
@@ -18,6 +19,7 @@ void InitStreams(){
 
 	InputStream = (struct Stream *)memory_alloc(memman, sizeof(struct Stream));
 	OutputStream = (struct Stream *)memory_alloc(memman, sizeof(struct Stream));
+	ErrorStream = (struct Stream *)memory_alloc(memman, sizeof(struct Stream));
 
 	/*
 	 *メモリを確保
@@ -25,17 +27,19 @@ void InitStreams(){
 	 */
 	InputStream->buffer = (char *)memory_alloc_4k(memman, __INPUT_STREAM_SIZE__);
 	OutputStream->buffer = (char *)memory_alloc_4k(memman, __OUTPUT_STREAM_SIZE__);
+	ErrorStream->buffer = (char *)memory_alloc_4k(memman, __ERROR_STREAM_SIZE__);
 
       /*
 	 *バッファを0クリア
 	 */
 	zeroclear_8array(InputStream->buffer, __INPUT_STREAM_SIZE__);
 	zeroclear_8array(OutputStream->buffer, __OUTPUT_STREAM_SIZE__);
+	zeroclear_8array(ErrorStream->buffer, __ERROR_STREAM_SIZE__);
 
 	/*
 	 *書き込み位置をリセット
 	 */
-	OutputStream->write_point = InputStream->write_point = 0;
+	OutputStream->write_point = InputStream->write_point = ErrorStream->write_point = 0;
 
 	puts("Complete initializing Streams.");
 }

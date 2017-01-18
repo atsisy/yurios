@@ -125,7 +125,8 @@
 /*
  *ストリームの定数
  */
-#define __INPUT_STREAM_SIZE__  4092
-#define __OUTPUT_STREAM_SIZE__ 4092
+#define __INPUT_STREAM_SIZE__  4096
+#define __OUTPUT_STREAM_SIZE__ 4096
+#define __ERROR_STREAM_SIZE__  4096
 
 #endif
