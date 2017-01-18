@@ -3,16 +3,10 @@
 #include "../include/string.h"
 
 /*
- *ストリームのバッファ
+ *ストリーム構造体たち
  */
-char *InputStream;
-char *OutputStream;
-
-/*
- *ストリームの書き込み位置
- */
-int input_write_point;
-int output_write_point;
+struct Stream *InputStream;
+struct Stream *OutputStream;
 
 /*
  *=======================================================================================
@@ -21,25 +15,27 @@ int output_write_point;
  *=======================================================================================
  */
 void InitStreams(){
-	puts("Initialize Streams.");
+
+	InputStream = (struct Stream *)memory_alloc(memman, sizeof(struct Stream));
+	OutputStream = (struct Stream *)memory_alloc(memman, sizeof(struct Stream));
 
 	/*
 	 *メモリを確保
 	 *確保するメモリ量はvalue.hに記述
 	 */
-	InputStream = (char *)memory_alloc_4k(memman, __INPUT_STREAM_SIZE__);
-	OutputStream = (char *)memory_alloc_4k(memman, __OUTPUT_STREAM_SIZE__);
+	InputStream->buffer = (char *)memory_alloc_4k(memman, __INPUT_STREAM_SIZE__);
+	OutputStream->buffer = (char *)memory_alloc_4k(memman, __OUTPUT_STREAM_SIZE__);
 
-	/*
+      /*
 	 *バッファを0クリア
 	 */
-	zeroclear_8array(InputStream, __INPUT_STREAM_SIZE__);
-	zeroclear_8array(OutputStream, __OUTPUT_STREAM_SIZE__);
+	zeroclear_8array(InputStream->buffer, __INPUT_STREAM_SIZE__);
+	zeroclear_8array(OutputStream->buffer, __OUTPUT_STREAM_SIZE__);
 
 	/*
 	 *書き込み位置をリセット
 	 */
-	output_write_point = input_write_point = 0;
+	OutputStream->write_point = InputStream->write_point = 0;
 
 	puts("Complete initializing Streams.");
 }
@@ -51,7 +47,7 @@ void InitStreams(){
  *=======================================================================================
  */
 char *GetOutputStream(){
-	return OutputStream;
+	return OutputStream->buffer;
 }
 
 /*
@@ -61,7 +57,7 @@ char *GetOutputStream(){
  *=======================================================================================
  */
 char *GetInputStream(){
-	return InputStream;
+	return InputStream->buffer;
 }
 
 /*
@@ -75,18 +71,18 @@ void WriteOutputStream(char *str){
 	/*
 	 *オーバーフローしそうなら元に戻す
 	 */
-	if(output_write_point > __OUTPUT_STREAM_SIZE__ - 0xff)
-		output_write_point = 0;
+	if(OutputStream->write_point > __OUTPUT_STREAM_SIZE__ - 0xff)
+		OutputStream->write_point = 0;
 
 	/*
 	 *コピー
 	 */
-	strcpy(OutputStream + output_write_point, str);
+	strcpy(OutputStream->buffer + OutputStream->write_point, str);
 
 	/*
 	 *書き込み位置をすすめる
 	 */
-	output_write_point += (strlen(str) + 1);
+	OutputStream->write_point += (strlen(str) + 1);
 
 }
 
@@ -97,7 +93,7 @@ void WriteOutputStream(char *str){
  *=======================================================================================
  */
 static void ResetOutputWritePoint(){
-	output_write_point = 0;
+	OutputStream->write_point = 0;
 }
 
 /*
@@ -107,7 +103,7 @@ static void ResetOutputWritePoint(){
  *=======================================================================================
  */
 static void ResetInputWritePoint(){
-	input_write_point = 0;
+	InputStream->write_point = 0;
 }
 
 /*
@@ -118,7 +114,7 @@ static void ResetInputWritePoint(){
  */
 void ResetOutputStream(){
 	ResetOutputWritePoint();
-	zeroclear_8array(OutputStream, __OUTPUT_STREAM_SIZE__);
+	zeroclear_8array(OutputStream->buffer, __OUTPUT_STREAM_SIZE__);
 }
 
 /*
@@ -129,5 +125,5 @@ void ResetOutputStream(){
  */
 void ResetInputStream(){
 	ResetInputWritePoint();
-	zeroclear_8array(InputStream, __INPUT_STREAM_SIZE__);
+	zeroclear_8array(InputStream->buffer, __INPUT_STREAM_SIZE__);
 }
