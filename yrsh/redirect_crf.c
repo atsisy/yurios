@@ -3,6 +3,8 @@
 #include "../include/yrfs.h"
 #include "../include/string.h"
 
+static void CraWrF_ReDir(char *FileName);
+
 /*
  *=======================================================================================
  *RedirectCreateFile関数
@@ -10,24 +12,31 @@
  *=======================================================================================
  */
 void RedirectCreateFile(char *FileName){
-	int fd;
+	
 	/*
 	 *リダイレクトしようとしているファイルはすでに存在しているか？
 	 */
-	if(ffind(FileName) == -1){        //存在していない
-		fd = do_open(FileName, __O_CREAT__);
-		if(fd == -1)
-			return;
-		do_write(fd, GetOutputStream(), strlen(GetOutputStream()));
-		do_close(fd);
-	}else{                            //存在している
+	if(ffind(FileName) != -1)        //存在している
 		RemoveFile(FileName);
-		fd = do_open(FileName, __O_CREAT__);
-		if(fd == -1)
-			return;
-		do_write(fd, GetOutputStream(), strlen(GetOutputStream()));
-		do_close(fd);
-	}
 
+	CraWrF_ReDir(FileName);
 	return;
+}
+
+/*
+ *=======================================================================================
+ *CraWrF_ReDir関数
+ *リダイレクト処理中に使う、ファイル作成とファイル書き込みを一度に行う関数
+ *引数
+ *char *FileName
+ *ファイル名
+ *=======================================================================================
+ */
+static void CraWrF_ReDir(char *FileName){
+	int fd;
+	fd = do_open(FileName, __O_CREAT__);
+	if(fd == -1)
+		return;
+	do_write(fd, GetOutputStream(), strlen(GetOutputStream()));
+	do_close(fd);
 }
