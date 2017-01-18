@@ -58,6 +58,7 @@ int dec_digit(int value, int n);
 void load_yrs(struct YRS_SRC *yrs_src);
 struct YRS_SRC *yrs_src_init(char *file_name);
 u8_t ShRecoRedirect(char *line);
+void RedirectCreateFile(char *FileName);
 
 int *system_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax);
 

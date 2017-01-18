@@ -12,7 +12,7 @@ static void CraWrF_ReDir(char *FileName);
  *=======================================================================================
  */
 void RedirectCreateFile(char *FileName){
-	
+
 	/*
 	 *リダイレクトしようとしているファイルはすでに存在しているか？
 	 */

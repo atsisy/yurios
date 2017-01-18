@@ -5,7 +5,6 @@
 #include "../include/yrfs.h"
 #include "../include/sysc.h"
 
-int do_open(char *pathname, u32_t flags);
 i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag);
 void command_cp(int argc, char **argv);
 
@@ -28,6 +27,7 @@ void yrsh_interpreter(char *command){
 		char *red_pare = (char *)memory_alloc(memman, n - 1);
 		memcpy(red_pare, command, n - 2);
 		yrsh_interpreter(red_pare);
+		RedirectCreateFile(command + n);
 		memory_free(memman, (u32_t)red_pare, n - 1);
 	}
 
@@ -82,11 +82,7 @@ void yrsh_interpreter(char *command){
 
 		fd = do_open("yuri_doc.txt", __O_RDONLY__);
 		fadd(fd, "\nSATORI");
-		/*
-		  ｖ			  do_read(fd, src2, 1);
 
-		  puts(src2);
-		*/
 	}else if(strcmp(part, "fwrite")){
 		char *fname = (char *)memory_alloc(memman, 32);
 		cut_string(command, fname, 7);
@@ -99,7 +95,7 @@ void yrsh_interpreter(char *command){
 		read_mem2hd(fname, src, 256);
 			
 		do_write(fd, src, 1);
-			
+
 		memory_free(memman, (u32_t)src, 256);
 
 	}else if(strcmp(command, "fszeroclear")){
