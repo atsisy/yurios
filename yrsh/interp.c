@@ -90,13 +90,15 @@ void yrsh_interpreter(char *command){
 		int fd = do_open(fname, __O_CREAT__), size;
 		iread(&inode, fd);
 
-		char *src = (char *)memory_alloc(memman, 256);
+		size = fat_getsize(fname);
 
-		size = read_mem2hd(fname, src, 256);
+		char *src = (char *)memory_alloc(memman, size);
+
+		read_mem2hd(fname, src, size);
 
 		do_write(fd, src, size);
 
-		memory_free(memman, (u32_t)src, 256);
+		memory_free(memman, (u32_t)src, size);
 
 	}else if(strcmp(command, "fszeroclear")){
 		/*
