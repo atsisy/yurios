@@ -8,7 +8,7 @@
  *メモリ上のファイルからHDDに書き込む関数
  *=======================================================================================
  */
-char *read_mem2hd(char *file_name, char *buffer, u32_t length){
+size_t read_mem2hd(char *file_name, char *buffer, u32_t length){
 	int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
 	readfat(fat, (unsigned char *)(ADR_DISKIMG + 0x0000200));
 
@@ -64,7 +64,7 @@ type_next_file:
 		print("File not found.");
 	}
 
-	return buffer;
+	return finfo[x].size;
 }
 
 u8_t *read_yim(char *file_name, u8_t *buffer, u32_t length){

@@ -59,7 +59,7 @@ void yrsh_interpreter(char *command){
 		 *ファイルの内容を表示
 		 */
 		command_cat(command);
-			
+
 	}else if(strcmp(command, "clear")){
 		/*
 		 *シェルの画面を新しい画面に置き換えるコマンド
@@ -69,15 +69,15 @@ void yrsh_interpreter(char *command){
 	}else if(strcmp(command, "open")){
 
 		struct i_node inode;
-		int fd = do_open("yuri_doc.txt", __O_CREAT__);
+		int fd = do_open("yuri_doc.txt", __O_CREAT__), size;
 		iread(&inode, fd);
-			
+
 		char *src = (char *)memory_alloc(memman, 256);
-			
-		read_mem2hd("YURI_DOC.TXT", src, 256);
-			
-		do_write(fd, src, 1);
-			
+
+		size = read_mem2hd("YURI_DOC.TXT", src, 256);
+
+		do_write(fd, src, size);
+
 		memory_free(memman, (u32_t)src, 256);
 
 		fd = do_open("yuri_doc.txt", __O_RDONLY__);
@@ -87,14 +87,14 @@ void yrsh_interpreter(char *command){
 		char *fname = (char *)memory_alloc(memman, 32);
 		cut_string(command, fname, 7);
 		struct i_node inode;
-		int fd = do_open(fname, __O_CREAT__);
+		int fd = do_open(fname, __O_CREAT__), size;
 		iread(&inode, fd);
-			
+
 		char *src = (char *)memory_alloc(memman, 256);
-			
-		read_mem2hd(fname, src, 256);
-			
-		do_write(fd, src, 1);
+
+		size = read_mem2hd(fname, src, 256);
+
+		do_write(fd, src, size);
 
 		memory_free(memman, (u32_t)src, 256);
 

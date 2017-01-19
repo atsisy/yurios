@@ -157,7 +157,7 @@ void cpu_cache_sub(u32_t *ebx, u32_t *ecx, u32_t *edx);
 /*
  *メモリを読む関数
  */
-char *read_mem2hd(char *file_name, char *buffer, u32_t length);
+size_t read_mem2hd(char *file_name, char *buffer, u32_t length);
 
 u32_t fat_getsize(char *file_name);
 
