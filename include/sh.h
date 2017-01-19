@@ -60,6 +60,7 @@ struct YRS_SRC *yrs_src_init(char *file_name);
 u8_t ShRecoRedirect(char *line);
 void Redirect(char *command);
 void RedirectCreateFile(char *FileName);
+void RedirectFileAddSub(char *FileName);
 
 int *system_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax);
 

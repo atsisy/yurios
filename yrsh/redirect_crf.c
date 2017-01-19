@@ -3,7 +3,7 @@
 #include "../include/yrfs.h"
 #include "../include/string.h"
 
-static void CraWrF_ReDir(char *FileName);
+void CraWrF_ReDir(char *FileName);
 
 /*
  *=======================================================================================
@@ -32,7 +32,7 @@ void RedirectCreateFile(char *FileName){
  *ファイル名
  *=======================================================================================
  */
-static void CraWrF_ReDir(char *FileName){
+void CraWrF_ReDir(char *FileName){
 	int fd;
 	fd = do_open(FileName, __O_CREAT__);
 	if(fd == -1)
