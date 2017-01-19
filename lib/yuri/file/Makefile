@@ -1,5 +1,5 @@
 DST = ../../../dst
-OBJS = $(DST)/addsmt.o $(DST)/mem2hd.o $(DST)/mem_read.o $(DST)/fat_getsize.o
+OBJS = $(DST)/addsmt.o $(DST)/mem2hd.o $(DST)/mem_read.o $(DST)/fat_getsize.o $(DST)/fsize.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YURI/FILE DIRECTORY'
