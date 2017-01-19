@@ -31,13 +31,13 @@ i32_t SearchCombinationCommand(char *command){
 				RedirectFAdd(command);
 				*ファイル追記形式ののリダイレクト処理
 				*/
-
-			break;
+				RedirectFAdd(command);
+			return 1;
 		case '|':
 			/*
 			 *パイプ処理
 			 */
-			break;
+			return 1;
 		}
 
 		if(!alphabet)
@@ -45,7 +45,7 @@ i32_t SearchCombinationCommand(char *command){
 		i++;
 	}
 
-	return -1;
+	return 0;
 }
 
 /*

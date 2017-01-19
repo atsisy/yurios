@@ -22,10 +22,14 @@ void yrsh_interpreter(char *command){
 	/*
 	 *リダイレクト処理
 	 */
+	/*
 	if(ShRecoRedirect(command)){
 		Redirect(command);
 		goto intp_finish;
 	}
+	*/
+	if(SearchCombinationCommand(command))
+		goto intp_finish;
 
 	/*
 	 *コマンドに合わせて処理を実行する

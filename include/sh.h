@@ -61,6 +61,8 @@ u8_t ShRecoRedirect(char *line);
 void Redirect(char *command);
 void RedirectCreateFile(char *FileName);
 void RedirectFileAddSub(char *FileName);
+i32_t SearchCombinationCommand(char *command);
+void RedirectFAdd(char *command);
 
 int *system_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax);
 
