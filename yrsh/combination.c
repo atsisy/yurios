@@ -28,7 +28,6 @@ i32_t SearchCombinationCommand(char *command){
 				Redirect(command);
 			else if(flag & __FILE_ADD__)
 				/*
-				RedirectFAdd(command);
 				*ファイル追記形式ののリダイレクト処理
 				*/
 				RedirectFAdd(command);

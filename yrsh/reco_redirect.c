@@ -5,31 +5,6 @@ void yrsh_interpreter(char *command);
 
 /*
  *=======================================================================================
- *ShRecoRedirect関数
- *コマンドにリダイレクトが含まれているか判定する関数
- *引数
- *char *line
- *シェルに入力された一行
- *=======================================================================================
- */
-u8_t ShRecoRedirect(char *line){
-	char *word = (char *)memory_alloc(memman, 128);
-
-	/*
-	 * > が登場するまでループ
-	 */
-	while(string_getNext(line, word)){
-		if(strcmp(word, ">")){
-			return 1;
-		}
-		line += strlen(word) + 1;
-	}
-
-	return 0;
-}
-
-/*
- *=======================================================================================
  *Redirect関数
  *リダイレクトを処理する関数
  *引数
@@ -47,6 +22,8 @@ void Redirect(char *command){
 	 *計算したオフセットからコマンド用バッファを確保
 	 */
 	char *red_pare = (char *)memory_alloc(memman, offset - 1);
+
+	zeroclear_8array(red_pare, offset - 1);
 
 	/*
 	 *計算したオフセットからコマンドを切り取り
@@ -87,6 +64,8 @@ void RedirectFAdd(char *command){
 	 *計算したオフセットからコマンド用バッファを確保
 	 */
 	char *red_pare = (char *)memory_alloc(memman, offset - 2);
+
+	zeroclear_8array(red_pare, offset - 2);
 
 	/*
 	 *計算したオフセットからコマンドを切り取り
