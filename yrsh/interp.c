@@ -178,7 +178,7 @@ void yrsh_interpreter(char *command){
 		fd = do_open(file_name, __O_RDONLY__);
 		gline(fd, n);
 
-		while(!strcmp(n, "end")){
+		while(!strcmp(n, "end") && !*n){
 			yrsh_interpreter(n);
 			zeroclear_8array(n, 32);
 			gline(fd, n);

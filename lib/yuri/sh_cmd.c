@@ -129,7 +129,7 @@ void command_cat(char *inputed_command){
 	/*
 	*読み込み
 	*/
-	read_mem2hd(inputed_command, src, 256);
+	read_mem2hd(inputed_command+4, src, 256);
 	
 	puts(src);
 	
