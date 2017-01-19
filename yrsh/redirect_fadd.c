@@ -19,6 +19,10 @@ void RedirectFileAddSub(char *FileName){
 	if(ffind(FileName) != -1){        //存在している
 		int fd = do_open(FileName, __O_RDONLY__);
 		fadd(fd, GetOutputStream());
+		char nl[2];
+		*nl = '\n';
+		nl[1] = '\0';
+		fadd(fd, nl);
 	}else{                            //存在していないので通常のリダイレクト処理
 		CraWrF_ReDir(FileName);
 	}
