@@ -116,4 +116,8 @@ struct Elf32_Phdr {
 	u32_t p_align;
 };
 
+#define __PF_X__ 0x01
+#define __PF_W__ 0x02
+#define __PF_R__ 0x04
+
 #endif
