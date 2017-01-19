@@ -10,76 +10,76 @@
  *ELF解析に使う構造体
  *=======================================================================================
  */
-struct ELF32_info {
+struct Elf32_info {
 	/*
 	 *ELFの最初の16バイト
 	 */
-	u8_t header[__ELF_HEADER_BYTES__];
+	u8_t e_ident[__ELF_HEADER_BYTES__];
 
 	/*
 	 *ファイルのタイプ
 	 */
-	u16_t type;
+	u16_t e_type;
 
 	/*
 	 *マシンアーキテクチャ
 	 */
-	u16_t machine;
+	u16_t e_machine;
 
 	/*
 	 *ファイルのバージョン
 	 */
-	u16_t version;
+	u16_t e_version;
 
 	/*
 	 *実行開始アドレス
 	 */
-	u16_t entry;
+	u16_t e_entry;
 
 	/*
 	 *プログラムヘッダテーブルまでのファイル先頭からのオフセット
 	 */
-	u16_t  phoff;
+	u16_t  e_phoff;
 
 	/*
 	 *セクションヘッダテーブルまでのファイル先頭からのオフセット
 	 */
-	u16_t  shoff;
+	u16_t  e_shoff;
 
 	/*
 	 *未使用
 	 */
-	u16_t flags;
+	u16_t e_flags;
 
 	/*
 	 *この構造体のサイズ（sizeof(struct elf_info)）
 	 */
-	u16_t ehsize;
+	u16_t e_ehsize;
 
 	/*
 	 *プログラムヘッダのサイズ
 	 */
-	u16_t phentsize;
+	u16_t e_phentsize;
 
 	/*
 	 *プログラムヘッダの個数
 	 */
-	u16_t phnum;
+	u16_t e_phnum;
 
 	/*
 	 *セクションヘッダのサイズ
 	 */
-	u16_t shentsize;
+	u16_t e_shentsize;
 
 	/*
 	 *セクションヘッダの個数
 	 */
-	u16_t shnum;
+	u16_t e_shnum;
 
 	/*
 	 *セクション名格納用のセクションのセクション番号
 	 */
-	u16_t shstrndx;
+	u16_t e_shstrndx;
 };
 
 
@@ -98,7 +98,7 @@ struct Elf32_Shdr {
 
 struct Elf32_Phdr {
 	u32_t p_type;
-	u32_t  p_offset;
+	u32_t p_offset;
 	u32_t p_vaddr;
 	u32_t p_paddr;
 	u32_t p_filesz;
