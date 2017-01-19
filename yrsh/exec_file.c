@@ -103,9 +103,8 @@ int do_shell_app(int *fat, char *command){
 				q[esp+i] = p[dathrb+i];
 			}
 
-			
 			start_app(0x1b, 1003 * 8, esp, 1004 * 8, &(me->tss.esp0));
-			
+
 			memory_free_4k(memman, (int)q, seg_size);
 		}else{
 			print("yuri executable file format error.");

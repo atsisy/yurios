@@ -10,7 +10,7 @@
  *ELF解析に使う構造体
  *=======================================================================================
  */
-struct elf32_info {
+struct ELF32_info {
 	/*
 	 *ELFの最初の16バイト
 	 */
@@ -80,6 +80,31 @@ struct elf32_info {
 	 *セクション名格納用のセクションのセクション番号
 	 */
 	u16_t shstrndx;
+};
+
+
+struct Elf32_Shdr {
+      u32_t sh_name;
+	u32_t sh_type;
+	u32_t sh_flags;
+	u32_t sh_addr;
+	u32_t sh_offset;
+	u32_t sh_size;
+	u32_t sh_link;
+	u32_t sh_info;
+	u32_t sh_addralign;
+	u32_t sh_entsize;
+};
+
+struct Elf32_Phdr {
+	u32_t p_type;
+	u32_t  p_offset;
+	u32_t p_vaddr;
+	u32_t p_paddr;
+	u32_t p_filesz;
+	u32_t p_memsz;
+	u32_t p_flags;
+	u32_t p_align;
 };
 
 #endif
