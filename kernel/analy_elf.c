@@ -11,3 +11,23 @@ u8_t CheckELF(struct Elf32_info *elf){
 		?
 		1 : 0;
 }
+
+/*
+ *=======================================================================================
+ *CutELFSectionHeader関数
+ *ELF構造体からセクションヘッダを切り取る関数
+ *=======================================================================================
+ */
+struct Elf32_Shdr *CutELFSectionHeader(struct Elf32_info *elf){
+	return (struct Elf32_Shdr *)((char *)elf + elf->e_shoff);
+}
+
+/*
+ *=======================================================================================
+ *CutELFSectionHeader関数
+ *ELF構造体からプログラムヘッダを切り取る関数
+ *=======================================================================================
+ */
+struct Elf32_Phdr *CutELFProgramHeader(struct Elf32_info *elf){
+	return (struct Elf32_Phdr *)((char *)elf + elf->e_phoff);
+}
