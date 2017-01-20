@@ -1,5 +1,5 @@
 DST = ../dst
-OBJS = start.o graphic.o dsctbl.o int.o fifo.o memory.o \
+OBJS = start.o graphic.o dsctbl.o int.o fifo.o memory.o analy_elf.o \
 	sys_call.o default_font.o core.o cpuinfo.o timer_int.o register.o stream.o
 
 all: $(OBJS) Makefile

@@ -1,5 +1,6 @@
 #include "../include/kernel.h"
 #include "../include/sh.h"
+#include "../include/elf.h"
 #include "../include/string.h"
 
 /*
@@ -256,11 +257,29 @@ int exec_elf_app(int *fat, char *command){
 
 			//メモリを開放
 			memory_free_4k(memman, (int)q, seg_size);
+		}else if(app_size >= (i32_t)sizeof(struct Elf32_info) && CheckELF((struct Elf32_info *)p)){
+			struct Elf32_info *elf = (struct Elf32_info *)p;
+
+			
+			if(!(esp = GetELFEsp(elf))){
+				/*
+				 *エラーを出力
+				 */
+				goto start_app_end;
+			}
+			seg_size = GetELFDataSize(elf);
+			q = (char *) memory_alloc_4k(memman, seg_size);
+			CopyELFDataSe(q, elf);
+			start_elf_app(me, p, app_size, q, seg_size, elf->e_entry, 0 * 8 + 4, esp, 1 * 8 + 4);
+			memory_free_4k(memman, (u32_t)q, seg_size);
+
 		}else{
 			print("yuri executable file format error.");
 		}
 
-		memory_free_4k(memman, (int) p, finfo->size);
+	start_app_end:
+
+		memory_free_4k(memman, (u32_t)p, finfo->size);
 
 		return 1;
 	}

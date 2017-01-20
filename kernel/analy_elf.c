@@ -98,6 +98,9 @@ struct Elf32_Shdr *FindELFSection(struct Elf32_info *elf, char *SectionName){
  *=======================================================================================
  */
 u32_t GetELFEsp(struct Elf32_info *elf){
+	/*
+	 *スタック用の.stackセクションを探す
+	 */
 	struct Elf32_Shdr* shdr = FindELFSection(elf, ".stack");
 	if(shdr)            //見つかった
 		return shdr->sh_size;

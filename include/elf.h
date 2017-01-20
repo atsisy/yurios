@@ -120,4 +120,14 @@ struct Elf32_Phdr {
 #define __PF_W__ 0x02
 #define __PF_R__ 0x04
 
+/*
+ *=======================================================================================
+ *ELF解析関数のプロトタイプ宣言
+ *=======================================================================================
+ */
+u8_t CheckELF(struct Elf32_info *elf);
+u32_t GetELFEsp(struct Elf32_info *elf);
+u32_t GetELFDataSize(struct Elf32_info *elf);
+void CopyELFDataSe(void *DataSegment, struct Elf32_info *elf);
+
 #endif
