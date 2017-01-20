@@ -11,6 +11,7 @@ all: $(YURIEXE) Makefile
 	ld -melf_i386 -o $(APP)/cli_app2.yx --script=$(LINKPATH)/app.lds cli_app2.o libyuri.a --nmagic -Map $(DST)/cli_app2.map
 	ld -melf_i386 -o $(APP)/rename.yx --script=$(LINKPATH)/app.lds rename.o libyuri.a --nmagic -Map $(DST)/rename.map
 	cd yrs && make all
+	cd elf_test && make all
 	mv *.o ..
 	rm *.a
 

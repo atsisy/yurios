@@ -1,4 +1,4 @@
-ENTRY(_Main)
+ENTRY(main)
 INCLUDE app_vars.lds
 
 SECTIONS
