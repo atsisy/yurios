@@ -187,7 +187,7 @@ void yrsh_interpreter(char *command){
 
 		do_close(fd);
 
-	}else if(do_shell_app(fat, command) == 0){
+	}else if(/*do_shell_app(fat, command) == 0*/!exec_elf_app(fat, command)){
 		//対応するコマンドではなく、さらにアプリケーションでもない場合
 		/*
 		 *外部アプリケーション実行

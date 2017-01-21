@@ -20,7 +20,7 @@ u8_t CheckELF(struct Elf32_info *elf){
  *=======================================================================================
  */
 struct Elf32_Shdr *CutELFSectionHeader(struct Elf32_info *elf){
-	return (struct Elf32_Shdr *)((char *)elf + elf->e_shoff);
+	return (struct Elf32_Shdr *)((int)elf + elf->e_shoff);
 }
 
 /*
@@ -81,12 +81,12 @@ void CopyELFDataSe(void *DataSegment, struct Elf32_info *elf){
  */
 struct Elf32_Shdr *FindELFSection(struct Elf32_info *elf, char *SectionName){
 
-	struct Elf32_Shdr* shdr = CutELFSectionHeader(elf);
-	char *strtab =  ((char *)elf + CutELFSectionHeader(elf)[(elf)->e_shstrndx].sh_offset);
+	struct Elf32_Shdr *shdr = CutELFSectionHeader(elf);
+	char *strtab = elf->e_shstrndx ? (char *)((int)elf + shdr[elf->e_shstrndx].sh_offset) : NULL;
 	int i;
 
-	for(i = 0; i < elf->e_shnum; i++){
-		if(strcmp(SectionName, strtab + shdr[i].sh_name) == 0)  //検証
+	for(i = 0;i < elf->e_shnum;i++){
+		if(strcmp(SectionName, strtab + shdr[i].sh_name))  //検証
 			return &shdr[i];
 	}
 	return 0;
@@ -101,7 +101,7 @@ u32_t GetELFEsp(struct Elf32_info *elf){
 	/*
 	 *スタック用の.stackセクションを探す
 	 */
-	struct Elf32_Shdr* shdr = FindELFSection(elf, ".stack");
+	struct Elf32_Shdr *shdr = FindELFSection(elf, ".stack");
 	if(shdr)            //見つかった
 		return shdr->sh_size;
 	else                //見つからなかった

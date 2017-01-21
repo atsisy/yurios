@@ -130,6 +130,7 @@ extern struct Process *ylsh_cursor_timer;
 void scroll(int height);
 struct FileInfo *file_search(char *name, struct FileInfo *finfo, int max);
 int do_shell_app(int *fat, char *command);
+int exec_elf_app(int *fat, char *command);
 void multi_shellscroll(struct BOOTINFO *binfo, int height, int top, int under);
 
 //history.c

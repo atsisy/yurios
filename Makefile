@@ -26,6 +26,7 @@ all:
 	mcopy application/cli.yx -i yuli.img ::
 	mcopy application/cli_app2.yx -i yuli.img ::
 	mcopy application/rename.yx -i yuli.img ::
+	mcopy application/elf_test.yx -i yuli.img ::
 	mcopy yuri.yim -i yuli.img ::
 	mcopy LICENSE -i yuli.img ::
 	mcopy ex.sh -i yuli.img ::

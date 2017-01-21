@@ -10,6 +10,7 @@
  *ELF解析に使う構造体
  *=======================================================================================
  */
+
 struct Elf32_info {
 	/*
 	 *ELFの最初の16バイト
@@ -29,27 +30,27 @@ struct Elf32_info {
 	/*
 	 *ファイルのバージョン
 	 */
-	u16_t e_version;
+	u32_t e_version;
 
 	/*
 	 *実行開始アドレス
 	 */
-	u16_t e_entry;
+	u32_t e_entry;
 
 	/*
 	 *プログラムヘッダテーブルまでのファイル先頭からのオフセット
 	 */
-	u16_t  e_phoff;
+	u32_t  e_phoff;
 
 	/*
 	 *セクションヘッダテーブルまでのファイル先頭からのオフセット
 	 */
-	u16_t  e_shoff;
+	u32_t  e_shoff;
 
 	/*
 	 *未使用
 	 */
-	u16_t e_flags;
+	u32_t e_flags;
 
 	/*
 	 *この構造体のサイズ（sizeof(struct elf_info)）
@@ -129,5 +130,4 @@ u8_t CheckELF(struct Elf32_info *elf);
 u32_t GetELFEsp(struct Elf32_info *elf);
 u32_t GetELFDataSize(struct Elf32_info *elf);
 void CopyELFDataSe(void *DataSegment, struct Elf32_info *elf);
-
 #endif

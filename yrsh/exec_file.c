@@ -3,6 +3,8 @@
 #include "../include/elf.h"
 #include "../include/string.h"
 
+u8_t *read_elf(char *file_name, u8_t *buffer, u32_t length);
+
 /*
  *=======================================================================================
  *do_shell_app関数
@@ -153,7 +155,8 @@ void start_elf_app(struct Process *proc, void *text, int text_size, void *data, 
 	set_segmdesc(gdt + 1003, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
 	set_segmdesc(gdt + 1004, data_size - 1, (int) data, AR_DATA32_RW + 0x60);
 
-	start_app(eip, cs, esp, ds, &(proc->tss.esp0));
+	//start_app(eip, cs, esp, ds, &(proc->tss.esp0));
+	start_app(eip, 1003 * 8, esp, 1004 * 8, &(proc->tss.esp0));
 }
 
 /*
@@ -167,7 +170,7 @@ int exec_elf_app(int *fat, char *command){
 	struct FileInfo *finfo;
 	char file_name[13], *p, *q;
 	struct Process *me = task_now();
-	int i, seg_size, data_size, esp, data, app_size;
+	int i, seg_size, esp, app_size;
 
 	zeroclear_8array(file_name, 13);
 
@@ -219,56 +222,26 @@ int exec_elf_app(int *fat, char *command){
 		/*
 		 *ファイルをロード
 		 */
-		p = (char *) memory_alloc_4k(memman, finfo->size);
-		loadfile(finfo->clustno, finfo->size, p, fat, (char *) (ADR_DISKIMG + 0x003e00));
+		p = (char *)memory_alloc_4k(memman, app_size);
+
+		//ELF用のローダ
+		read_elf(file_name, (u8_t *)p, app_size);
 
 		/*
 		 *ロードしたファイルが正式なものかチェックする
 		 */
-		if(finfo->size >= 36 && strcmp(p + 4, "yrex") == 1 && *p == 0x00){
-                  //ヘッダ解析
-
-			/*
-			 *OSが用意するアプリ用のデータセグメントのサイズ
-			 */
-			seg_size = *((int *)(p + 0x0000));
-
-                  /*
-			 *espの初期値
-			 */
-			esp = *((int *)(p + 0x000c));
-
-			//*((char ***)(esp + 8)) = argv;
-			*((u32_t *)(esp + 4)) = 875;
-
-			/*
-			 *データセクションの大きさ
-			 */
-			data_size = *((int *)(p + 0x0010));
-
-                  /*
-			 *データ部分の始まり位置
-			 */
-			data = *((int *)(p + 0x0014));
-
-			q = (char *)memory_alloc_4k(memman, seg_size);
-		      memcpy(q + esp, p + data, data_size);
-			start_elf_app(me, p, app_size, q, seg_size, 0x1b, 0 * 8 + 4, esp, 1 * 8 + 4);
-
-			//メモリを開放
-			memory_free_4k(memman, (int)q, seg_size);
-		}else if(app_size >= (i32_t)sizeof(struct Elf32_info) && CheckELF((struct Elf32_info *)p)){
+	      if(app_size >= (i32_t)sizeof(struct Elf32_info) && CheckELF((struct Elf32_info *)p)){
 			struct Elf32_info *elf = (struct Elf32_info *)p;
 
-			
 			if(!(esp = GetELFEsp(elf))){
+				puts("ELF ERROR");
 				/*
 				 *エラーを出力
 				 */
 				goto start_app_end;
 			}
 			seg_size = GetELFDataSize(elf);
-			q = (char *) memory_alloc_4k(memman, seg_size);
+			q = (char *)memory_alloc_4k(memman, seg_size);
 			CopyELFDataSe(q, elf);
 			start_elf_app(me, p, app_size, q, seg_size, elf->e_entry, 0 * 8 + 4, esp, 1 * 8 + 4);
 			memory_free_4k(memman, (u32_t)q, seg_size);
