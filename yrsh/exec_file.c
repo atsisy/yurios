@@ -233,13 +233,9 @@ int exec_elf_app(int *fat, char *command){
 	      if(app_size >= (i32_t)sizeof(struct Elf32_info) && CheckELF((struct Elf32_info *)p)){
 			struct Elf32_info *elf = (struct Elf32_info *)p;
 
-			if(!(esp = GetELFEsp(elf))){
-				puts("ELF ERROR");
-				/*
-				 *エラーを出力
-				 */
+			if(!(esp = GetELFEsp(elf)))   //エラーで終了
 				goto start_app_end;
-			}
+
 			seg_size = GetELFDataSize(elf);
 			q = (char *)memory_alloc_4k(memman, seg_size);
 			CopyELFDataSe(q, elf);
@@ -247,7 +243,7 @@ int exec_elf_app(int *fat, char *command){
 			memory_free_4k(memman, (u32_t)q, seg_size);
 
 		}else{
-			print("yuri executable file format error.");
+			pError("Yuri executable file format error.");
 		}
 
 	start_app_end:
