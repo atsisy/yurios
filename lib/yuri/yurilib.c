@@ -1,5 +1,6 @@
 #include "../../include/kernel.h"
 #include "../../include/sh.h"
+#include "../../include/elf.h"
 #include "../../include/string.h"
 #include "../../include/sysc.h"
 #include "../../include/yrfs.h"
@@ -253,7 +254,8 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 
 	int i;
 
-	int cs_base = *((int *) 0xfe8);
+	int cs_base = me->cs_val;
+	int ds_base = me->ds_val;
 
 	/*
 	  アセンブリの方で２回pushadをしてレジスタをバックアップしている
@@ -315,6 +317,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		registers[7] = do_read(eax, (char *)(ebx+cs_base), ecx);
 		break;
 	case 6:
+	{
 	      /*
 		 *=======================================================================================
 		 *メモリマネージャ初期化のシステムコール
@@ -323,10 +326,35 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *ecx:メモリマネージャが管理する領域のサイズ
 		 *=======================================================================================
 		 */
+		/*
 		memory_init((struct MEMMAN *)(ebx + cs_base));
 		ecx &= 0xfffffff0;	//16バイト単位にする
 		memory_free((struct MEMMAN *)(ebx + cs_base), eax, ecx);
+		*/
+
+		struct Elf32_info *elf = (struct Elf32_info *)cs_base;
+
+		//このアプリケーションはELFか？
+		if(CheckELF(elf)){
+			struct Elf32_Shdr *m_section;
+			memman = GetAppMM(me, &m_section);
+
+			if(!memman)
+				return &(me->tss.esp0);
+
+			memory_init(memman);
+			u32_t data_off = m_section->sh_addr + 32 * 1024;
+			u32_t data_size = GetELFDataSize(elf) - data_off;
+			//16バイトごとになるようにマスク
+			data_size &= 0xfffffff0;
+			memory_free(memman, data_off, data_size);
+		}else{
+			memory_init((struct MEMMAN *)(ebx + ds_base));
+			ecx &= 0xfffffff0;
+			memory_free((struct MEMMAN *)(ebx + ds_base), eax, ecx);
+		}
 		break;
+	}
 	case 7:
 	      /*
 		 *=======================================================================================

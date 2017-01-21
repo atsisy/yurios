@@ -130,4 +130,7 @@ u8_t CheckELF(struct Elf32_info *elf);
 u32_t GetELFEsp(struct Elf32_info *elf);
 u32_t GetELFDataSize(struct Elf32_info *elf);
 void CopyELFDataSe(void *DataSegment, struct Elf32_info *elf);
+struct MEMMAN *GetAppMM(struct Process *proc, struct Elf32_Shdr **p_malloc_SHDR);
+
+
 #endif
