@@ -365,7 +365,14 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *=======================================================================================
 		 */
 		ecx = (ecx+0x0f) & 0xfffffff0;	//16バイト単位にする
-		registers[7] = memory_alloc((struct MEMMAN *)(ebx+cs_base), ecx);
+
+		if(CheckELF((struct Elf32_info *)cs_base))
+			memman = GetAppMM(me, 0);
+		else
+			memman = (struct MEMMAN *)(ebx + ds_base);
+
+		//結果を返す
+		registers[7] = memory_alloc(memman, ecx);
 		break;
 	case 8:
 	      /*
@@ -377,7 +384,12 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *=======================================================================================
 		 */
 		ecx = (ecx+0x0f) & 0xfffffff0;	//16バイト単位にする
-		memory_free((struct MEMMAN *)(ebx+cs_base), eax, ecx);
+		if(CheckELF((struct Elf32_info *)cs_base))
+			memman = GetAppMM(me, 0);
+		else
+			memman = (struct MEMMAN *)(ebx + ds_base);
+
+		memory_free(memman, eax, ecx);
 		break;
 	case 9:
 
