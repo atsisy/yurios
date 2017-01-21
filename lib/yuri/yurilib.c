@@ -290,7 +290,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 
 		//eaxに返り値を格納
-		registers[7] = do_write(eax, (char *)(ebx + cs_base), ecx);
+		registers[7] = do_write(eax, (char *)(ebx + ds_base), ecx);
 		break;
 	case 3:
 	      /*
@@ -298,7 +298,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *openシステムコール
 		 *=======================================================================================
 		 */
-		registers[7] = do_open((char *)(eax + cs_base), ebx);
+		registers[7] = do_open((char *)(eax + ds_base), ebx);
 		break;
 	case 4:
 		/*
@@ -314,7 +314,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *=======================================================================================
 		 */
 
-		registers[7] = do_read(eax, (char *)(ebx+cs_base), ecx);
+		registers[7] = do_read(eax, (char *)(ebx+ds_base), ecx);
 		break;
 	case 6:
 	{
