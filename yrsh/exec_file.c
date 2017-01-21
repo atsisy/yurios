@@ -150,7 +150,7 @@ void start_elf_app(struct Process *proc, void *text, int text_size, void *data, 
 	struct SEGMENT_DESCRIPTOR *gdt = (struct SEGMENT_DESCRIPTOR *)ADR_GDT;
 	
 	proc->cs_val = (int)text;
-	proc-> = (int)data;
+	proc->ds_val = (int)data;
 
 	set_segmdesc(gdt + 1003, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
 	set_segmdesc(gdt + 1004, data_size - 1, (int) data, AR_DATA32_RW + 0x60);
