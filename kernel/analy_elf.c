@@ -1,5 +1,6 @@
 #include "../include/elf.h"
 #include "../include/string.h"
+#include "../include/sh.h"
 
 /*
  *=======================================================================================
@@ -117,7 +118,7 @@ u32_t GetELFEsp(struct Elf32_info *elf){
 struct MEMMAN *GetAppMM(struct Process *proc, struct Elf32_Shdr **p_malloc_SHDR){
 	struct Elf32_info *elf = (struct Elf32_info *)proc->cs_val;
 
-	if(CheckELF(elf))
+	if(!CheckELF(elf))
 		return 0;
 
 	struct Elf32_Shdr *m_section = FindELFSection(elf, ".malloc");

@@ -313,7 +313,6 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *readシステムコール
 		 *=======================================================================================
 		 */
-
 		registers[7] = do_read(eax, (char *)(ebx+ds_base), ecx);
 		break;
 	case 6:
