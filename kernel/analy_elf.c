@@ -107,3 +107,26 @@ u32_t GetELFEsp(struct Elf32_info *elf){
 	else                //見つからなかった
 		return 0;
 }
+
+/*
+ *=======================================================================================
+ *GetAppMM関数
+ *アプリケーション用のメモリマネージャを引き出す関数
+ *=======================================================================================
+ */
+struct MEMMAN *GetAppMM(struct Process *proc, struct Elf32_Shdr **p_malloc_SHDR){
+	struct Elf32_info *elf = (struct Elf32_info *)proc->cs_val;
+
+	if(CheckELF(elf))
+		return 0;
+
+	struct Elf32_Shdr *m_section = FindELFSection(elf, ".malloc");
+
+	if(p_malloc_SHDR)
+		*p_malloc_SHDR = m_section;
+
+	if(!m_section)
+		return 0;
+
+	return (struct MEMMAN *)(m_section->sh_addr + proc->ds_val);
+}
