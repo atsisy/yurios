@@ -155,6 +155,8 @@ void start_elf_app(struct Process *proc, void *text, int text_size, void *data, 
 	set_segmdesc(gdt + 1003, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
 	set_segmdesc(gdt + 1004, data_size - 1, (int) data, AR_DATA32_RW + 0x60);
 
+	*((u32_t *)esp) = 875;
+
 	start_app(eip, 1003 * 8, esp, 1004 * 8, &(proc->tss.esp0));
 }
 

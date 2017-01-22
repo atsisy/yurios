@@ -13,6 +13,7 @@ An open source 32bit operating systems!
   - なんかCUIベースでいろいろできる(しょぼいですが)
   - なんか窓際の埃のようなしょぼいGUIがある
   - なんかシェルがスクロールする
+  - システムコールを用いてなんかアプリケーションを作成できる
 - ライセンスについて(下にも書いてあります)
   - 私としてはオープンソースというものは感染すべきではないと思っております。様々な人たちが自由にソースコードを引用できるべきなのです。なので緩いMITライセンスにしました。
   - 私が開発したゆりOSのデフォルトフォントも、もちろんMITライセンスが適用されております。
@@ -66,4 +67,4 @@ $ sudo zypper in make gcc gcc-32bit nasm
 バグの報告やYuri開発に協力したい人、感想などがあればat.sisy@gmail.comまでメールを送っていただければ幸いです。もちろんプルリクエストなどもウェルカムです。
 
 ##Lisence
-Yuriは[MIT Lisence](https://opensource.org/licenses/MIT)を採用しています。
+ゆりOSは[MIT Lisence](https://opensource.org/licenses/MIT)を採用しています。
