@@ -9,7 +9,7 @@
 
 
 void print(char *str);
-void puts(char *str);
+i32_t puts(char *str);
 void print_value(int value, int x, int y);
 void put_char(char ch);
 void pError(char *message);
