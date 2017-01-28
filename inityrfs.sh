@@ -1,0 +1,2 @@
+mkdir /
+touch history
