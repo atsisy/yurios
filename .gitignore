@@ -7,3 +7,7 @@ yuli.img
 .clang_complete
 all_merge.sh
 *.yim
+GPATH
+GRTAGS
+GTAGS
+HTML
