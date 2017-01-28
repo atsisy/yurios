@@ -4,7 +4,7 @@
 #include "../../include/string.h"
 
 //カレントディレクトリの文字列
-char *CURRENT_DIRECTRY_NAME;
+char *CURRENT_DIRECTORY_NAME;
 
 static void InitDir(struct i_node inode);
 
@@ -64,9 +64,9 @@ static void InitDir(struct i_node inode){
 	int size;
 
 	//絶対パス用のバッファを確保
-	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CURRENT_DIRECTRY_NAME) * strlen(inode.file_name)) + 2));
+	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CURRENT_DIRECTORY_NAME) * strlen(inode.file_name)) + 2));
 	//絶対バスを生成
-	strcat(ndir_name, CURRENT_DIRECTRY_NAME);
+	strcat(ndir_name, CURRENT_DIRECTORY_NAME);
 	strcat(ndir_name, inode.file_name);
 
 	//追記

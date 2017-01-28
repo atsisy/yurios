@@ -129,4 +129,9 @@
 #define __OUTPUT_STREAM_SIZE__ 4096
 #define __ERROR_STREAM_SIZE__  4096
 
+/*
+ *yurifs関係
+ */
+#define __CURRENT_DIR_STR_SIZE__ 4096
+
 #endif
