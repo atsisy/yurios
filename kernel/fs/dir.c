@@ -1,5 +1,12 @@
 #include "../../include/yrfs.h"
 #include "../../include/sysc.h"
+#include "../../include/kernel.h"
+#include "../../include/string.h"
+
+//カレントディレクトリの文字列
+char *CURRENT_DIRECTRY_NAME;
+
+static void InitDir(struct i_node inode);
 
 /*
  *=======================================================================================
@@ -7,11 +14,11 @@
  *mkdirシステムコールのカーネル内処理
  *=======================================================================================
  */
-int do_mkdir(char *pathname, u32_t flags){
+i32_t do_mkdir(char *pathname, u32_t flags){
 
 	int fd = 0;
 	struct i_node inode;
-	
+
 	if(flags & __O_CREAT__){
 		/*
 		 *同名のファイルが存在しない
@@ -30,7 +37,8 @@ int do_mkdir(char *pathname, u32_t flags){
 			 */
 			fd = iwrite(&inode);
 
-			//blocks_info[fd].exist = __USED_BLOCK__;
+			//最初の書き込み
+			InitDir(inode);
 		}
 	}
 	if(flags & __O_RDONLY__){
@@ -40,5 +48,30 @@ int do_mkdir(char *pathname, u32_t flags){
 		return ffind(pathname);
 	}
 
+	do_close(fd);
+
 	return fd;
+}
+
+/*
+ *=======================================================================================
+ *InitDir関数
+ *ディレクトリファイルの最初の書き込みを行う関数
+ *=======================================================================================
+ */
+static void InitDir(struct i_node inode){
+	//ディレクトリの絶対パスの文字列長
+	int size;
+
+	//絶対パス用のバッファを確保
+	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CURRENT_DIRECTRY_NAME) * strlen(inode.file_name)) + 2));
+	//絶対バスを生成
+	strcat(ndir_name, CURRENT_DIRECTRY_NAME);
+	strcat(ndir_name, inode.file_name);
+
+	//追記
+	fadd(inode.id, ndir_name);
+
+	//メモリ解放
+	memory_free(memman, (u32_t)ndir_name, size);
 }

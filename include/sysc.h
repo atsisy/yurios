@@ -63,5 +63,10 @@ i32_t do_close(i32_t fd);
  */
 int do_get_key();
 
+/*
+ *do_mkdirシステムコール
+ */
+i32_t do_mkdir(char *pathname, u32_t flags);
+
 #endif
 
