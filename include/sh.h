@@ -32,6 +32,7 @@ void command_lscpu(void);
 void command_writeyim(char *file_name);
 void command_rm(char *file_name);
 void command_touch(char *file_name);
+void command_pwd(void);
 
 void readfat(int *fat, unsigned char *img);
 void loadfile(int clustno, int size, char *buf, int *fat, char *img);
@@ -70,5 +71,6 @@ int *system_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, 
 extern struct QUEUE fifo;
 extern char *keys0;
 extern char *keys1;
+
 
 #endif

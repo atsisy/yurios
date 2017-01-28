@@ -2,6 +2,7 @@
 #include "../../include/sysc.h"
 #include "../../include/kernel.h"
 #include "../../include/string.h"
+#include "../../include/sh.h"
 
 //カレントディレクトリの文字列
 char *CURRENT_DIRECTORY_NAME;
@@ -74,4 +75,15 @@ static void InitDir(struct i_node inode){
 
 	//メモリ解放
 	memory_free(memman, (u32_t)ndir_name, size);
+}
+
+/*
+ *=======================================================================================
+ *command_pwd関数
+ *pwdコマンドに内部処理
+ *=======================================================================================
+ */
+void command_pwd(){
+	//標準出力
+	puts(CURRENT_DIRECTORY_NAME);
 }

@@ -66,6 +66,8 @@ void yrsh_interpreter(char *command){
 		 *UNIXのclearと同じく
 		 */
 		ylsh_clear();
+	}else if(strcmp(command, "pwd")){
+		command_pwd();
 	}else if(strcmp(command, "open")){
 
 		struct i_node inode;
