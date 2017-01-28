@@ -14,8 +14,10 @@ int do_open(char *pathname, u32_t flags) {
 		     /*
 		 	*inode作成
 		 	*/
-			
 			inode = icreat(pathname);
+
+			//通常ファイルのフラグを立てる
+			inode.flags |= __NORMAL_FILE__;
 
 			/*
 			 *inodeを補助記憶装置に書き出し

@@ -36,6 +36,16 @@
 
 #define __BLOCKS_LIMIT__ 2097152
 
+
+//ファイルの種類とか
+#define __NORMAL_FILE__      0x01
+#define __DIRECTORY_FILE__   0x02
+#define __LINK_FILE__        0x04
+#define __BLOCK_DEVICE__     0x08
+#define __CHAR_DEVICE__      0x10
+#define __PIPE_FILE__
+#define __SOCKET_FILE__
+
 /*
  *=======================================================================================
  *ブロックの情報を保持しておく構造体
