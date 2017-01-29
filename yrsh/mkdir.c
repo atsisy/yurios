@@ -11,4 +11,3 @@ void command_mkdir(char *pathname){
 	char *dir_name = pathname + 6;
 	do_close(do_mkdir(dir_name, __O_CREAT__));
 }
-

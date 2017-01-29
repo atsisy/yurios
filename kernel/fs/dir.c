@@ -65,10 +65,11 @@ static void InitDir(struct i_node inode){
 	int size;
 
 	//絶対パス用のバッファを確保
-	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CURRENT_DIRECTORY_NAME) * strlen(inode.file_name)) + 2));
+	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CURRENT_DIRECTORY_NAME) * strlen(inode.file_name)) + 3));
 	//絶対バスを生成
 	strcat(ndir_name, CURRENT_DIRECTORY_NAME);
 	strcat(ndir_name, inode.file_name);
+	strcat(ndir_name, "/");
 
 	//追記
 	fadd(inode.id, ndir_name);
