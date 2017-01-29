@@ -33,7 +33,6 @@ void init_yrfs() {
 	//カレントディレクトリ名を初期化
 	CURRENT_DIRECTORY_NAME = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
 	zeroclear_8array(CURRENT_DIRECTORY_NAME, __CURRENT_DIR_STR_SIZE__);
-	*CURRENT_DIRECTORY_NAME = '/';
 
 	for(i = 0;i < __INODE_LIMIT__;i++){
 		iread(&inode, i);

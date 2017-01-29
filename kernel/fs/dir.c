@@ -70,7 +70,9 @@ static void InitDir(struct i_node inode){
 	strcat(ndir_name, CURRENT_DIRECTORY_NAME);
 	strcat(ndir_name, inode.file_name);
 
-	strcat(ndir_name, "/");
+	// "/"がなかったら追加
+	if(GetStringTail(ndir_name) == '/')
+		strcat(ndir_name, "/");
 
 	//追記
 	fadd(inode.id, ndir_name);

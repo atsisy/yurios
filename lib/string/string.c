@@ -196,7 +196,7 @@ i32_t SearchStringTail(char *str, char alphabet){
  */
 char GetStringTail(char *str){
 	if(!*str)
-		return -1;
+		return 0;
 
 	do{
 		str++;
