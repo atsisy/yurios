@@ -69,6 +69,7 @@ static void InitDir(struct i_node inode){
 	//絶対バスを生成
 	strcat(ndir_name, CURRENT_DIRECTORY_NAME);
 	strcat(ndir_name, inode.file_name);
+
 	strcat(ndir_name, "/");
 
 	//追記

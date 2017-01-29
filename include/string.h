@@ -11,5 +11,7 @@ char *strcpy(char *dst, const char *str);
 char *strcat(char *s1, const char *s2);
 void *memcpy(void *s1, const void *s2, size_t size);
 i32_t SearchStringFirst(char *str, char alphabet);
+i32_t SearchStringTail(char *str, char alphabet);
+char GetStringTail(char *str);
 
 #endif
