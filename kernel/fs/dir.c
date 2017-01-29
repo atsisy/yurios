@@ -91,3 +91,23 @@ void command_pwd(){
 	//標準出力
 	puts(CURRENT_DIRECTORY_NAME);
 }
+
+/*
+ *=======================================================================================
+ *DirAddFile関数
+ *ディレクトリに新しいファイルの情報を書き込む関数
+ *=======================================================================================
+ */
+u8_t DirAddFile(i32_t dir_file_id, i32_t inode_id){
+	//4294967296 <- 10桁 + 1 (NULL文字)
+	char inode_id_str[11];
+	zeroclear_8array(inode_id_str, 11);
+
+	//文字列に変換
+	sprintf(inode_id_str, "%d", inode_id);
+
+	//追記
+	fadd(dir_file_id, inode_id_str);
+
+	return SUCCESS;
+}
