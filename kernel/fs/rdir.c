@@ -46,3 +46,19 @@ u8_t CreateRootDir(void){
 
 	return FAILURE;
 }
+
+/*
+ *=======================================================================================
+ *MountRootDir関数
+ *ルートディレクトリをカレントディレクトリにする関数
+ *=======================================================================================
+ */
+void MountRootDir(void){
+	//カレントディレクトリ名を初期化
+	CurrentDirectory.AbsPath = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
+	zeroclear_8array(CurrentDirectory.AbsPath, __CURRENT_DIR_STR_SIZE__);
+
+	//初期値をルートディレクトリからロード
+	*CurrentDirectory.AbsPath = '/';
+	CurrentDirectory.OwnFD = ffind("/");
+}

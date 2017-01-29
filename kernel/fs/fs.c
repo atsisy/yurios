@@ -14,6 +14,7 @@ struct block_info *blocks_info;
 extern struct Directory CurrentDirectory;
 
 u8_t CreateRootDir(void);
+void MountRootDir(void);
 
 /*
  *=======================================================================================
@@ -35,12 +36,7 @@ void init_yrfs() {
 
 	//ルートディレクトリがなければ作成
 	CreateRootDir();
-
-	//カレントディレクトリ名を初期化
-	CurrentDirectory.AbsPath = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
-	zeroclear_8array(CurrentDirectory.AbsPath, __CURRENT_DIR_STR_SIZE__);
-	*CurrentDirectory.AbsPath = '/';
-	CurrentDirectory.OwnFD = ffind("/");
+	MountRootDir();
 
 	for(i = 0;i < __INODE_LIMIT__;i++){
 		iread(&inode, i);
