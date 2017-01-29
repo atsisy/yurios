@@ -202,5 +202,5 @@ char GetStringTail(char *str){
 		str++;
 	}while(*str);
 
-	return *--str;
+	return *(str--);
 }

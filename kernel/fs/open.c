@@ -30,6 +30,9 @@ int do_open(char *pathname, u32_t flags) {
 			 */
 			fd = iwrite(&inode);
 
+			//ディレクトリとひも付け
+			DirAddFile(inode.id);
+
 			//blocks_info[fd].exist = __USED_BLOCK__;
 		}
 	}

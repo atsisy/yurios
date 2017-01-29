@@ -66,6 +66,8 @@ static void InitDir(struct i_node inode){
 
 	//絶対パス用のバッファを確保
 	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CurrentDirectory.AbsPath) * strlen(inode.file_name)) + 3));
+	zeroclear_8array(ndir_name, size);
+
 	//絶対バスを生成
 	strcat(ndir_name, CurrentDirectory.AbsPath);
 	strcat(ndir_name, inode.file_name);
@@ -98,7 +100,7 @@ void command_pwd(){
  *ディレクトリに新しいファイルの情報を書き込む関数
  *=======================================================================================
  */
-u8_t DirAddFile(i32_t dir_file_id, i32_t inode_id){
+u8_t DirAddFile(i32_t inode_id){
 	//4294967296 <- 10桁 + 1 (NULL文字)
 	char inode_id_str[11];
 	zeroclear_8array(inode_id_str, 11);
@@ -107,7 +109,7 @@ u8_t DirAddFile(i32_t dir_file_id, i32_t inode_id){
 	sprintf(inode_id_str, "%d", inode_id);
 
 	//追記
-	fadd(dir_file_id, inode_id_str);
+	fadd(CurrentDirectory.OwnFD, inode_id_str);
 
 	return SUCCESS;
 }
