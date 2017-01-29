@@ -33,6 +33,7 @@ void command_writeyim(char *file_name);
 void command_rm(char *file_name);
 void command_touch(char *file_name);
 void command_pwd(void);
+void command_mkdir(char *pathname);
 
 void readfat(int *fat, unsigned char *img);
 void loadfile(int clustno, int size, char *buf, int *fat, char *img);

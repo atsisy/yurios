@@ -68,6 +68,8 @@ void yrsh_interpreter(char *command){
 		ylsh_clear();
 	}else if(strcmp(command, "pwd")){
 		command_pwd();
+	}else if(strcmp(part, "mkdir")){
+		command_mkdir(command);
 	}else if(strcmp(command, "open")){
 
 		struct i_node inode;

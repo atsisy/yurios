@@ -30,6 +30,7 @@ all:
 	mcopy yuri.yim -i yuli.img ::
 	mcopy LICENSE -i yuli.img ::
 	mcopy ex.sh -i yuli.img ::
+	mcopy inityrfs.sh -i yuli.img ::
 
 clean :
 	rm -f ./dst/*.s
