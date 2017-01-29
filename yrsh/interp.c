@@ -121,7 +121,8 @@ void yrsh_interpreter(char *command){
 			  do_gettime(__DAY__), do_gettime(__YEAR__));
 		puts(time);
 	}else if(strcmp(command, "fls")){
-		file_list(NULL);
+		//file_list(NULL);
+		nFileList(NULL);
 	}else if(strcmp(command, "lscpu")){
 		command_lscpu();
 	}else if(strcmp(command, "fork")){

@@ -178,6 +178,7 @@ u32_t byte2sectors(u32_t bytes);
 
 void filesystem_zeroclear();
 void file_list(char *option);
+void nFileList(char *option);
 
 void uchar4tou32(u8_t *data, u32_t *u32);
 

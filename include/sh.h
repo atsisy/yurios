@@ -58,6 +58,8 @@ int dec_digit(int value, int n);
 	2:クアッドモード(4つ)
 */
 
+i32_t osAtoi(char *str);
+
 void load_yrs(struct YRS_SRC *yrs_src);
 struct YRS_SRC *yrs_src_init(char *file_name);
 void Redirect(char *command);

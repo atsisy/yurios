@@ -1,7 +1,10 @@
 #include "../../include/yrfs.h"
 #include "../../include/sh.h"
+#include "../../include/sysc.h"
+#include "../../include/string.h"
 
 static char *yrfs_file_info(char *info, struct i_node *inode);
+extern struct Directory CurrentDirectory;
 
 /*
  *=======================================================================================
@@ -25,6 +28,29 @@ void file_list(char *option) {
 	memory_free(memman, (u32_t)str, 270);
 	memory_free(memman, (u32_t)inode, sizeof(struct i_node));
 }
+
+void nFileList(char *option) {
+      i32_t fd = CurrentDirectory.OwnFD;
+	i32_t child_file_fd;
+	char *line = (char *)memory_alloc(memman, 11);
+	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
+
+	do_close(fd);
+
+	//読み捨て
+	gline(fd, line);
+
+	do{
+		zeroclear_8array(line, 11);
+		gline(fd, line);
+		if(!*line)
+			break;
+		iread(inode, osAtoi(line));
+		puts(inode->file_name);
+	}while(true);
+}
+
+
 
 /*
  *=======================================================================================
