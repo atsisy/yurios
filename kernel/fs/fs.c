@@ -10,7 +10,7 @@
 
 struct block_info *blocks_info;
 
-extern char *CURRENT_DIRECTORY_NAME;
+extern struct Directory CurrentDirectory;
 
 /*
  *=======================================================================================
@@ -31,8 +31,8 @@ void init_yrfs() {
 	param_y = indent << 4;
 
 	//カレントディレクトリ名を初期化
-	CURRENT_DIRECTORY_NAME = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
-	zeroclear_8array(CURRENT_DIRECTORY_NAME, __CURRENT_DIR_STR_SIZE__);
+	CurrentDirectory.AbsPath = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
+	zeroclear_8array(CurrentDirectory.AbsPath, __CURRENT_DIR_STR_SIZE__);
 
 	for(i = 0;i < __INODE_LIMIT__;i++){
 		iread(&inode, i);

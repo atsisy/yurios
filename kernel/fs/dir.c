@@ -4,8 +4,8 @@
 #include "../../include/string.h"
 #include "../../include/sh.h"
 
-//カレントディレクトリの文字列
-char *CURRENT_DIRECTORY_NAME;
+//カレントディレクトリ
+struct Directory CurrentDirectory;
 
 static void InitDir(struct i_node inode);
 
@@ -65,9 +65,9 @@ static void InitDir(struct i_node inode){
 	int size;
 
 	//絶対パス用のバッファを確保
-	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CURRENT_DIRECTORY_NAME) * strlen(inode.file_name)) + 3));
+	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CurrentDirectory.AbsPath) * strlen(inode.file_name)) + 3));
 	//絶対バスを生成
-	strcat(ndir_name, CURRENT_DIRECTORY_NAME);
+	strcat(ndir_name, CurrentDirectory.AbsPath);
 	strcat(ndir_name, inode.file_name);
 
 	// "/"がなかったら追加
@@ -89,7 +89,7 @@ static void InitDir(struct i_node inode){
  */
 void command_pwd(){
 	//標準出力
-	puts(CURRENT_DIRECTORY_NAME);
+	puts(CurrentDirectory.AbsPath);
 }
 
 /*
