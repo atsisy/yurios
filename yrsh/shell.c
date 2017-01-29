@@ -85,7 +85,7 @@ void shell_master(void){
 
 	int shell_buf[128];								//シェルに来るシグナルや割り込み情報をためておくバッファ
 
-	history_init();
+	//history_init();
 
 	queue_init(me->irq, 128, shell_buf, me);	//シェル用FIFOを初期化
 
@@ -126,7 +126,7 @@ void shell_master(void){
 		ResetOutputStream();
 
 		//historyに追加
-		add_history(command);
+		//add_history(command);
 
 		put_char('%');
 

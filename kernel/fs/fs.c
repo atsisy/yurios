@@ -13,6 +13,8 @@ struct block_info *blocks_info;
 
 extern struct Directory CurrentDirectory;
 
+u8_t CreateRootDir(void);
+
 /*
  *=======================================================================================
  *init_yrfs関数
@@ -32,11 +34,12 @@ void init_yrfs() {
 	param_y = indent << 4;
 
 	//ルートディレクトリがなければ作成
-	do_mkdir("/", __O_CREAT__);
+	CreateRootDir();
 
 	//カレントディレクトリ名を初期化
 	CurrentDirectory.AbsPath = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
 	zeroclear_8array(CurrentDirectory.AbsPath, __CURRENT_DIR_STR_SIZE__);
+	*CurrentDirectory.AbsPath = '/';
 	CurrentDirectory.OwnFD = ffind("/");
 
 	for(i = 0;i < __INODE_LIMIT__;i++){

@@ -78,6 +78,7 @@ static void InitDir(struct i_node inode){
 
 	//追記
 	fadd(inode.id, ndir_name);
+	fadd(inode.id, "\n");
 
 	//メモリ解放
 	memory_free(memman, (u32_t)ndir_name, size);
