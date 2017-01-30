@@ -1,5 +1,5 @@
 DST = ../../dst
-OBJS = $(DST)/print.o $(DST)/strlib.o
+OBJS = $(DST)/print.o $(DST)/strlib.o $(DST)/entry.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD YURIC DIRECTORY'

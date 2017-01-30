@@ -1,9 +1,8 @@
 #include "../../../include/yuri/yuri.h"
 #include "../../../include/yuri/stdio.h"
 
-void main(void){
+void main(int argc, char **argv){
 
-	malloc_init();
 	char *a = malloc(128);
 
 	read(stdin, a, 127);
