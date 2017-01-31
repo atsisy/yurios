@@ -1,5 +1,5 @@
-#ifndef YULLIB_H
-#define YULLIB_H
+#ifndef __SH_H__
+#define __SH_H__
 
 #include "kernel.h"
 
@@ -15,7 +15,7 @@ void put_char(char ch);
 void pError(char *message);
 
 void type_prompt(char *dst, int buffer_limit);
-void ntype_prompt(char *dst, int buffer_limit);
+void ntype_prompt(char *dst, i32_t buffer_limit, u32_t offset);
 
 void indent_shell(void);
 void increase_length(void);
@@ -28,7 +28,7 @@ void command_ls(void);
 void command_cat(char *inputed_command);
 void ylsh_clear(void);
 void command_lscpu(void);
- void command_show(char *inputed_command);
+void command_show(char *inputed_command);
 void command_writeyim(char *file_name);
 void command_rm(char *file_name);
 void command_touch(char *file_name);

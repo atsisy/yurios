@@ -155,7 +155,7 @@ void type_prompt(char *dst, int buffer_limit){
 /*
  *ユーザからの入力を受ける関数
  */
-void ntype_prompt(char *dst, int buffer_limit){
+void ntype_prompt(char *dst, i32_t buffer_limit, u32_t offset){
 
 	struct Process *proc = task_now();
 	int i;
@@ -174,7 +174,7 @@ void ntype_prompt(char *dst, int buffer_limit){
 	queue_init(&keycmd, 32, keycmd_buf, 0);
 
 	//dstを0クリア
-	zeroclear_8array(dst, 1024 << 2);
+	zeroclear_8array(dst, buffer_limit);
 	for(;;){
 
 		if(!queue_size(proc->irq)){
@@ -210,7 +210,7 @@ void ntype_prompt(char *dst, int buffer_limit){
 					indent_shell();
 					return;
 				}else if(i == 256 + 0x0e){	//BackSpaceキーの処理
-					if(length >= 2){	//">"これを消さないようにする
+					if((u32_t)length > offset){	//">"これを消さないようにする
 						dst[index] = '\0';
 						increase_length();
 						erase_a_alphabet();
