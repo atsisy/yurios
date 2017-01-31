@@ -57,7 +57,7 @@ void type_prompt(char *dst, int buffer_limit){
 					indent_shell();
 					return;
 				}else if(i == 256 + 0x0e){	//BackSpaceキーの処理
-					if(length >= 2){	//">"これを消さないようにする
+					if(length > 0){	//">"これを消さないようにする
 						increase_length();
 						erase_a_alphabet();	//裏でlengthがデクリメントされている
 						erase_a_alphabet();
