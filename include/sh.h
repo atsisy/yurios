@@ -68,6 +68,8 @@ void RedirectFileAddSub(char *FileName);
 i32_t SearchCombinationCommand(char *command);
 void RedirectFAdd(char *command);
 
+u16_t count_arguments(char *str);
+
 int *system_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax);
 
 //一時的にここにおいておく。

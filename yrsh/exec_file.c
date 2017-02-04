@@ -155,8 +155,6 @@ void start_elf_app(struct Process *proc, void *text, int text_size, void *data, 
 	set_segmdesc(gdt + 1003, text_size - 1, (int) text, AR_CODE32_ER + 0x60);
 	set_segmdesc(gdt + 1004, data_size - 1, (int) data, AR_DATA32_RW + 0x60);
 
-	*((u32_t *)esp) = 875;
-
 	start_app(eip, 1003 * 8, esp, 1004 * 8, &(proc->tss.esp0));
 }
 
@@ -237,9 +235,16 @@ int exec_elf_app(int *fat, char *command){
 			if(!(esp = GetELFEsp(elf)))   //エラーで終了
 				goto start_app_end;
 
+			//コマンドライン引数のデータをプロセス構造体に入れておく
+			me->argc = count_arguments(command);
+
+			//セグメントのサイズ
 			seg_size = GetELFDataSize(elf);
+
+			//セグメントの領域を確保
 			q = (char *)memory_alloc_4k(memman, seg_size);
 			CopyELFDataSe(q, elf);
+
 			start_elf_app(me, p, app_size, q, seg_size, elf->e_entry, 0 * 8 + 4, esp, 1 * 8 + 4);
 			memory_free_4k(memman, (u32_t)q, seg_size);
 
