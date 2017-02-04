@@ -378,19 +378,43 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 }
 
 
-char **extend(char *line){
-	i32_t space_count = 1, i, n;
-	char **argv;
-	
-	for(i = 0;line[i] != '\0';i++){
-		if(line[i] == ' '){
-			space_count++;
+/*
+ *=======================================================================================
+ *count_arguments関数
+ *文字列中の単語の数を調べる関数
+ *=======================================================================================
+ */
+u16_t count_arguments(char *str){
+	int count = 0;
+
+	//最初の文字がNULL文字だったらすぐに0を返す
+	if(!*str)
+		return 0;
+
+	//先頭の無駄な空白を読み捨て
+	if(*str == ' ')
+		__SHRINK_STR_MACRO__(str);
+
+	//ループでカウント
+	do{
+		if(*str == ' '){
+			count++;
+		      __SHRINK_STR_MACRO__(str);
 		}
-	}
+	}while(*str);
 
-	argv = (char **)memory_alloc(memman, sizeof(char *) * space_count);
+	return count;
+}
 
-	for(n = 0;n < space_count;n++){
+char **extend(char *line){
+	i32_t words_count = 1, i, n;
+	char **argv;
+
+	words_count = count_arguments(line);
+
+	argv = (char **)memory_alloc(memman, sizeof(char *) * words_count);
+
+	for(n = 0;n < words_count;n++){
 		for(i = 0;line[i] != ' ';){
 			i++;
 		}

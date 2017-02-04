@@ -129,9 +129,10 @@ struct TSS32 {
  *プロセスを表す構造体
  */
 struct Process {
-	int sel;        //selはGDTの番号のこと
-	int status;     //プロセスの状態
-	int level, priority;
+	i32_t sel;        //selはGDTの番号のこと
+	i32_t status;     //プロセスの状態
+	i32_t level;
+	i32_t priority;
 	struct QUEUE *irq;
 	struct TSS32 tss;
 	u32_t pid;
@@ -139,6 +140,7 @@ struct Process {
 	char proc_name[64];
 	u32_t cs_val;
 	u32_t ds_val;
+	u8_t argc;
 };
 
 struct PROCESS_LEVEL_FLOOR{

@@ -15,4 +15,11 @@ i32_t SearchStringTail(char *str, char alphabet);
 char GetStringTail(char *str);
 void gline(int fd, char *line);
 
+/*
+ *=======================================================================================
+ *マクロとか
+ *=======================================================================================
+ */
+#define __SHRINK_STR_MACRO__(str) while(*str == ' '){ str++; }
+
 #endif
