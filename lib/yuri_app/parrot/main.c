@@ -3,6 +3,9 @@
 
 void main(int argc, char **argv){
 
+	if(argc == 1)
+		puts("argc");
+	
 	char *a = malloc(128);
 
 	read(stdin, a, 127);

@@ -16,7 +16,7 @@ global stat
 global close
 global getca
 
-  [SECTION .text]
+[SECTION .text]
 
   ;; put_charシステムコール
   ;; 一文字シェルに表示する
