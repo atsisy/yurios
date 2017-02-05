@@ -1,9 +1,9 @@
 #include "../../../include/yuri/stdio.h"
 #include "../../../include/yuri/yuri.h"
 
-void main(int argc){
-	if(argc == 875){
-		puts("test");
-	}
-	exit();
+int main(int argc, char **argv){
+	if(argc == 1)
+		puts("Argc test...OK");
+
+	return 0;
 }

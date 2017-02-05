@@ -66,7 +66,7 @@ void *malloc(size_t size);
 void free(void *ptr);
 int get_key(int mode);
 void put_char(int ch);
-void exit(void);
+void exit(i32_t status);
 void draw_rect(int start_x, int start_y, int end_x, int end_y, char color);
 void sleep(unsigned int timeout);
 void newline(void);

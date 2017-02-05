@@ -306,7 +306,16 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *exitシステムコール
 		 *=======================================================================================
 		 */
-		return &(me->tss.esp0);
+		if(!eax){
+			/*
+			 *正常終了
+			 */
+			return &(me->tss.esp0);
+		}else{
+			pError("A non-zero value was returned by application.");
+			return &(me->tss.esp0);
+		}
+		
 	case 5:
 		/*
 		 *=======================================================================================

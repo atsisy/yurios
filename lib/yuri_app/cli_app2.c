@@ -20,5 +20,5 @@ int main(void){
 
 	close(fd);
 
-	exit();
+	exit(0);
 }

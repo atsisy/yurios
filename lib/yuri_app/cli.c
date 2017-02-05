@@ -9,7 +9,7 @@ void main(void){
 
 	puts(a);
 
-      exit();
+      exit(0);
 
 	return;
 }

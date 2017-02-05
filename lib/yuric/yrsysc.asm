@@ -125,10 +125,12 @@ get_key:
 
   ;; exitシステムコール
   ;; プログラム終了のシステム
-  ;; 引数無し
+  ;; 引数
+  ;; 終了状態
 exit:
-  mov		edx, 4
-  int		0x68
+  mov	edx, 4
+  mov eax, [esp+4]
+  int	0x68
 
 sleep:
   mov   edx, 10                 ;10を代入してdo_sleepを呼び出す

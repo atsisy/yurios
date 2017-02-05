@@ -38,7 +38,6 @@ char *cut_string(const char *str, char *dst, int start_point){
 
 	return dst;
 }
-/*
 
 char *strcpy(char *s1, const char *s2){
 	while(*s2){
@@ -75,4 +74,3 @@ unsigned long int strlen(const char *str){
 	}
 	return count;
 }
-*/

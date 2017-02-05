@@ -38,7 +38,7 @@ int main(void) {
 		
 	}
 
-	exit();
+	exit(0);
 }
 
 void print_sc(char *code){

@@ -1,10 +1,7 @@
 #include "../../../include/yuri/yuri.h"
 #include "../../../include/yuri/stdio.h"
 
-void main(int argc, char **argv){
-
-	if(argc == 1)
-		puts("argc");
+int main(int argc, char **argv){
 
 	char *a = malloc(128);
 
@@ -14,4 +11,5 @@ void main(int argc, char **argv){
 
 	newline();
 
+	return 0;
 }
