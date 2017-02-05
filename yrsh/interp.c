@@ -157,7 +157,7 @@ void yrsh_interpreter(char *command){
 		cut_string(command, file_name, 9);
 		command_writeyim(file_name);
 	}else if(strcmp(command, "os")){
-		puts("YuriOS Version 0.1.0b\nRelease in 1/14, 2017");
+		puts("YuriOS Version 0.1.0c\nRelease in 2/22, 2017");
 	}else if(strcmp(part, "rm")){
 		/*
 		 *=======================================================================================

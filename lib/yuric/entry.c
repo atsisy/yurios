@@ -6,4 +6,5 @@ void __entry__(void){
 	malloc_init();
 	int argc;
 	main(getca(&argc), 0);
+	exit();
 }

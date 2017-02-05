@@ -5,7 +5,7 @@ void main(int argc, char **argv){
 
 	if(argc == 1)
 		puts("argc");
-	
+
 	char *a = malloc(128);
 
 	read(stdin, a, 127);
@@ -13,7 +13,5 @@ void main(int argc, char **argv){
 	write(stdout, a, 127);
 
 	newline();
-
-      exit();
 
 }

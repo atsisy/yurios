@@ -385,7 +385,7 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
  *=======================================================================================
  */
 u16_t count_arguments(char *str){
-	int count = 0;
+	int count = 1;
 
 	//最初の文字がNULL文字だったらすぐに0を返す
 	if(!*str)
@@ -401,7 +401,7 @@ u16_t count_arguments(char *str){
 			count++;
 		      __SHRINK_STR_MACRO__(str);
 		}
-	}while(*str);
+	}while(*str++);
 
 	return count;
 }
