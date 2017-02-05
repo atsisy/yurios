@@ -14,6 +14,7 @@ global newline
 global seek
 global stat
 global close
+global getca
 
   [SECTION .text]
 
@@ -186,6 +187,16 @@ stat:
   ;; =>ファイルディスクリプタ
 close:
   mov edx, 14
+  mov eax, [esp+4]
+  int 0x68
+  ret
+
+  ;; getcaシステムコール
+  ;; コマンドライン引数を取得するシステムコール
+  ;; 引数
+  ;; int *argc
+getca:
+  mov edx, 15
   mov eax, [esp+4]
   int 0x68
   ret

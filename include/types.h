@@ -140,7 +140,7 @@ struct Process {
 	char proc_name[64];
 	u32_t cs_val;
 	u32_t ds_val;
-	u8_t argc;
+	i32_t argc;
 };
 
 struct PROCESS_LEVEL_FLOOR{
