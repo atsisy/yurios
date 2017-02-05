@@ -5,7 +5,7 @@ yuli.img
 .directory
 *.yx
 .clang_complete
-all_merge.sh
+push.sh
 *.yim
 GPATH
 GRTAGS
