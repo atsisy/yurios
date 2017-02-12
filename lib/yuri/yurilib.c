@@ -480,6 +480,13 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 */
 		//me->argcが変な値だったら-1を返す
 		registers[7] = *((int *)eax) = me->argc > 0 ? me->argc : -1;
+		ecx = (ecx + 0x0f) & 0xfffffff0;	//16バイト単位にする
+
+		if (CheckELF((struct Elf32_info *)cs_base))
+			memman = GetAppMM(me, 0);
+		//結果を返す
+		*((char **)ebx) = (char **)memory_alloc(memman, sizeof(char)*strlen(GetInputStream()));
+
 		break;
 	}
 

@@ -5,5 +5,7 @@ int main(int argc, char **argv);
 void __entry__(void){
 	malloc_init();
 	int argc;
-	exit(main(getca(&argc), 0));
+	char **argv;
+	getca(&argc, &argv);
+	exit(main(argc, argv));
 }

@@ -196,9 +196,12 @@ close:
   ;; getcaシステムコール
   ;; コマンドライン引数を取得するシステムコール
   ;; 引数
-  ;; int *argc
+  ;; int *argc, char **argv
 getca:
+  push ebx
   mov edx, 15
-  mov eax, [esp+4]
+  mov eax, [esp+8]
+  mov ebx, [esp+12]
   int 0x68
+  pop ebx
   ret
