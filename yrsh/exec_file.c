@@ -237,6 +237,10 @@ int exec_elf_app(int *fat, char *command){
 
 			//コマンドライン引数のデータをプロセス構造体に入れておく
 			me->argc = count_arguments(command);
+			
+			//コマンドラインの文字列を代入しておく
+			me->cmd_line = (char *)memory_alloc(memman, (sizeof(char) * strlen(command)) + 1);
+			strcpy(me->cmd_line, command);
 
 			//セグメントのサイズ
 			seg_size = GetELFDataSize(elf);

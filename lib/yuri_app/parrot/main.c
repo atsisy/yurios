@@ -3,6 +3,8 @@
 
 int main(int argc, char **argv){
 
+	puts(argv);
+
 	char *a = malloc(128);
 
 	read(stdin, a, 127);

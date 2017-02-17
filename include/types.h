@@ -141,6 +141,7 @@ struct Process {
 	u32_t cs_val;
 	u32_t ds_val;
 	i32_t argc;
+	char *cmd_line;
 };
 
 struct PROCESS_LEVEL_FLOOR{

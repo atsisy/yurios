@@ -322,7 +322,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *readシステムコール
 		 *=======================================================================================
 		 */
-		registers[7] = do_read(eax, (char *)(ebx+ds_base), ecx);
+		registers[7] = do_read(eax, (char *)(ebx + ds_base), ecx);
 		break;
 	case 6:
 	{
@@ -473,22 +473,23 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		registers[7] = do_close(eax);
 		break;
 	case 15:
+	{
+		u32_t size;
 		/*
 		 *=======================================================================================
 		 *getcaシステムコール
 		 *=======================================================================================
 		 */
-		//me->argcが変な値だったら-1を返す
+		 //me->argcが変な値だったら-1を返す
 		registers[7] = *((int *)eax) = me->argc > 0 ? me->argc : -1;
-		ecx = (ecx + 0x0f) & 0xfffffff0;	//16バイト単位にする
 
-		if (CheckELF((struct Elf32_info *)cs_base))
-			memman = GetAppMM(me, 0);
-		//結果を返す
-		*((char **)ebx) = (char **)memory_alloc(memman, sizeof(char)*strlen(GetInputStream()));
+		strcpy((char *)(ebx + ds_base), me->cmd_line);
+		puts((char *)(ebx + ds_base));
 
 		break;
 	}
+	}
+
 
 	return 0;
 }
