@@ -1,7 +1,7 @@
 #include "../../../include/yuri/yuri.h"
 #include "../../../include/yuri/stdio.h"
 
-int main(int argc, char **argv){
+int main(int argc, char *argv){
 
 	puts(argv);
 

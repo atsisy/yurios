@@ -15,13 +15,20 @@ int strcmp(const char *s, const char *t){
 	return 1;
 }
 
-void string_getNext(char *str, char *dst){
+char *string_getNext(char *str, char *dst){
+	if(!*str)
+		return NULL;
+	if(*str == ' ')
+		return NULL;
+
 	int i;
+
+	while(*str++ == ' ');
 	for(i = 0;str[i] != ' ' && str[i] != '\0';i++){
 		dst[i] = str[i];
 	}
 	dst[i] = '\0';
-	return;
+	return dst;
 }
 
 

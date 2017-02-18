@@ -474,14 +474,13 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		break;
 	case 15:
 	{
-		u32_t size;
 		/*
 		 *=======================================================================================
 		 *getcaシステムコール
 		 *=======================================================================================
 		 */
 		 //me->argcが変な値だったら-1を返す
-		registers[7] = *((int *)eax) = me->argc > 0 ? me->argc : -1;
+		registers[7] = *((int *)(eax + cs_base)) = me->argc > 0 ? me->argc : -1;
 
 		strcpy((char *)(ebx + ds_base), me->cmd_line);
 		puts((char *)(ebx + ds_base));
