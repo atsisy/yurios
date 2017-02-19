@@ -34,10 +34,6 @@ void init_yrfs() {
 
 	param_y = indent << 4;
 
-	//ルートディレクトリがなければ作成
-	CreateRootDir();
-	MountRootDir();
-
 	for(i = 0;i < __INODE_LIMIT__;i++){
 		iread(&inode, i);
 		/*
@@ -67,6 +63,10 @@ void init_yrfs() {
 
 	boxfill8(binfo->vram, binfo->scrnx, 0, 0, param_y, 64, param_y+16);
 	print_value(100, 0, param_y);
+
+	//ルートディレクトリがなければ作成
+	CreateRootDir();
+	MountRootDir();
 	
 	indent_shell();
 	puts("Complete Initializing yurifs.");

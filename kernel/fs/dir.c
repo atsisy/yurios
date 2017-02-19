@@ -41,12 +41,8 @@ i32_t do_mkdir(char *pathname, u32_t flags){
 			//最初の書き込み
 			InitDir(inode);
 		}
-	}
-	if(flags & __O_RDONLY__){
-		/*
-		 *ffind関数をつかってinode idを求めて返す
-		 */
-		return ffind(pathname);
+	}else{
+		pError("mkdir: cannot create directory 'test': File exists");
 	}
 
 	do_close(fd);
