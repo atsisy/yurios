@@ -40,9 +40,13 @@ i32_t do_mkdir(char *pathname, u32_t flags){
 
 			//最初の書き込み
 			InitDir(inode);
+
+			//ディレクトリとひも付け
+			DirAddFile(inode.id);
+
 		}
 	}else{
-		pError("mkdir: cannot create directory 'test': File exists");
+		pError("mkdir: cannot create directory : File exists");
 	}
 
 	do_close(fd);

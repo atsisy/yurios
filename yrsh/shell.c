@@ -150,7 +150,9 @@ static void put_first_str(){
 	put_char('[');
 	print(CurrentDirectory.AbsPath);
 	put_char(']');
+	put_char('\n');
 	put_char('%');
+	put_char(' ');
 }
 
 /*
