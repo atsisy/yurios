@@ -5,7 +5,10 @@
 #include "../include/ata.h"
 #include "../include/yrfs.h"
 
+extern struct Directory CurrentDirectory;
+
 void put_char(char ch);
+static void put_first_str();
 void yrsh_interpreter(char *command);
 
 int length, indent, MAX_SCROLL;
@@ -96,6 +99,7 @@ void shell_master(void){
 	ch_keybuf(me->irq);
 
 	for(;;){
+		put_first_str();
 		io_cli();
 
 		/*
@@ -128,8 +132,6 @@ void shell_master(void){
 		//historyに追加
 		//add_history(command);
 
-		put_char('%');
-
 		/*
 		 *何らかの処理中にコンソールのカーソルが動いてるのはおかしいのでストップしていたカーソル点滅スレッドを再開
 		 */
@@ -137,6 +139,18 @@ void shell_master(void){
 
 	}
 
+}
+
+/*
+ *=======================================================================================
+ *シェルの最初の一行を出力する関数
+ *=======================================================================================
+ */
+static void put_first_str(){
+	put_char('[');
+	print(CurrentDirectory.AbsPath);
+	put_char(']');
+	put_char('%');
 }
 
 /*

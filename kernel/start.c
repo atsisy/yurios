@@ -111,7 +111,6 @@ void Main(void) {
 	 */
 	puts("Welcome to Yuri.");
 	puts("Enjoy hacking on Yuri!!");
-	put_char('%');
 
 	ylsh          = task_alloc("shell");
 	ylsh->tss.eip = (int) shell_master;
