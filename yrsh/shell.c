@@ -105,7 +105,7 @@ void shell_master(void){
 		/*
 		 *ユーザの入力待ち
 		 */
-		ntype_prompt(command, 1024, 1);
+		ntype_prompt(command, 1024, 2);
 
 		/*
 		 *処理を実行する際にカーソルが点滅するのはおかしいので一旦寝てもらう

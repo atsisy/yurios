@@ -111,6 +111,7 @@ u8_t DirAddFile(i32_t inode_id){
 
 	//追記
 	fadd(CurrentDirectory.OwnFD, inode_id_str);
+	fadd(CurrentDirectory.OwnFD, "\n");
 
 	return SUCCESS;
 }
