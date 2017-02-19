@@ -34,6 +34,7 @@ void command_rm(char *file_name);
 void command_touch(char *file_name);
 void command_pwd(void);
 void command_mkdir(char *pathname);
+u8_t command_cd(char *dir_path);
 
 void readfat(int *fat, unsigned char *img);
 void loadfile(int clustno, int size, char *buf, int *fat, char *img);

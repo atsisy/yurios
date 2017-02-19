@@ -434,6 +434,17 @@ char **extend(char *line){
  *=======================================================================================
  */
 u8_t command_cd(char *dir_path){
+
+	/*
+	 *パスになるまでインクリメント
+	 */
+	while(*dir_path != ' ')
+		dir_path++;
+	dir_path++;
+
+	/*
+	 *実際の処理
+	 */
 	if(ffind(dir_path) == -1){
 		print("cd: no such file or directory: ");
 		puts(dir_path);

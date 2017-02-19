@@ -148,6 +148,8 @@ void yrsh_interpreter(char *command){
 		command_show(command);
 	}else if(strcmp(part, "cp")){
 		fae((i32_t)command_cp, 1, command, 0);
+	}else if(strcmp(part, "cd")){
+		command_cd(command);
 	}else if(strcmp(command, "yrws")){
 		yrsw_main();
 	}else if(strcmp(command, "end")){
