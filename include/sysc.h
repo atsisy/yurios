@@ -68,5 +68,10 @@ int do_get_key();
  */
 i32_t do_mkdir(char *pathname, u32_t flags);
 
+/*
+ *do_chdirシステムコール
+ */
+void do_chdir(char *pathname);
+
 #endif
 

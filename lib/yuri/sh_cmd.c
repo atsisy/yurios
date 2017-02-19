@@ -426,3 +426,20 @@ char **extend(char *line){
 
 	return argv;
 }
+
+/*
+ *=======================================================================================
+ *command_cd関数
+ *カレントディレクトリを移動するコマンドの処理関数
+ *=======================================================================================
+ */
+u8_t command_cd(char *dir_path){
+	if(ffind(dir_path) == -1){
+		print("cd: no such file or directory: ");
+		puts(dir_path);
+		return FAILURE;
+	}else{
+		do_chdir(dir_path);
+		return SUCCESS;
+	}
+}
