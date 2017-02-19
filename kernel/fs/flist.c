@@ -31,7 +31,6 @@ void file_list(char *option) {
 
 void nFileList(char *option) {
       i32_t fd = CurrentDirectory.OwnFD;
-	i32_t child_file_fd;
 	char *line = (char *)memory_alloc(memman, 11);
 	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
 
