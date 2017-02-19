@@ -70,11 +70,11 @@ static void InitDir(struct i_node inode){
 
 	//絶対バスを生成
 	strcat(ndir_name, CurrentDirectory.AbsPath);
-	strcat(ndir_name, inode.file_name);
-
 	// "/"がなかったら追加
-	if(GetStringTail(ndir_name) == '/')
+	if(GetStringTail(ndir_name) != '/')
 		strcat(ndir_name, "/");
+
+	strcat(ndir_name, inode.file_name);
 
 	//追記
 	fadd(inode.id, ndir_name);
