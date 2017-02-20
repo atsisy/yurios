@@ -8,6 +8,7 @@
 struct Directory CurrentDirectory;
 
 static void InitDir(struct i_node inode);
+static void write_current_dir_info(i32_t new_dir_fd, i32_t crrdir_fd);
 
 /*
  *=======================================================================================
@@ -68,7 +69,7 @@ static void InitDir(struct i_node inode){
 	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CurrentDirectory.AbsPath) * strlen(inode.file_name)) + 3));
 	zeroclear_8array(ndir_name, size);
 
-	//絶対バスを生成
+	//絶対パスを生成
 	strcat(ndir_name, CurrentDirectory.AbsPath);
 	// "/"がなかったら追加
 	if(GetStringTail(ndir_name) != '/')
@@ -79,6 +80,9 @@ static void InitDir(struct i_node inode){
 	//追記
 	fadd(inode.id, ndir_name);
 	fadd(inode.id, "\n");
+
+	//親ディレクトリ情報も渡す
+	write_current_dir_info(inode.id, CurrentDirectory.OwnFD);
 
 	//メモリ解放
 	memory_free(memman, (u32_t)ndir_name, size);
@@ -114,4 +118,22 @@ u8_t DirAddFile(i32_t inode_id){
 	fadd(CurrentDirectory.OwnFD, "\n");
 
 	return SUCCESS;
+}
+
+/*
+ *=======================================================================================
+ *write_current_dir_info関数
+ *カレントディレクトリの情報を子ディレクトリに書き込む関数
+ *=======================================================================================
+ */
+static void write_current_dir_info(i32_t new_dir_fd, i32_t crrdir_fd){
+	char inode_id_str[11];
+	zeroclear_8array(inode_id_str, 11);
+
+	//文字列に変換
+	sprintf(inode_id_str, "%d", crrdir_fd);
+
+	//追記
+	fadd(new_dir_fd, inode_id_str);
+	fadd(new_dir_fd, "\n");
 }
