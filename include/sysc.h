@@ -71,7 +71,7 @@ i32_t do_mkdir(char *pathname, u32_t flags);
 /*
  *do_chdirシステムコール
  */
-void do_chdir(char *pathname);
+i32_t do_chdir(char *pathname);
 
 #endif
 

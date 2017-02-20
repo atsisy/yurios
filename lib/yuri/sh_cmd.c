@@ -445,12 +445,11 @@ u8_t command_cd(char *dir_path){
 	/*
 	 *実際の処理
 	 */
-	if(ffind(dir_path) == -1){
+	if(do_chdir(dir_path) == -1){
 		print("cd: no such file or directory: ");
 		puts(dir_path);
 		return FAILURE;
 	}else{
-		do_chdir(dir_path);
 		return SUCCESS;
 	}
 }

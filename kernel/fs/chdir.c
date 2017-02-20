@@ -13,7 +13,7 @@ extern struct Directory CurrentDirectory;
  *chdirシステムコールのカーネル内処理
  *=======================================================================================
  */
-void do_chdir(char *pathname){
+i32_t do_chdir(char *pathname){
 	i32_t fd = CurrentDirectory.OwnFD, next_file_fd;
 	char *line = (char *)memory_alloc(memman, 11);
 	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
@@ -23,6 +23,17 @@ void do_chdir(char *pathname){
 	//読み捨て
 	//最初の一行ははカレントディレクトリの絶対パス(だったはず)
 	gline(fd, line);
+
+	if(strcmp(pathname, "..")){
+		char abs_path[256];
+		//親ディレクトリに移動
+		zeroclear_8array(line, 11);
+		gline(fd, line);
+		gline((next_file_fd = osAtoi(line)), abs_path);
+		strcpy(CurrentDirectory.AbsPath, abs_path);
+		CurrentDirectory.OwnFD = next_file_fd;
+		return 0;
+	}
 
 	do{
 		//バッファを初期化
@@ -42,8 +53,11 @@ void do_chdir(char *pathname){
 					 */
 					strcpy(CurrentDirectory.AbsPath, abs_path);
 					CurrentDirectory.OwnFD = next_file_fd;
+					return 0;
 				}
 			}
 		}
 	}while(true);
+
+	return -1;
 }
