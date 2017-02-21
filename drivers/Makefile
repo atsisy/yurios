@@ -1,4 +1,3 @@
-DST = ../dst
 OBJS = keyboard.o mouse.o ata_init.o ata_write.o ata_read.o ata_back.o prepare_wr.o
 
 all: keyboard.o Makefile

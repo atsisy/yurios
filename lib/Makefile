@@ -1,5 +1,3 @@
-DST = ../dst
-
 all: Makefile
 	@echo 'BUILD LIB DIRECTORY'
 	cd yuric && make all

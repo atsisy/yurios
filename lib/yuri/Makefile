@@ -1,4 +1,3 @@
-DST = ../../dst
 OBJS = $(DST)/yurilib.o $(DST)/sh_cmd.o $(DST)/display.o $(DST)/end.o $(DST)/error.o
 
 all: $(OBJS) Makefile

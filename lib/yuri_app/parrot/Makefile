@@ -1,6 +1,5 @@
 LINKPATH  = ../../../ls
 APP = ../../../application
-DST = ../../../dst
 YURIEXE = main.o
 
 all: $(YURIEXE) Makefile

@@ -1,4 +1,3 @@
-DST = ../../dst
 OBJS = mtask.o init.o tp_switch.o send.o
 
 all: $(OBJS) Makefile

@@ -1,4 +1,3 @@
-DST = ../../dst
 OBJS = $(DST)/string.o
 
 all: $(OBJS) Makefile

@@ -1,4 +1,3 @@
-DST = ../../dst
 OBJS = $(DST)/ope_new.o
 
 all: $(OBJS) Makefile

@@ -1,4 +1,3 @@
-DST = ../../dst
 LINKPATH  = ../../ls
 YURIEXE = cli.o cli_app2.o rename.o
 APP = ../../application

@@ -1,4 +1,3 @@
-DST = ../dst
 OBJS = yrws_main.o cursor.o layer.o layer_redraw.o draw_window.o layer_map.o \
 	puttext.o create_window.o yim.o boot_subproc.o bar_clock.o table_tennis.o draw.o
 

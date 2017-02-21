@@ -1,4 +1,3 @@
-DST = ../../dst
 OBJS = $(DST)/get_clock.o $(DST)/set_clock.o $(DST)/timer.o
 
 all: $(OBJS) Makefile
