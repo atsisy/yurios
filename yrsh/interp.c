@@ -10,7 +10,7 @@ void command_cp(int argc, char **argv);
 
 void yrsw_main();
 void getline(char *all, char *line);
-void gline(int fd, char *line);
+i8_t gline(int fd, char *line);
 
 void yrsh_interpreter(char *command){
 
@@ -233,7 +233,7 @@ void getline(char *all, char *line) {
  *改行で区切ってファイルの中身を返す
  *=======================================================================================
  */
-void gline(int fd, char *line) {
+i8_t gline(int fd, char *line) {
 
 	u32_t  i, p;
 	u32_t *box = (u32_t *)memory_alloc(memman, sizeof(u32_t) * 128);
@@ -248,6 +248,8 @@ void gline(int fd, char *line) {
 
 	while(1){
 		do_read(fd, buffer, 512);
+		if(!*buffer)
+			return FAILURE;
 		for(;i < 512; i++, p++ ){
 			switch(buffer[i]){
 				//改行
@@ -258,7 +260,7 @@ void gline(int fd, char *line) {
 
 				memory_free(memman, (u32_t)box, sizeof(u32_t) * 128);
 				memory_free(memman, (u32_t)buffer, 1024);
-				return;
+				return SUCCESS;
 			default:
 				line[p] = buffer[i];
 			}

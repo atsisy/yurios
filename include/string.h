@@ -13,7 +13,7 @@ void *memcpy(void *s1, const void *s2, size_t size);
 i32_t SearchStringFirst(char *str, char alphabet);
 i32_t SearchStringTail(char *str, char alphabet);
 char GetStringTail(char *str);
-void gline(int fd, char *line);
+i8_t gline(int fd, char *line);
 
 /*
  *=======================================================================================
