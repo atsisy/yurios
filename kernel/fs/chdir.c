@@ -30,6 +30,7 @@ i32_t do_chdir(char *pathname){
 		zeroclear_8array(line, 11);
 		gline(fd, line);
 		gline((next_file_fd = osAtoi(line)), abs_path);
+		puts(abs_path);
 		strcpy(CurrentDirectory.AbsPath, abs_path);
 		CurrentDirectory.OwnFD = next_file_fd;
 		return 0;

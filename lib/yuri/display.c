@@ -124,3 +124,48 @@ void print_value(int value, int x, int y){
 
 	return;
 }
+
+/*
+ *=======================================================================================
+ *kernel_color_print関数
+ *8bitカラーで文字列を表示する関数
+ *引数
+ *char *str
+ *=>文字列
+ *u8_t
+ *color
+ *=>色
+ *=======================================================================================
+ */
+i32_t kernel_color_print(char *str, u8_t color){
+	/*
+	 *一回クリア
+	 */
+	boxfill8(binfo->vram, binfo->scrnx, BLACK,
+		   length << 3, input_y + (indent << 4), (length << 3)+(strlen(str) << 3), (input_y + (indent << 4)+16));
+
+	/*
+	 *実際に表示する
+	 */
+	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), color, str);
+
+	return 1;
+}
+
+/*
+ *=======================================================================================
+ *kernel_color_puts関数
+ *8bitカラーでputsする関数
+ *引数
+ *char *str
+ *=>文字列
+ *u8_t
+ *color
+ *=>色
+ *=======================================================================================
+ */
+i32_t kernel_color_puts(char *str, u8_t color){
+	kernel_color_print(str, color);
+	indent_shell();
+	return 0;
+}
