@@ -149,6 +149,8 @@ i32_t kernel_color_print(char *str, u8_t color){
 	 */
 	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), color, str);
 
+	length += strlen(str);
+
 	return 1;
 }
 

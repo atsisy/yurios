@@ -13,6 +13,8 @@ i32_t puts(char *str);
 void print_value(int value, int x, int y);
 void put_char(char ch);
 void pError(char *message);
+i32_t kernel_color_print(char *str, u8_t color);
+i32_t kernel_color_puts(char *str, u8_t color);
 
 void type_prompt(char *dst, int buffer_limit);
 void ntype_prompt(char *dst, i32_t buffer_limit, u32_t offset);

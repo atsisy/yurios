@@ -147,9 +147,9 @@ void shell_master(void){
  *=======================================================================================
  */
 static void put_first_str(){
-	put_char('[');
-	print(CurrentDirectory.AbsPath);
-	put_char(']');
+	kernel_color_print("[", __RGB256COL__(87, 157, 122));
+	kernel_color_print(CurrentDirectory.AbsPath, __RGB256COL__(87, 157, 122));
+	kernel_color_print("]", __RGB256COL__(87, 157, 122));
 	put_char('\n');
 	put_char('%');
 	put_char(' ');
