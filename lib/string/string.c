@@ -200,3 +200,28 @@ char GetStringTail(char *str){
 	return *str;
 }
 
+/*
+ *=======================================================================================
+ *Ystring_replace関数
+ *文字列中の指定した文字を代わりの文字に入れ替える関数
+ *引数
+ *char *str
+ *文字列
+ *char replace
+ *入れ替えさせる文字
+ *char alternative
+ *入れ替える文字列
+ *=======================================================================================
+ */
+int ystring_replace_char(char *str, char replace, char alternative){
+	if(!*str)
+		return 0;
+
+	do{
+		if(*str == replace)
+			*str = alternative;
+		str++;
+	}while(*str);
+
+	return 1;
+}
