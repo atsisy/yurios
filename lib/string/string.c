@@ -225,3 +225,4 @@ int ystring_replace_char(char *str, char replace, char alternative){
 
 	return 1;
 }
+

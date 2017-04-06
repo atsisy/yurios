@@ -10,6 +10,7 @@ push.sh
 GPATH
 GRTAGS
 GTAGS
+GSYMS
 HTML
 *.el
 .vs
