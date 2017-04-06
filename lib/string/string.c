@@ -199,3 +199,4 @@ char GetStringTail(char *str){
 		str++;
 	return *str;
 }
+

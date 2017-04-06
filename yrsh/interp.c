@@ -12,6 +12,8 @@ void yrsw_main();
 void getline(char *all, char *line);
 void gline(int fd, char *line);
 
+double sin1(double sita);
+
 void yrsh_interpreter(char *command){
 
       int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
@@ -175,6 +177,15 @@ void yrsh_interpreter(char *command){
 		cut_string(command, file_name, 6);
 
 		command_touch(file_name);
+	}else if(strcmp(part, "sin")){
+		char angle[10];
+		int sita, ans;
+		cut_string(command, angle, 4);
+		sita = osAtoi(angle);
+		ans = sin1(sita);
+		zeroclear_8array(angle, 10);
+		sprintf(angle, "%d", ans);
+		puts(angle);
 	}else if(strcmp(part, "yrs")){
 
 
