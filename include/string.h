@@ -16,11 +16,14 @@ char GetStringTail(char *str);
 void gline(int fd, char *line);
 struct StringBuffer *create_string_buffer(const char *init_str);
 u8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str);
+char StringBuffer_CharAt(struct StringBuffer *str_buf, u32_t index);
+size_t StringBuffer_Length(struct StringBuffer *str_buf);
+i8_t StringBuffer_Clean(struct StringBuffer *str_buf);
+i8_t StringBuffer_Free(struct StringBuffer *str_buf);
 
 
 struct StringBuffer {
 	char *buffer;
-	u16_t write_point;
 };
 
 
