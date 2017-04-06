@@ -4,6 +4,7 @@
 #include "../include/string.h"
 #include "../include/ata.h"
 #include "../include/yrws.h"
+#include "../include/util_macro.h"
 
 void init_yrfs();
 static void init();
@@ -152,7 +153,7 @@ void task_b_main(void){
 			putfonts8_asc(binfo->vram, binfo->scrnx, 950, 600, COL8_FFFFFF, s);
 		}
 		io_cli();
-		if(queue_size(&fifo) == 0){
+		if(IS_FAILURE(queue_size(&fifo))){
 			io_stihlt();
 		}else{
 			i = queue_pop(&fifo);

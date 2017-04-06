@@ -3,6 +3,7 @@
 #include "../include/sh.h"
 #include "../include/ata.h"
 #include "../include/yrfs.h"
+#include "../include/util_macro.h"
 
 
 int do_get_key(){
@@ -13,7 +14,7 @@ int do_get_key(){
 
 	for(;;){
 
-		if(!queue_size(me->irq)){
+		if(IS_FAILURE(queue_size(me->irq))){
 			task_sleep(me);
 			io_sti();
 

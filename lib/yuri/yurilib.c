@@ -4,6 +4,7 @@
 #include "../../include/string.h"
 #include "../../include/sysc.h"
 #include "../../include/yrfs.h"
+#include "../../include/util_macro.h"
 
 void readfat(int *fat, unsigned char *img);
 void loadfat(int clustno, int size, char *buf, int *fat, char *img);
@@ -413,7 +414,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 
 		for(;;){
 			io_cli();
-			if(queue_size(me->irq) == 0){
+			if(IS_FAILURE(queue_size(me->irq))){
 				if(eax != 0){
 					task_sleep(me);	/* FIFOが空なので寝て待つ */
 				}else{

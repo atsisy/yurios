@@ -4,6 +4,7 @@
 #include "../include/value.h"
 #include "../include/ata.h"
 #include "../include/yrfs.h"
+#include "../include/util_macro.h"
 
 extern struct Directory CurrentDirectory;
 
@@ -196,7 +197,7 @@ void ylsh_cursor(void) {
 		 length << 3, input_y + (indent << 4), (length << 3)+4, (input_y + (indent << 4)+16));
 
 	while(1){
-		if(!queue_size(&fifo)){
+		if(IS_FAILURE(queue_size(&fifo))){
 			/*
 			 *割り込み来てない
 			 */

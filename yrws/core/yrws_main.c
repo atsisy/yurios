@@ -1,6 +1,7 @@
 #include "../../include/kernel.h"
 #include "../../include/yrws.h"
 #include "../../include/sh.h"
+#include "../../include/util_macro.h"
 
 static void init_yrws(void);
 void erase_cursor(void);
@@ -68,7 +69,7 @@ void yrsw_main(){
             /*
 		 *マウスのキューはからか?
 		 */
-            if(!queue_size(mouse_queue)){
+            if(IS_FAILURE(queue_size(mouse_queue))){
 			/*
 			 *割り込み来ないから寝る
 			 */

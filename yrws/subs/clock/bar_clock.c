@@ -2,6 +2,7 @@
 #include "../../../include/yrws.h"
 #include "../../../include/sh.h"
 #include "../../../include/sysc.h"
+#include "../../../include/util_macro.h"
 
 extern struct Layer *task_bar;
 
@@ -29,7 +30,7 @@ void bar_clock_proc(void){
 	TimerIntr_SetTime(timer_intr, 20000);
 
 	while(1){
-		if(!queue_size(timer_intr->queue)){
+		if(IS_FAILURE(queue_size(timer_intr->queue))){
 			/*
 			 *割り込みは来ていなかった
 			 */

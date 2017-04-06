@@ -1,6 +1,7 @@
 #include "../../include/yrws.h"
 #include "../../include/kernel.h"
 #include "../../include/sh.h"
+#include "../../include/util_macro.h"
 
 struct Point {
 	int x, y;
@@ -59,7 +60,7 @@ int tt_main(){
 	InitGame(window);
 
 	while(1){
-		if(!queue_size(irq_queue)){
+		if(IS_FAILURE(queue_size(irq_queue))){
 			//キューが空っぽだから寝る
 			task_sleep(me);
 			io_sti();

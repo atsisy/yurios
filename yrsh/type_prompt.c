@@ -1,5 +1,6 @@
 #include "../include/kernel.h"
 #include "../include/sh.h"
+#include "../include/util_macro.h"
 
 
 /*
@@ -24,7 +25,7 @@ void type_prompt(char *dst, int buffer_limit){
 
 	for(;;){
 
-		if(!queue_size(proc->irq)){
+		if(IS_FAILURE(queue_size(proc->irq))){
 			/*
 			 *割り込み来ないから寝る
 			 */

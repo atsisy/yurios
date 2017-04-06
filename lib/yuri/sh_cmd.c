@@ -5,6 +5,7 @@
 #include "../../include/yrfs.h"
 #include "../../include/ata.h"
 #include "../../include/sysc.h"
+#include "../../include/util_macro.h"
 
 u8_t *read_yim(char *file_name, char *buffer, u32_t length);
 
@@ -360,7 +361,7 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 
 	for(;;){
 		break;
-		if(!queue_size(parent->irq)){
+		if(IS_FAILURE(queue_size(parent->irq))){
 			task_sleep(parent);
 			io_sti();
 		}else{
