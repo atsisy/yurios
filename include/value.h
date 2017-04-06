@@ -91,7 +91,7 @@
 #define	TASK_GDT	3
 
 #define SUCCESS 1
-#define FAILURE 0
+#define FAILURE -1
 
 /*
  *QUEUEがオーバーランしたときのフラグ
