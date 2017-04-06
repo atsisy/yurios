@@ -12,7 +12,6 @@
  */
 struct StringBuffer *create_string_buffer(const char *init_str){
 	struct StringBuffer *new_buffer = (struct StringBuffer *)memory_alloc(memman, sizeof(struct StringBuffer));
-	new_buffer->write_point = 0;
 	StringBuffer_Append(new_buffer, init_str);
 	return new_buffer;
 }

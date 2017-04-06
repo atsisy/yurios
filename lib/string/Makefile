@@ -1,4 +1,4 @@
-OBJS = $(DST)/string.o
+OBJS = $(DST)/string.o $(DST)/string_buffer.o
 
 all: $(OBJS) Makefile
 	@echo 'BUILD STRING DIRECTORY'
