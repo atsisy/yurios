@@ -34,7 +34,7 @@ struct StringBuffer *create_string_buffer(const char *init_str){
  *strcpyでコピーするのでstrは破壊されない
  *=======================================================================================
  */
-u8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str){
+i8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str){
 
 	if(IS_FAILURE((int)(str_buf->buffer = (char *)memory_alloc(memman, strlen(str) + 1))))
 		return FAILURE;
@@ -125,4 +125,49 @@ i8_t StringBuffer_Free(struct StringBuffer *str_buf){
 	}
 
 	return SUCCESS;
+}
+
+/*
+ *=======================================================================================
+ *StringBuffer_Reset関数
+ *StringBufferが保持する文字列を再代入する関数
+ *引数
+ *struct StringBuffer *str_buf
+ *対象のStringBuffer構造体へのポインタ
+ *const char *new_str
+ *新しくセットする文字列
+ *=======================================================================================
+ */
+i8_t StringBuffer_Reset(struct StringBuffer *str_buf, const char *new_str){
+	if(IS_FAILURE(StringBuffer_Free(str_buf))){
+		return FAILURE;
+	}
+
+	if(IS_FAILURE(StringBuffer_Append(str_buf, new_str))){
+		return FAILURE;
+	}
+
+	return SUCCESS;
+}
+
+/*
+ *=======================================================================================
+ *StringBuffer_Insert関数
+ *StringBufferの文字列の指定されたindexに文字列を挿入する関数
+ *引数
+ *struct StringBuffer *str_buf
+ *対象のstringbuffer構造体へのポインタ
+ *const char *str
+ *挿入する文字列
+ *int index
+ *挿入するインデックス
+ *返り値
+ *成功
+ *SUccess
+ *失敗
+ *Failure
+ *=======================================================================================
+ */
+i8_t StringBuffer_Insert(struct StringBuffer *str_buf, const char *str, int index){
+      return ystring_insert(&str_buf->buffer, str, index);
 }

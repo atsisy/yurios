@@ -94,7 +94,7 @@ unsigned int memory_alloc(struct MEMMAN *man, unsigned int size){
 	/*
 	 *もう空きが無いため失敗
 	 */
-	return FAILURE;
+	return (u32_t)NULL;
 }
 
 /*

@@ -14,12 +14,15 @@ i32_t SearchStringFirst(char *str, char alphabet);
 i32_t SearchStringTail(char *str, char alphabet);
 char GetStringTail(char *str);
 void gline(int fd, char *line);
+i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index);
+
 struct StringBuffer *create_string_buffer(const char *init_str);
-u8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str);
+i8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str);
 char StringBuffer_CharAt(struct StringBuffer *str_buf, u32_t index);
 size_t StringBuffer_Length(struct StringBuffer *str_buf);
 i8_t StringBuffer_Clean(struct StringBuffer *str_buf);
 i8_t StringBuffer_Free(struct StringBuffer *str_buf);
+i8_t StringBuffer_Insert(struct StringBuffer *str_buf, const char *str, int index);
 
 
 struct StringBuffer {

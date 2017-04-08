@@ -1,4 +1,6 @@
 #include "../../include/types.h"
+#include "../../include/kernel.h"
+#include "../../include/util_macro.h"
 
 /*
  *=======================================================================================
@@ -226,3 +228,47 @@ int ystring_replace_char(char *str, char replace, char alternative){
 	return 1;
 }
 
+/*
+ *=======================================================================================
+ *ystring_insert関数
+ *文字列中に文字列を挿入する関数
+ *引数
+ *char **str_pointer
+ *挿入される文字列へのポインタ
+ *const char *insert_str
+ *挿入する文字列
+ *挿入するインデックス
+ *u32_t index
+ *=======================================================================================
+ */
+i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index){
+      //変数宣言
+	u32_t i, j, length, insert_length = strlen(insert_str);
+	char *p, *before_str = *str_pointer;
+
+      //新しくメモリを確保
+	p = (char *)memory_alloc(memman, (length = strlen(*str_pointer) + insert_length) + 1);
+
+      if(IS_NULLPO(p)) return FAILURE;
+
+      /*
+       *コピー作業
+       */
+	for(i = 0;i < index;i++)
+		p[i] = before_str[i];
+
+      for(j = 0;j < insert_length;++j)
+            p[i + j] = insert_str[j];
+
+	for(; i < length;++i)
+            p[i + j] = before_str[i];
+
+      //もともとのメモリを開放
+      memory_free(memman ,(u32_t)before_str, length - insert_length);
+
+      //挿入済みの文字列へのポインタを代入
+      *str_pointer = p;
+
+	return SUCCESS;
+
+}
