@@ -380,3 +380,134 @@ static void copy_shrink_string(char *str_pointer, const char *original, char tar
       }
 
 }
+
+/*
+ *=======================================================================================
+ *hm_contains_string関数
+ *文字列中に指定した文字がいくつ入っているか算出する関数
+ *引数
+ *const char *str
+ *算出する文字列
+ *char key_word
+ *指定する文字
+ *返り値
+ *成功
+ *含まれる数
+ *失敗
+ *FAILURE
+ *=======================================================================================
+ */
+i32_t hm_contains_string(const char *str, char key_word){
+      if(IS_NULLPO(str))
+            return FAILURE;
+
+      i32_t num = 0;
+
+      while(*str){
+            if(*str == key_word)
+                  ++num;
+            ++str;
+      }
+
+      return num;
+}
+
+/*
+ *=======================================================================================
+ *effective_limited_strcpy関数
+ *任意の文字を終点として文字列をコピーする関数
+ *引数
+ *char *dst
+ *コピー先
+ *char **str
+ *コピー元
+ *char key_word
+ *終点として扱う文字
+ *返り値
+ *成功
+ *SUCCESS
+ *失敗
+ *FAILURE
+ *MEMO
+ *引数strは内部でインクリメントされ、呼び出し元に影響を与える
+ *=======================================================================================
+ */
+i8_t effective_limited_strcpy(char *dst, char **str, char key_word){
+      if(IS_NULLPO(dst) || IS_NULLPO(str))
+            return FAILURE;
+
+      u32_t i = 0;
+      while(**str != key_word){
+            dst[i] = **str;
+            ++i;
+            ++*str;
+      }
+
+      return SUCCESS;
+}
+
+/*
+ *=======================================================================================
+ *limited_strlen関数
+ *任意の文字を終点として文字列長を算出する関数
+ *引数
+ *char *str
+ *算出する文字列
+ *char key_char
+ *終点として扱う文字
+ *返り値
+ *成功
+ *文字列長
+ *失敗
+ *FAILURE
+ *=======================================================================================
+ */
+i32_t limited_strlen(char *str, char key_char){
+      if(IS_NULLPO(str))
+            return FAILURE;
+
+      u32_t count = 0;
+      while(*str != key_char){
+            ++count;
+            ++str;
+      }
+      return count;
+}
+
+/*
+ *=======================================================================================
+ *split_string関数
+ *文字列を任意の文字で分割する関数
+ *一次元文字を任意の文字で分割し、二次元文字配列として分割する関数
+ *引数
+ *char *str
+ *分割する文字列
+ *char key_word
+ *分割に用いる文字
+ *返り値
+ *成功
+ *文字の二次元配列（文字列配列）へのポインタ
+ *失敗
+ *NULL
+ *=======================================================================================
+ */
+char **split_string(char *str, char key_word){
+      u32_t i, words, length;
+      char **str_vector = (char **)memory_alloc(memman, (words = hm_contains_string(str, key_word) + 1));
+
+      if(IS_NULLPO(str_vector))
+            return NULL;
+
+      for(i = 0;i < words; i++, length = 0){
+
+            length = limited_strlen(str, key_word);
+            str_vector[i] = (char *)memory_alloc(memman, length + 1);
+
+            if(IS_NULLPO(str_vector[i]))
+                  return NULL;
+
+            effective_limited_strcpy(str_vector[i], &str, key_word);
+      }
+
+      return str_vector;
+}
