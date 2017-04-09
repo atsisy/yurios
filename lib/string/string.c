@@ -3,6 +3,12 @@
 #include "../../include/util_macro.h"
 
 /*
+ *staticな関数のプロトタイプ宣言
+ */
+static u32_t get_shrink_length(char *str_pointer, char target_char);
+static void copy_shrink_string(char *str_pointer, const char *original, char target_char);
+
+/*
  *=======================================================================================
  *strcmp関数
  *２つの文字列を比較する関数
@@ -215,17 +221,17 @@ char GetStringTail(char *str){
  *入れ替える文字列
  *=======================================================================================
  */
-int ystring_replace_char(char *str, char replace, char alternative){
+i8_t ystring_replace_char(char *str, char target, char alternative){
 	if(!*str)
-		return 0;
+		return FAILURE;
 
 	do{
-		if(*str == replace)
+		if(*str == target)
 			*str = alternative;
-		str++;
+		++str;
 	}while(*str);
 
-	return 1;
+	return SUCCESS;
 }
 
 /*
@@ -270,5 +276,107 @@ i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index){
       *str_pointer = p;
 
 	return SUCCESS;
+
+}
+
+/*
+ *=======================================================================================
+ *y_shrink_loop_char関数
+ *文字列中の指定した文字が連続で存在していた場合、それを一文字に圧縮する関数
+ *例
+ *"fooooooooo" char target_char = 'o'
+ *"fooooooooo" -> "fo"
+ *引数
+ *char **str_pointer
+ *文字列へのポインタへのポインタ
+ *char target_char
+ *圧縮する文字
+ *返り値
+ *成功
+ *SUCCESS
+ *失敗
+ *FAILURE
+ *=======================================================================================
+ */
+i8_t y_shrink_loop_char(char **str_pointer, char target_char){
+      char *new_str = (char *)memory_alloc(memman, get_shrink_length(*str_pointer, target_char) + 1);
+
+      if(IS_NULLPO(new_str))
+            return FAILURE;
+
+      copy_shrink_string(new_str, *str_pointer, target_char);
+
+      if(IS_FAILURE(memory_free(memman, (u32_t)(*str_pointer), strlen(*str_pointer))))
+         return FAILURE;
+
+      *str_pointer = new_str;
+
+      return SUCCESS;
+}
+
+/*
+ *=======================================================================================
+ *get_shrink_length関数
+ *文字列中の指定した文字が連続で存在していた場合、それを一文字とした時の文字列長を返す静的関数
+ *引数
+ *char *str_pointer
+ *文字列へのポインタ
+ *char target_char
+ *圧縮する文字
+ *返り値
+ *圧縮したときの文字列長
+ *=======================================================================================
+ */
+static u32_t get_shrink_length(char *str_pointer, char target_char){
+      u32_t length = 0;
+
+      while(*str_pointer){
+            if(*str_pointer == target_char){
+                  while(*str_pointer == target_char){
+                        ++*str_pointer;
+                  }
+
+                  //このまま行くと、ループの最後で余計にインクリメントされてしまうのでデクリメント
+                  --*str_pointer;
+            }
+            length++;
+            ++str_pointer;
+      }
+
+      return length;
+}
+
+/*
+ *=======================================================================================
+ *copy_shrink_string関数
+ *文字列中の指定した文字が連続で存在していた場合、それを一文字とした時の文字列をコピーする静的関数
+ *引数
+ *char *str_pointer
+ *文字列へのポインタ
+ *char *original
+ *圧縮されていないもともとの文字列
+ *char target_char
+ *圧縮する文字
+ *返り値
+ *なし
+ *=======================================================================================
+ */
+static void copy_shrink_string(char *str_pointer, const char *original, char target_char){
+
+      while(*original){
+
+            *str_pointer = *original;
+
+            if(*str_pointer == target_char){
+                  while(*original == target_char){
+                        ++original;
+                  }
+                  //このまま行くと、ループの最後で余計にインクリメントされてしまうのでデクリメント
+                  --original;
+            }
+
+            ++str_pointer;
+            ++original;
+      }
 
 }

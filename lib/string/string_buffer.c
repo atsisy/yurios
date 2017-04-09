@@ -171,3 +171,26 @@ i8_t StringBuffer_Reset(struct StringBuffer *str_buf, const char *new_str){
 i8_t StringBuffer_Insert(struct StringBuffer *str_buf, const char *str, int index){
       return ystring_insert(&str_buf->buffer, str, index);
 }
+
+/*
+ *=======================================================================================
+ *StringBuffer_ReplaceChar関数
+ *StringBufferの文字列内の指定した文字を任意の文字に置換する関数
+ *引数
+ *struct StringBuffer *str_buf
+ *対象のstringbuffer構造体へのポインタ
+ *char target
+ *新しい文字に置換されるべき文字
+ *char alternative
+ *置換する文字
+ *返り値
+ *成功
+ *SUccess
+ *失敗
+ *Failure
+ *=======================================================================================
+ */
+i8_t StringBuffer_ReplaceChar(struct StringBuffer *str_buf, char target, char alternative){
+      return ystring_replace_char(str_buf->buffer, target, alternative);
+}
+
