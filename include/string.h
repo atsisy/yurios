@@ -17,6 +17,15 @@ void gline(int fd, char *line);
 i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index);
 i8_t y_shrink_loop_char(char **str_pointer, char target_char);
 i8_t ystring_replace_char(char *str, char target, char alternative);
+i32_t hm_contains_string(const char *str, char key_word);
+i8_t effective_limited_strcpy(char *dst, char **str, char key_word);
+i32_t limited_strlen(char *str, char key_char);
+char **split_string(char *str, char key_word);
+
+
+struct StringBuffer {
+	char *buffer;
+};
 
 struct StringBuffer *create_string_buffer(const char *init_str);
 i8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str);
@@ -27,10 +36,7 @@ i8_t StringBuffer_Free(struct StringBuffer *str_buf);
 i8_t StringBuffer_Insert(struct StringBuffer *str_buf, const char *str, int index);
 i8_t StringBuffer_ReplaceChar(struct StringBuffer *str_buf, char target, char alternative);
 i8_t StringBuffer_ShrinkLoopChar(struct StringBuffer *str_buf, char target_char);
-
-struct StringBuffer {
-	char *buffer;
-};
+char **StringBuffer_SplitToCharPP(struct StringBuffer *str_buf, char key_word);
 
 
 /*

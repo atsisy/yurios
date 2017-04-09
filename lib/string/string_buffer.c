@@ -213,3 +213,22 @@ i8_t StringBuffer_ShrinkLoopChar(struct StringBuffer *str_buf, char target_char)
       return y_shrink_loop_char(&str_buf->buffer, target_char);
 }
 
+/*
+ *=======================================================================================
+ *StringBuffer_SplitToCharPP関数
+ *StringBuffer構造体の文字列を任意の文字で文字列配列に分割する関数
+ *引数
+ *struct StringBuffer *str_buf
+ *対象のstringbuffer構造体へのポインタ
+ *char key_word
+ *分割に使う文字
+ *返り値
+ *成功
+ *文字列配列へのポインタ
+ *失敗
+ *NULL
+ *=======================================================================================
+ */
+char **StringBuffer_SplitToCharPP(struct StringBuffer *str_buf, char key_word){
+      return split_string(str_buf->buffer, key_word);
+}
