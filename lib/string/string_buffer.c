@@ -194,3 +194,22 @@ i8_t StringBuffer_ReplaceChar(struct StringBuffer *str_buf, char target, char al
       return ystring_replace_char(str_buf->buffer, target, alternative);
 }
 
+/*
+ *=======================================================================================
+ *StringBuffer_ShrinkLoopChar関数
+ *StringBufferの文字列中の連続した任意の文字を一文字に圧縮する関数
+ *引数
+ *struct StringBuffer *str_buf
+ *対象のstringbuffer構造体へのポインタ
+ *char target_char
+ *指定する任意の文字
+ *成功
+ *SUccess
+ *失敗
+ *Failure
+ *=======================================================================================
+ */
+i8_t StringBuffer_ShrinkLoopChar(struct StringBuffer *str_buf, char target_char){
+      return y_shrink_loop_char(&str_buf->buffer, target_char);
+}
+
