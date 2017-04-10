@@ -39,6 +39,11 @@ i8_t StringBuffer_ShrinkLoopChar(struct StringBuffer *str_buf, char target_char)
 char **StringBuffer_SplitToCharPP(struct StringBuffer *str_buf, char key_word);
 
 
+struct StringVector {
+      struct StringBuffer *buffers;
+      u16_t size;
+};
+
 /*
  *=======================================================================================
  *マクロとか
