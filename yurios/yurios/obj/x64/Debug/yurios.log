@@ -1,0 +1,4 @@
+﻿  Validating architecture
+  Validating sources
+  Copying sources remotely
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Application Type\Linux\1.0\Linux.Makefile.Targets(134,5): warning : Remote build command not configured. Skipping...
