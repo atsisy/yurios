@@ -6,7 +6,7 @@ OBJS = dst/kernel_kernel.o dst/drivers.o	dst/timer.o dst/yrsh.o \
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
 CC = gcc -O0 -m32 -c -Wa,--32
-DST = ~/program/yurios/dst
+DST = ~/projects/yurios/dst
 export BINOPT
 export CC
 export DST

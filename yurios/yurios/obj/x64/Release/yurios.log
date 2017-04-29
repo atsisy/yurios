@@ -1,40 +1,45 @@
 ﻿  Validating architecture
   Validating sources
   Copying sources remotely
-  C:\Users\Akihiro\Source\Repos\yurios\.vs\slnx.sqlite
-  C:\Users\Akihiro\Source\Repos\yurios\.vs\VSWorkspaceState.json
-  C:\Users\Akihiro\Source\Repos\yurios\yurios\yurios\obj\x64\Debug\303991017.CopySourcesUpToDateFile.tlog
-  C:\Users\Akihiro\Source\Repos\yurios\yurios\yurios\obj\x64\Debug\303991017.Local_Remote_PathMapping.tlog
-  C:\Users\Akihiro\Source\Repos\yurios\yurios\yurios\obj\x64\Debug\yurios.log
-  5 File(s) copied
-  Invoking cd ~/projects/yurios && make all
+  C:\Users\Akihiro\Source\Repos\yurios\yurios\yurios\yurios.vcxproj
+  C:\Users\Akihiro\Source\Repos\yurios\yurios\yurios\obj\x64\Release\yurios.log
+  2 File(s) copied
+  Invoking cd ~/projects && chmod +x yurios && cd yurios && make time
+  make clean
+  make[1]: Entering directory '/home/ubuntu/projects/yurios'
+  rm -f ./dst/*.s
+  rm -f ./dst/*.o
+  rm -f ./dst/yuli.sys
+  rm -f ./application/*.yx
+  make[1]: Leaving directory '/home/ubuntu/projects/yurios'
+  time make all
+  make[1]: Entering directory '/home/ubuntu/projects/yurios'
   mkdir -p dst
   mkdir -p application
   cd drivers && make all
-  make[1]: Entering directory '/home/ubuntu/projects/yurios/drivers'
+  make[2]: Entering directory '/home/ubuntu/projects/yurios/drivers'
   gcc -O0 -m32 -c -Wa,--32 keyboard.c -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc -o keyboard.o
   BUILD DRIVERS DIRECTORY
   cd ata && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/drivers/ata'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/drivers/ata'
   
   BUILD ATA DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/drivers/ata'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/drivers/ata'
   cd mouse && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/drivers/mouse'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/drivers/mouse'
   gcc -O0 -m32 -c -Wa,--32 mouse.c -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc -o ../mouse.o
   BUILD DRIVERS/MOUSE DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/drivers/mouse'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/drivers/mouse'
   ld -melf_i386 -r keyboard.o mouse.o ata_init.o ata_write.o ata_read.o ata_back.o prepare_wr.o -o ~/projects/yurios/dst/drivers.o
   rm *.o
-  make[1]: Leaving directory '/home/ubuntu/projects/yurios/drivers'
+  make[2]: Leaving directory '/home/ubuntu/projects/yurios/drivers'
   cd boot && make all
-  
-  make[1]: Entering directory '/home/ubuntu/projects/yurios/boot'
+  make[2]: Entering directory '/home/ubuntu/projects/yurios/boot'
   nasm ipl.asm -o ipl.bin
   nasm asmhead.asm -o asmhead.bin
-  make[1]: Leaving directory '/home/ubuntu/projects/yurios/boot'
+  make[2]: Leaving directory '/home/ubuntu/projects/yurios/boot'
   cd kernel && make all
-  make[1]: Entering directory '/home/ubuntu/projects/yurios/kernel'
+  make[2]: Entering directory '/home/ubuntu/projects/yurios/kernel'
   start.c: In function ‘task_b_main’:
   start.c: In function ‘task_b_main’:
   start.c:140:6: warning: variable ‘i’ set but not used [-Wunused-but-set-variable]
@@ -46,21 +51,41 @@
   
   BUILD KERNEL DIRECTORY
   cd fs && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/kernel/fs'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/kernel/fs'
   
   BUILD FS DIRECTORY
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/kernel/fs'
   
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/kernel/fs'
   cd sysc && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/kernel/sysc'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/kernel/sysc'
   BUILD SYSC DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/kernel/sysc'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/kernel/sysc'
   cd time && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/kernel/time'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/kernel/time'
+  In file included from ../../include/types.h:4:0,
+                   from ../../include/kernel.h:4,
+                   from timer.c:1:
+  timer.c: In function ‘timer_alloc’:
+  In file included from ../../include/types.h:4:0,
+                   from ../../include/kernel.h:4,
+                   from timer.c:1:
+  timer.c: In function ‘timer_alloc’:
+  ../../include/value.h:94:17: warning: return makes pointer from integer without a cast [-Wint-conversion]
+   #define FAILURE -1
+                   ^
+  timer.c:173:9: note: in expansion of macro ‘FAILURE’
+    return FAILURE;
+           ^
+  ../../include/value.h:94:17: warning: return makes pointer from integer without a cast [-Wint-conversion]
+   #define FAILURE -1
+                   ^
+  timer.c:173:9: note: in expansion of macro ‘FAILURE’
+    return FAILURE;
+           ^
   BUILD KERNEL/TIME DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/kernel/time'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/kernel/time'
   cd proc && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/kernel/proc'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/kernel/proc'
   In file included from ../../include/types.h:4:0,
                    from ../../include/kernel.h:4,
                    from mtask.c:1:
@@ -81,54 +106,55 @@
   mtask.c:135:9: note: in expansion of macro ‘FAILURE’
     return FAILURE;
            ^
+  
   BUILD KERNEL/PROC DIRECTORY
   rm -f *.o
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/kernel/proc'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/kernel/proc'
   cd cxx && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/kernel/cxx'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/kernel/cxx'
   BUILD CXX DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/kernel/cxx'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/kernel/cxx'
   rm -f *.o
-  
-  make[1]: Leaving directory '/home/ubuntu/projects/yurios/kernel'
+  make[2]: Leaving directory '/home/ubuntu/projects/yurios/kernel'
   cd yrsh && make all
-  make[1]: Entering directory '/home/ubuntu/projects/yurios/yrsh'
+  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrsh'
   
   BUILD YRSH DIRECTORY
   cd script && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrsh/script'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrsh/script'
   
   BUILD YRSH/SCRIPT DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrsh/script'
-  make[1]: Leaving directory '/home/ubuntu/projects/yurios/yrsh'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrsh/script'
+  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrsh'
   cd lib && make all
-  make[1]: Entering directory '/home/ubuntu/projects/yurios/lib'
+  make[2]: Entering directory '/home/ubuntu/projects/yurios/lib'
   BUILD LIB DIRECTORY
   cd yuric && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/lib/yuric'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuric'
   BUILD YURIC DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuric'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuric'
   cd math && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/lib/math'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/math'
   BUILD MATH DIRECTORY
   mv *.o ..
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/lib/math'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/math'
   cd yuri && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri'
-  cd file && make all
-  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri/file'
-  BUILD YURI/FILE DIRECTORY
-  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri/file'
-  BUILD YURI DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri'
-  cd string && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/lib/string'
-  BUILD STRING DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/lib/string'
-  cd yuri_app && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app'
-  gcc -O0 -m32 -c -Wa,--32,-a,-ad cli.c -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc -o cli.o > ~/projects/yurios/dst/cli.lst
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri'
   
+  cd file && make all
+  make[4]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri/file'
+  
+  BUILD YURI/FILE DIRECTORY
+  make[4]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri/file'
+  BUILD YURI DIRECTORY
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri'
+  cd string && make all
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/string'
+  BUILD STRING DIRECTORY
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/string'
+  cd yuri_app && make all
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app'
+  gcc -O0 -m32 -c -Wa,--32,-a,-ad cli.c -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc -o cli.o > ~/projects/yurios/dst/cli.lst
   gcc -O0 -m32 -c -Wa,--32,-a,-ad cli_app2.c -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc -o cli_app2.o > ~/projects/yurios/dst/cli_app2.lst
   cli_app2.c: In function ‘main’:
   cli_app2.c: In function ‘main’:
@@ -151,13 +177,12 @@
   BUILD libyuri.a
   ar rcs libyuri.a ~/projects/yurios/dst/yrsysc.o ~/projects/yurios/dst/print.o ~/projects/yurios/dst/strlib.o ~/projects/yurios/dst/entry.o
   ld -melf_i386 -o ../../application/cli.yx --script=../../ls/app.lds cli.o libyuri.a --nmagic -Map ~/projects/yurios/dst/cli.map
+  
   ld -melf_i386 -o ../../application/cli_app2.yx --script=../../ls/app.lds cli_app2.o libyuri.a --nmagic -Map ~/projects/yurios/dst/cli_app2.map
   ld -melf_i386 -o ../../application/rename.yx --script=../../ls/app.lds rename.o libyuri.a --nmagic -Map ~/projects/yurios/dst/rename.map
   mv *.a ~/projects/yurios/dst
-  
   cd yrs && make all
-  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app/yrs'
-  
+  make[4]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app/yrs'
   main.c: In function ‘main’:
   main.c: In function ‘main’:
   main.c:42:1: warning: control reaches end of non-void function [-Wreturn-type]
@@ -166,7 +191,7 @@
   main.c:42:1: warning: control reaches end of non-void function [-Wreturn-type]
    }
    ^
-  GAS LISTING /tmp/cc4cmTWo.s 			page 1
+  GAS LISTING /tmp/ccB2Tor9.s 			page 1
   
   
      1              		.file	"main.c"
@@ -226,7 +251,7 @@
     41 004f 83C410   		addl	$16, %esp
     42 0052 85C0     		testl	%eax, %eax
     43 0054 757B     		jne	.L12
-  GAS LISTING /tmp/cc4cmTWo.s 			page 2
+  GAS LISTING /tmp/ccB2Tor9.s 			page 2
   
   
     44 0056 83EC08   		subl	$8, %esp
@@ -286,7 +311,7 @@
     82 00d2 83EC0C   		subl	$12, %esp
     83 00d5 6A00     		pushl	$0
     84 00d7 E8FCFFFF 		call	exit
-  GAS LISTING /tmp/cc4cmTWo.s 			page 3
+  GAS LISTING /tmp/ccB2Tor9.s 			page 3
   
   
     84      FF
@@ -334,17 +359,17 @@
    128              		.comm	times.1082,4,4
    129              		.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609"
    130              		.section	.note.GNU-stack,"",@progbits
-  GAS LISTING /tmp/cc4cmTWo.s 			page 4
+  GAS LISTING /tmp/ccB2Tor9.s 			page 4
   
   
   DEFINED SYMBOLS
                               *ABS*:0000000000000000 main.c
-       /tmp/cc4cmTWo.s:12     .text:0000000000000000 main
-       /tmp/cc4cmTWo.s:122    .bss:0000000000000000 code.1080
-       /tmp/cc4cmTWo.s:124    .bss:0000000000000400 identifier.1081
-       /tmp/cc4cmTWo.s:124    .bss:0000000000000418 times_flag.1083
-       /tmp/cc4cmTWo.s:99     .text:00000000000000e8 print_sc
-       /tmp/cc4cmTWo.s:128    .bss:000000000000041c times.1082
+       /tmp/ccB2Tor9.s:12     .text:0000000000000000 main
+       /tmp/ccB2Tor9.s:122    .bss:0000000000000000 code.1080
+       /tmp/ccB2Tor9.s:124    .bss:0000000000000400 identifier.1081
+       /tmp/ccB2Tor9.s:124    .bss:0000000000000418 times_flag.1083
+       /tmp/ccB2Tor9.s:99     .text:00000000000000e8 print_sc
+       /tmp/ccB2Tor9.s:128    .bss:000000000000041c times.1082
   
   UNDEFINED SYMBOLS
   read
@@ -353,9 +378,9 @@
   puts
   exit
   BUILD YURISCRIPT DIRECTORY
-  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app/yrs'
+  make[4]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app/yrs'
   cd elf_test && make all
-  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app/elf_test'
+  make[4]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app/elf_test'
   In file included from main.c:1:0:
   ../../../include/yuri/stdio.h:10:6: warning: conflicting types for built-in function ‘puts’
    void puts(char *string);
@@ -364,7 +389,7 @@
   ../../../include/yuri/stdio.h:10:6: warning: conflicting types for built-in function ‘puts’
    void puts(char *string);
         ^
-  GAS LISTING /tmp/ccQ4bXBx.s 			page 1
+  GAS LISTING /tmp/ccfWr7Ai.s 			page 1
   
   
      1              		.file	"main.c"
@@ -412,19 +437,19 @@
     38              	.LFE0:
     40              		.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609"
     41              		.section	.note.GNU-stack,"",@progbits
-  GAS LISTING /tmp/ccQ4bXBx.s 			page 2
+  GAS LISTING /tmp/ccfWr7Ai.s 			page 2
   
   
   DEFINED SYMBOLS
                               *ABS*:0000000000000000 main.c
-       /tmp/ccQ4bXBx.s:8      .text:0000000000000000 main
+       /tmp/ccfWr7Ai.s:8      .text:0000000000000000 main
   
   UNDEFINED SYMBOLS
   puts
   BUILD YURIAPP DIRECTORY
-  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app/elf_test'
+  make[4]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app/elf_test'
   cd parrot && make all
-  make[3]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app/parrot'
+  make[4]: Entering directory '/home/ubuntu/projects/yurios/lib/yuri_app/parrot'
   In file included from main.c:2:0:
   ../../../include/yuri/stdio.h:10:6: warning: conflicting types for built-in function ‘puts’
    void puts(char *string);
@@ -439,7 +464,7 @@
   main.c:4:5: warning: second argument of ‘main’ should be ‘char **’ [-Wmain]
    int main(int argc, char *argv){
        ^
-  GAS LISTING /tmp/ccPaEPLH.s 			page 1
+  GAS LISTING /tmp/cclMcObn.s 			page 1
   
   
      1              		.file	"main.c"
@@ -499,16 +524,16 @@
     49              		.cfi_endproc
     50              	.LFE0:
     52              		.ident	"GCC: (Ubuntu 5.4.0-6ubuntu1~16.04.4) 5.4.0 20160609"
-  GAS LISTING /tmp/ccPaEPLH.s 			page 2
+  GAS LISTING /tmp/cclMcObn.s 			page 2
   
   
     53              		.section	.note.GNU-stack,"",@progbits
-  GAS LISTING /tmp/ccPaEPLH.s 			page 3
+  GAS LISTING /tmp/cclMcObn.s 			page 3
   
   
   DEFINED SYMBOLS
                               *ABS*:0000000000000000 main.c
-       /tmp/ccPaEPLH.s:5      .text:0000000000000000 main
+       /tmp/cclMcObn.s:5      .text:0000000000000000 main
   
   UNDEFINED SYMBOLS
   puts
@@ -517,44 +542,42 @@
   write
   newline
   BUILD PARROT DIRECTORY
-  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app/parrot'
+  make[4]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app/parrot'
   mv *.o ..
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/lib/yuri_app'
   mv *.o ~/projects/yurios/dst
-  
-  make[1]: Leaving directory '/home/ubuntu/projects/yurios/lib'
+  make[2]: Leaving directory '/home/ubuntu/projects/yurios/lib'
   cd yrws && make all
-  make[1]: Entering directory '/home/ubuntu/projects/yurios/yrws'
+  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrws'
   cd core && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrws/core'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrws/core'
+  
   BUILD YRWS/CORE DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrws/core'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrws/core'
   cd layer && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrws/layer'
-  
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrws/layer'
   BUILD YRWS/LAYER DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrws/layer'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrws/layer'
   cd lib && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrws/lib'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrws/lib'
   
   BUILD YRWS/LIB DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrws/lib'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrws/lib'
   cd window && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrws/window'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrws/window'
   BUILD YRWS/WINDOW DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrws/window'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrws/window'
   cd subs && make all
-  make[2]: Entering directory '/home/ubuntu/projects/yurios/yrws/subs'
+  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrws/subs'
   cd clock && make all
-  make[3]: Entering directory '/home/ubuntu/projects/yurios/yrws/subs/clock'
+  make[4]: Entering directory '/home/ubuntu/projects/yurios/yrws/subs/clock'
   BUILD YRWS/LIB DIRECTORY
-  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrws/subs/clock'
+  make[4]: Leaving directory '/home/ubuntu/projects/yurios/yrws/subs/clock'
   BUILD YRWS/LIB DIRECTORY
-  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrws/subs'
+  make[3]: Leaving directory '/home/ubuntu/projects/yurios/yrws/subs'
   BUILD YRWS DIRECTORY
-  make[1]: Leaving directory '/home/ubuntu/projects/yurios/yrws'
+  make[2]: Leaving directory '/home/ubuntu/projects/yurios/yrws'
   ld -melf_i386 -o dst/boot.bin --script=ls/kernel.lds dst/kernel_kernel.o dst/drivers.o	dst/timer.o dst/yrsh.o dst/yurilib.o dst/string.o dst/string_buffer.o dst/sh_cmd.o dst/proc.o dst/fsize.o dst/basis.o dst/fork.o dst/display.o dst/yrfs.o dst/ope_new.o dst/read.o dst/write.o dst/sleep.o dst/get_clock.o dst/fat_getsize.o dst/set_clock.o dst/yrws.o dst/addsmt.o dst/mem_read.o dst/end.o dst/error.o
-  
   cat dst/asmhead.bin dst/boot.bin > dst/yuli.sys
   mformat -f 1440 -C -B dst/ipl.bin -i yuli.img ::
   plain_io: Protocol error
@@ -567,15 +590,19 @@
   buffer_flush: write: Protocol error
   mcopy dst/yuli.sys -i yuli.img ::
   mcopy yuri_doc.txt -i yuli.img ::
+  
   mcopy application/cli_app2.yx -i yuli.img ::
   mcopy application/rename.yx -i yuli.img ::
   mcopy application/elf_test.yx -i yuli.img ::
   mcopy application/parrot.yx -i yuli.img ::
-  
   #mcopy yuri.yim -i yuli.img ::
   mcopy LICENSE -i yuli.img ::
   mcopy ex.sh -i yuli.img ::
   mcopy inityrfs.sh -i yuli.img ::
+  make[1]: Leaving directory '/home/ubuntu/projects/yurios'
+  1.84user 0.80system 0:05.65elapsed 46%CPU (0avgtext+0avgdata 21308maxresident)k
+  0inputs+1232outputs (0major+284167minor)pagefaults 0swaps
+  1.84user 0.80system 0:05.65elapsed 46%CPU (0avgtext+0avgdata 21308maxresident)k
+  0inputs+1232outputs (0major+284167minor)pagefaults 0swaps
   
-  Invoking true
           1 file(s) copied.

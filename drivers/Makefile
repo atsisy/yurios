@@ -4,7 +4,7 @@ all: keyboard.o Makefile
 	@echo 'BUILD DRIVERS DIRECTORY'
 	cd ata && make all
 	cd mouse && make all
-	@ld -melf_i386 -r $(OBJS) -o $(DST)/drivers.o
+	ld -melf_i386 -r $(OBJS) -o $(DST)/drivers.o
 	rm *.o
 
 %.o: %.c

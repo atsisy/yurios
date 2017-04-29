@@ -66,9 +66,111 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <RemoteBuildCommandLine>true</RemoteBuildCommandLine>
+    <RemoteCleanCommandLine>make clean</RemoteCleanCommandLine>
+    <AdditionalSourcesToCopyMapping>C:\Users\Akihiro\Source\Repos\yurios\;$(AdditionalSourcesToCopyMapping)</AdditionalSourcesToCopyMapping>
+    <SourcesToCopyRemotelyOverride>@(SourcesToCopyRemotely)</SourcesToCopyRemotelyOverride>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <AdditionalSourcesToCopyMapping>C:\Users\Akihiro\Source\Repos\yurios\;$(AdditionalSourcesToCopyMapping)</AdditionalSourcesToCopyMapping>
+    <SourcesToCopyRemotelyOverride>@(SourcesToCopyRemotely)</SourcesToCopyRemotelyOverride>
+    <RemoteBuildCommandLine>true</RemoteBuildCommandLine>
+    <RemoteCleanCommandLine>make clean</RemoteCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <AdditionalSourcesToCopyMapping>C:\Users\Akihiro\Source\Repos\yurios\;$(AdditionalSourcesToCopyMapping)</AdditionalSourcesToCopyMapping>
+    <SourcesToCopyRemotelyOverride>@(SourcesToCopyRemotely)</SourcesToCopyRemotelyOverride>
+    <RemoteBuildCommandLine>true</RemoteBuildCommandLine>
+    <RemoteCleanCommandLine>make clean</RemoteCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <AdditionalSourcesToCopyMapping>
+    </AdditionalSourcesToCopyMapping>
+    <SourcesToCopyRemotelyOverride>@(SourcesToCopyRemotely)</SourcesToCopyRemotelyOverride>
+    <RemoteBuildCommandLine>true</RemoteBuildCommandLine>
+    <RemoteCleanCommandLine>make clean</RemoteCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <AdditionalSourcesToCopyMapping>C:\Users\Akihiro\Source\Repos\yurios\;$(AdditionalSourcesToCopyMapping)</AdditionalSourcesToCopyMapping>
+    <SourcesToCopyRemotelyOverride>@(SourcesToCopyRemotely)</SourcesToCopyRemotelyOverride>
+    <RemoteBuildCommandLine>true</RemoteBuildCommandLine>
+    <RemoteCleanCommandLine>make clean</RemoteCleanCommandLine>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <AdditionalSourcesToCopyMapping>C:\Users\Akihiro\Source\Repos\yurios\;$(AdditionalSourcesToCopyMapping)</AdditionalSourcesToCopyMapping>
+    <SourcesToCopyRemotelyOverride>@(SourcesToCopyRemotely)</SourcesToCopyRemotelyOverride>
+    <RemoteBuildCommandLine>true</RemoteBuildCommandLine>
+    <RemoteCleanCommandLine>make clean</RemoteCleanCommandLine>
+  </PropertyGroup>
   <ItemGroup>
   </ItemGroup>
-  <ItemDefinitionGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <PreBuildEvent>
+      <Command>C:\Windows\System32\xcopy.exe C:\Users\Akihiro\Source\Repos\yurios C:\Users\Akihiro\vagrant\shared\yurios /S/E/I/D/Y/C</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy C:\Users\Akihiro\vagrant\shared\yurios\yuli.img C:\Users\Akihiro\Documents /Y</Command>
+    </PostBuildEvent>
+    <RemotePreBuildEvent>
+      <Command>cd ~/projects/yurios &amp;&amp; make all</Command>
+    </RemotePreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <PreBuildEvent>
+      <Command>C:\Windows\System32\xcopy.exe C:\Users\Akihiro\Source\Repos\yurios C:\Users\Akihiro\vagrant\shared\yurios /S/E/I/D/Y/C</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy C:\Users\Akihiro\vagrant\shared\yurios\yuli.img C:\Users\Akihiro\Documents /Y</Command>
+    </PostBuildEvent>
+    <RemotePreBuildEvent>
+      <Command>cd ~/projects/yurios &amp;&amp; make all</Command>
+    </RemotePreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Command>C:\Windows\System32\xcopy.exe C:\Users\Akihiro\Source\Repos\yurios C:\Users\Akihiro\vagrant\shared\yurios /S/E/I/D/Y/C</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy C:\Users\Akihiro\vagrant\shared\yurios\yuli.img C:\Users\Akihiro\Documents /Y</Command>
+    </PostBuildEvent>
+    <RemotePreBuildEvent>
+      <Command>cd ~/projects/yurios &amp;&amp; make all</Command>
+    </RemotePreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>C:\Windows\System32\xcopy.exe C:\Users\Akihiro\Source\Repos\yurios C:\Users\Akihiro\vagrant\shared\yurios /S/E/I/D/Y/C</Command>
+    </PreBuildEvent>
+    <RemotePreBuildEvent>
+      <Command>cd ~/projects/yurios &amp;&amp; make all</Command>
+    </RemotePreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy C:\Users\Akihiro\vagrant\shared\yurios\yuli.img C:\Users\Akihiro\Documents /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <PreBuildEvent>
+      <Command>C:\Windows\System32\xcopy.exe C:\Users\Akihiro\Source\Repos\yurios C:\Users\Akihiro\vagrant\shared\yurios /S/E/I/D/Y/C</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy C:\Users\Akihiro\vagrant\shared\yurios\yuli.img C:\Users\Akihiro\Documents /Y</Command>
+    </PostBuildEvent>
+    <RemotePreBuildEvent>
+      <Command>cd ~/projects/yurios &amp;&amp; make all</Command>
+    </RemotePreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <PreBuildEvent>
+      <Command>C:\Windows\System32\xcopy.exe C:\Users\Akihiro\Source\Repos\yurios C:\Users\Akihiro\vagrant\shared\yurios /S/E/I/D/Y/C</Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy C:\Users\Akihiro\vagrant\shared\yurios\yuli.img C:\Users\Akihiro\Documents /Y</Command>
+    </PostBuildEvent>
+    <RemotePreBuildEvent>
+      <Command>cd ~/projects/yurios &amp;&amp; make all</Command>
+    </RemotePreBuildEvent>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
