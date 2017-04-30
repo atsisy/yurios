@@ -2,6 +2,10 @@
 #include "../include/kernel.h"
 #include "../include/value.h"
 
+int queue_push(struct QUEUE *queue, int data);
+int queue_push(struct QUEUE *queue, int data);
+int queue_size(struct QUEUE *queue);
+
 /*
  *=======================================================================================
  *queue_init関数
@@ -29,6 +33,13 @@ int queue_init(struct QUEUE *queue, int size, int *buf, struct Process *process)
 	queue->write_index = 0;   //書き込み位置(最初は0)
 	queue->read_index = 0;    //読み込み位置(最初は0)
 	queue->task = process;	  //データが入った時に起こすプロセス
+
+	/*
+	*メンバ関数ポインタを代入
+	*/
+	queue->push = queue_push;
+	queue->pop = queue_pop;
+	queue->element_count = queue_size;
 
 	/*
 	 *完了

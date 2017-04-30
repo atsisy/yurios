@@ -44,7 +44,7 @@ struct BOOTINFO { /* 0x0ff0-0x0fff */
 	u8_t *vram;
 };
 
-struct FileInfo{
+struct FileInfo {
 	unsigned char name[8], ext[3], type;    //ファイル名、拡張子、ファイルのタイプ
 	char reserve[10];   //予約する場所らしい
 	unsigned int short time, date, clustno; //ファイル情報
@@ -52,13 +52,13 @@ struct FileInfo{
 };
 
 // dsctbl.c
-struct SEGMENT_DESCRIPTOR{
+struct SEGMENT_DESCRIPTOR {
 	short limit_low, base_low;
 	char base_mid, access_right;
 	char limit_high, base_high;
 };
 
-struct GATE_DESCRIPTOR{
+struct GATE_DESCRIPTOR {
 	short offset_low, selector;
 	char dw_count, access_right;
 	short offset_high;
@@ -81,8 +81,58 @@ struct QUEUE {
 	/*
 	 *サイズ
 	 */
-	int size, free, flags;
+	int size;
+	/*
+	*空き容量
+	*/
+	int free;
+
+	/*
+	*キューの状態を表すフラグ
+	*/
+	int flags;
+
+	/*
+	*起こすべきプロセス
+	*/
 	struct Process *task;
+
+	/*
+	*=============================================================================
+	*queue_push関数
+	*キューにデータをプッシュする関数
+	*引数
+	*struct QUEUE *fifo
+	*=>データをプッシュするキュー
+	*int data
+	*=>キューにプッシュするデータ
+	*=============================================================================
+	*/
+	int(*push)(struct QUEUE *queue, int data);
+
+	/*
+	*=======================================================================================
+	*queue_pop関数
+	*引数
+	*struct QUEUE *queue
+	*=>要素を取り出したいキュー
+	*=======================================================================================
+	*/
+	int(*pop)(struct QUEUE *queue);
+
+	/*
+	*=======================================================================================
+	*queue_size関数
+	*キューの現在の要素数を返す関数
+	*引数
+	*struct QUEUE *queue
+	*=>サイズを調べたいキューへのポインタ
+	*返り値
+	*キューの要素数
+	*=======================================================================================
+	*/
+	int(*element_count)(struct QUEUE *queue);
+
 };
 
 //memory.c
@@ -90,19 +140,19 @@ struct QUEUE {
 #define MEMMAN_ADDR  0x00
 
 //空き情報
-struct FREEINFO{
+struct FREEINFO {
 	unsigned int addr, size;
 };
 
 //メモリマネージャ構造体
-struct MEMMAN{
+struct MEMMAN {
 	int frees, maxfrees, lostsize, losts;
 	struct FREEINFO free[MEMMAN_FREES];
 };
 
 //timer.c
 
-struct TIMER{
+struct TIMER {
 	struct TIMER *next;          //自分の次にタイムアウトするタイマへのポインタ
 	unsigned int timeout, status;
 	struct QUEUE *fifo;
