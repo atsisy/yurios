@@ -1,4 +1,5 @@
 OBJS = $(DST)/ope_new.o
+DST = ../../dst
 
 all: $(OBJS) Makefile
 	@echo 'BUILD CXX DIRECTORY'

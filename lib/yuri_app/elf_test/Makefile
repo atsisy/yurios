@@ -1,4 +1,5 @@
 LINKPATH  = ../../../ls
+DST = ../../../dst
 APP = ../../../application
 YURIEXE = main.o
 

@@ -1,4 +1,5 @@
 OBJS = $(DST)/yurilib.o $(DST)/sh_cmd.o $(DST)/display.o $(DST)/end.o $(DST)/error.o
+DST = ../../dst
 
 all: $(OBJS) Makefile
 	cd file && make all

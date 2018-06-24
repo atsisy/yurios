@@ -6,7 +6,7 @@ OBJS = dst/kernel_kernel.o dst/drivers.o	dst/timer.o dst/yrsh.o \
 
 BINOPT = -nostdlib -Wl,--oformat=binary -fno-builtin -ffreestanding -Wall -nostdinc
 CC = gcc -O0 -m32 -c -Wa,--32
-DST = ~/projects/yurios/dst
+DST = ../dst
 export BINOPT
 export CC
 export DST
@@ -25,20 +25,18 @@ all:
 	mformat -f 1440 -C -B dst/ipl.bin -i yuli.img ::
 	mcopy dst/yuli.sys -i yuli.img ::
 	mcopy yuri_doc.txt -i yuli.img ::
-	mcopy application/cli_app2.yx -i yuli.img ::
-	mcopy application/rename.yx -i yuli.img ::
-	mcopy application/elf_test.yx -i yuli.img ::
-	mcopy application/parrot.yx -i yuli.img ::
+	#mcopy application/cli_app2.yx -i yuli.img ::
+	#mcopy application/rename.yx -i yuli.img ::
+	#mcopy application/elf_test.yx -i yuli.img ::
+	#mcopy application/parrot.yx -i yuli.img ::
 	#mcopy yuri.yim -i yuli.img ::
 	mcopy LICENSE -i yuli.img ::
 	mcopy ex.sh -i yuli.img ::
 	mcopy inityrfs.sh -i yuli.img ::
 
 clean :
-	rm -f ./dst/*.s
-	rm -f ./dst/*.o
-	rm -f ./dst/yuli.sys
-	rm -f ./application/*.yx
+	rm -rf dst
+	rm -rf application
 
 time:
 	make clean

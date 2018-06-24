@@ -1,4 +1,5 @@
 LINKPATH  = ../../../ls
+DST = ../../../dst
 APP = ../../../application
 YURIEXE = main.o
 
@@ -12,3 +13,4 @@ all: $(YURIEXE) Makefile
 
 %.o: %.asm
 	@nasm -f elf $*.asm -o $*.o
+

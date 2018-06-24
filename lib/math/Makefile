@@ -1,4 +1,5 @@
 OBJS = basis.o
+DST = ../../dst
 
 all: $(OBJS) Makefile
 	@echo 'BUILD MATH DIRECTORY'
