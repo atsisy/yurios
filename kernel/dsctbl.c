@@ -32,6 +32,9 @@ void init_gdtidt(void){
 	//実行時例外が発生したときの処理を登録する
 	set_gatedesc(idt + 0x0d, (int) asm_inthandler0d, 16, AR_INTGATE32);
 
+	//ページフォールトが発生したときの処理を登録する
+	set_gatedesc(idt + 0x0e, (int) asm_inthandler0e, 16, AR_INTGATE32);
+
 	//タイマ割り込みが発生したときの処理を登録しておく
 	set_gatedesc(idt + 0x20, (int) asm_inthandler20, 16, AR_INTGATE32);
 

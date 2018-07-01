@@ -11,10 +11,10 @@ global	io_in8, io_in16, io_in32
 global	io_out8, io_out16, io_out32
 global	io_load_eflags, io_store_eflags
 global	load_gdtr, load_idtr
-  global	load_cr0, store_cr0
+  global	load_cr0, store_cr0, load_cr2
   global  load_cr3, store_cr3
   global flush_tlb, paging_on
-global	asm_inthandler21
+global	asm_inthandler21, asm_inthandler0e
 global	asm_inthandler20, asm_inthandler0d
 global	asm_inthandler0c, asm_inthandler00
 global	memtest_sub
@@ -31,7 +31,8 @@ extern	stack_exp_handler
 extern	sys_call
 extern	general_exp_handler
 extern	zzdiv_handler  
-
+extern  page_fault_handler      
+  
 ; 以下は実際の関数
 
 [SECTION .text]		; オブジェクトファイルではこれを書いてからプログラムを書くらしい
@@ -135,6 +136,11 @@ load_cr0:		; int load_cr0(void);
 	mov		eax, cr0
 	ret
 
+  	
+load_cr2:
+	mov eax, cr2
+	ret
+  
 load_cr3:
   mov eax, cr3
   ret
@@ -210,7 +216,7 @@ asm_inthandler0c:
 	pop  es
 	add  esp, 4
 	iretd
-
+  
   ;; 一般保護例外のイベントハンドラ
 asm_inthandler0d:
 	sti
@@ -230,6 +236,22 @@ asm_inthandler0d:
 	pop		ds
 	pop		es
 	add		esp, 4			; INT 0x0d では、これが必要
+	iretd
+
+asm_inthandler0e:
+  push	es
+	push	ds
+	pushad
+	mov	eax, esp
+	push	eax
+	mov	ax, ss
+	mov	ds, ax
+	mov	es, ax
+	call	page_fault_handler
+	pop	eax
+	popad
+	pop	ds
+	pop	es
 	iretd
 
 

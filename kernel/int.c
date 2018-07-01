@@ -99,3 +99,13 @@ int *stack_exp_handler(int *esp){
   
 	return &(proc->tss.esp0);      //異常終了実行
 }
+
+int *page_fault_handler(int *esp)
+{
+	puts("Page Fault.");
+        printk("address:0x%x", load_cr2());
+
+        struct Process *proc = task_now();
+        
+	return &(proc->tss.esp0);      //異常終了実行
+}
