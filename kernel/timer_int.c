@@ -1,4 +1,4 @@
-#include "../include/kernel.h"
+#include <mm.h>
 
 /*
  *=======================================================================================
@@ -14,7 +14,6 @@
  *=======================================================================================
  */
 struct Timer_Interrupt *alloc_TimerIntr(struct Process *proc, i32_t identifier){
-
 	//Timer_Interrupt構造体を確保
 	struct Timer_Interrupt *timer_intr = (struct Timer_Interrupt *)memory_alloc(memman, sizeof(struct Timer_Interrupt));
 

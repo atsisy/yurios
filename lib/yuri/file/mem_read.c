@@ -61,7 +61,7 @@ type_next_file:
 		memory_free_4k(memman, (int)p, finfo[x].size);
 	}else{
 		//ファイルが見つからなかった場合
-		print("File not found.");
+		printk("File not found.");
 	}
 
 	return finfo[x].size;
@@ -145,7 +145,7 @@ type_next_file:
 
 	}else{
 		//ファイルが見つからなかった場合
-		print("File not found.");
+		printk("File not found.");
 	}
 
 	return buffer;
@@ -162,6 +162,7 @@ u8_t *read_elf(char *file_name, u8_t *buffer, u32_t length){
 	for(y = 0;y < 11;y++){	//とりあえず初期化
 			s[y] = ' ';
 	}
+        
 	y = 0;
 	for(x = 0;y < 11 && file_name[x] != 0;x++){
 		if(file_name[x] == '.' && y <= 8){
@@ -205,7 +206,7 @@ type_next_file:
 
 	}else{
 		//ファイルが見つからなかった場合
-		print("File not found.");
+		printk("File not found.");
 	}
 
 	return buffer;

@@ -1,4 +1,4 @@
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/sh.h"
 #include "../../include/string.h"
 #include "../../include/value.h"
@@ -32,9 +32,7 @@ void command_print(char *inputed_command){
 	/*
 	 *カットした文字列を表示
 	 */
-	print(str);
-
-	indent_shell();
+	puts(str);
 
 	return;
 }
@@ -47,39 +45,11 @@ void command_print(char *inputed_command){
  *引数返り値なし
  *=======================================================================================
  */
-void command_memory(void){
-	char s[20];
-	sprintf(s, "total:%dMB", memtotal / (1024 * 1024));
-	print(s);
-
-	if(indent > MAX_SCROLL)
-		scroll(16);
-
-	indent_shell();
-	sprintf(s, "free:%dKB", memory_total(memman) / 1024);
-	print(s);
-
-	indent_shell();
-
+void command_memory(void)
+{
+	printk("total:%dMB\n", memtotal / (1024 * 1024));
+	printk("free:%dKB\n", memory_total(memman) / 1024);
 	return;
-}
-
-void command_history(void){
-	//ファイルディスクリプタ
-	i32_t fd;
-
-	//文字列用メモリ確保
-	char *str = (char *)memory_alloc(memman, 1024);
-
-	if((fd = do_open("history", __O_RDONLY__)) != -1){
-		do_read(fd, str, 2);
-		puts(str);
-	}else{
-		puts("ERROR");
-	}
-
-	//開放
-	memory_free(memman, (u32_t)str, 1024);
 }
 
 /*
@@ -156,7 +126,7 @@ void command_lscpu(void) {
 	*CPUベンダ名を取得
 	*/
 	cpu_vendor(&ebx, &ecx, &edx);
-	print("Vendor ID:");
+	printk("Vendor ID:");
 
 	vendor[0] = (char)ebx;
 	vendor[1] = (char)(ebx >> 8);
@@ -447,10 +417,11 @@ u8_t command_cd(char *dir_path){
 	 *実際の処理
 	 */
 	if(do_chdir(dir_path) == -1){
-		print("cd: no such file or directory: ");
+		printk("cd: no such file or directory: ");
 		puts(dir_path);
 		return FAILURE;
 	}else{
 		return SUCCESS;
 	}
 }
+

@@ -105,31 +105,24 @@ char *strcat(char *s1, const char *s2) {
 	return s1;
 }
 
-/*
- *=======================================================================================
- *memcpy関数
- *指定しただけ、メモリの内容をコピーする関数
- *引数
- *void *s1
- *コピー
- *const void *s2
- *コピー先
- *size_t size
- *コピーするサイズ
- *=======================================================================================
- */
-void *memcpy(void *s1, const void *s2, size_t size){
-	char *ss1 = s1;
-	const char *ss2 = s2;
+void *memset(char *buf, u8_t ch, size_t n)
+{
+        for(size_t i = 0;i < n;i++){
+                buf[i] = ch;
+        }
 
-	if(size != 0){
-		register const char *t = ss2 + size;
-		do{
-			*ss1++ = *ss2++;
-		}while (ss2 != t);
-	}
-	return s1;
+        return (void *)buf;
 }
+
+void *memcpy(void *dest, void *src, size_t n)
+{
+        for(size_t i = 0;i < n;i++){
+                ((u8_t *)dest)[i] = ((u8_t *)src)[i];
+        }
+
+        return (void *)dest;
+}
+
 
 /*
  *=======================================================================================

@@ -21,9 +21,9 @@ typedef int   i32_t;
 
 typedef unsigned int off_t;
 
-#define TRUE  1
+typedef char bool;
+
 #define true  1
-#define FALSE 0
 #define false 0
 
 

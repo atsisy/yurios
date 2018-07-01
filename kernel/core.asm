@@ -11,8 +11,10 @@ global	io_in8, io_in16, io_in32
 global	io_out8, io_out16, io_out32
 global	io_load_eflags, io_store_eflags
 global	load_gdtr, load_idtr
-global	load_cr0, store_cr0
-global	asm_inthandler21, asm_inthandler2c
+  global	load_cr0, store_cr0
+  global  load_cr3, store_cr3
+  global flush_tlb, paging_on
+global	asm_inthandler21
 global	asm_inthandler20, asm_inthandler0d
 global	asm_inthandler0c, asm_inthandler00
 global	memtest_sub
@@ -20,14 +22,15 @@ global	farjmp, run_app
 global	farcall, start_app
 global	load_tr
 global	asm_put_char
-global	asm_sys_call
+  global	asm_sys_call
+  global print_a
 extern	keyboard_handler
 extern 	mouse_handler
 extern	timer_handler
 extern	stack_exp_handler
 extern	sys_call
 extern	general_exp_handler
-extern	zzdiv_handler
+extern	zzdiv_handler  
 
 ; 以下は実際の関数
 
@@ -50,6 +53,9 @@ io_cli:	; void io_cli(void);で使う
 io_sti:
 	sti
 	ret
+
+print_a:
+  	mov word [0x000B8000], 0x4128
 
   ;; sti命令とhlt命令を同時にするアセンブリ関数
   ;; つまり、割り込み許可してから、黙り込む
@@ -112,7 +118,6 @@ io_store_eflags:	;void io_store_eflags(int eflags);で使う
 	popfd	;スタックからpopして、eflagsに代入
 	ret
 
-
 load_gdtr:
 	mov	ax, [esp+4]
 	mov [esp+6], ax
@@ -127,14 +132,42 @@ load_idtr:
 
   ;; cr0を見るアセンブリ関数
 load_cr0:		; int load_cr0(void);
-		mov		eax, cr0
-		ret
+	mov		eax, cr0
+	ret
+
+load_cr3:
+  mov eax, cr3
+  ret
 
   ;; cr0に値をぶち込むアセンブリ関数
 store_cr0:
 	mov	eax, [esp+4]
 	mov	cr0, eax
 	ret
+
+store_cr3:
+  mov eax, [esp+4]
+  mov cr3, eax
+  ret
+
+flush_tlb:
+  push eax
+  mov eax, [esp+4]
+  cli
+  invlpg [esp+4]
+  sti
+  pop eax
+  ret
+
+paging_on:
+  cli
+  push eax
+  mov eax, cr0
+  or eax, 0x80000000
+  mov cr0, eax                  
+  pop eax
+  sti
+  ret
 
   ;; ゼロ除算例外のイベントハンドラ
 asm_inthandler00:
@@ -233,25 +266,7 @@ asm_inthandler21:
 	pop	ds
 	pop	es
 	iretd
-
-  ;; マウス割り込みハンドラ(今は使わない)
-asm_inthandler2c:
-	push	es
-	push	ds
-	pushad
-	mov	eax, esp
-	push	eax
-	mov	ax, ss
-	mov	ds, ax
-	mov	es, ax
-	call	mouse_handler
-	pop	eax
-	popad
-	pop	ds
-	pop	es
-	iretd
-
-
+  
 memtest_sub:	; unsigned int memtest_sub(unsigned int start, unsigned int end)
 	push	edi
 	push	esi

@@ -14,6 +14,7 @@ extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
 
 /* nasmfunc.asm */
 void io_hlt(void);	//hltするための関数
+void print_a(void);
 void io_cli(void);	//割り込み許可フラグを0にして割り込み禁止にする
 void io_sti(void);	//割り込み許可フラグを1にして割り込み許可にする
 void io_stihlt(void);
@@ -35,7 +36,10 @@ void asm_inthandler2c(void);
 void asm_inthandler20(void);
 unsigned int memtest_sub(unsigned int start, unsigned int end);
 int load_cr0(void);
-void store_cr0(int cr0);
+void store_cr0(unsigned long cr0);
+int load_cr3(void);
+void store_cr3(unsigned long cr3);
+void flush_tlb(unsigned long addr);
 void farjmp(int eip, int cs);
 void farcall(int eip, int cs);
 void load_tr(int tr);
@@ -45,16 +49,24 @@ i32_t cpu_brand_string(char *string);
 void run_app(int eip, int cs, int esp, int ds, int *tss_esp0);	//アプリケーション起動
 void start_app(int eip, int cs, int esp, int ds, int *tss_esp0);
 
-/* graphic.c */
-void init_palette(void);
-void set_palette(int start, int end, unsigned char *rgb);
-void boxfill8(u8_t *vram, int xsize, unsigned char c, int x0, int y0, int x1, int y1);
-void putfont8(u8_t *vram, int xsize, int x, int y, char c, char *font);
-void putfonts8_asc(u8_t *vram, int xsize, int x, int y, char c, char *s);
-void putfonts_err(u8_t *vram, int xsize, int x, int y, char c, char *s);
-void draw_vline(unsigned char *vram, int screen_x, int screen_y, int draw_x, int draw_y);
-void draw_hline(unsigned char *vram, int screen_x, int screen_y, int draw_x, int draw_y);
+void put_character(u8_t c, u8_t fcolor, u8_t backcolor, u8_t x, u8_t y);
 
+#define TEXT_VIDEO_RAM_ADDR 0xb8000
+#define TEXT_SCREEN_WIDTH 80
+#define TEXT_SCREEN_HEIGHT 25
+/*
+ * フレームバッファのポート
+ */
+// 情報を送信するためのポート
+#define FRAMEBUF_COMMAND_PORT 0x03d4
+// フレームバッファに対する設定
+#define FRAMEBUF_DATA_PORT 0x03d5
+
+/*
+ * フレームバッファに対する信号
+ */
+#define FRAMEBUF_HIGH_BYTE 14
+#define FRAMEBUF_LOW_BYTE 15
 
 // dsctbl.c
 
@@ -83,18 +95,15 @@ void init_keyboard(struct QUEUE *fifo, int data0);
 void ch_keybuf(struct QUEUE *new_buf);
 struct QUEUE *now_keybuf(void);
 
-//memory.c
+void puts(const char *str);
+void yksh_init();
+void printk(const char *format, ...);
+void put_char(char ch);
 
-extern unsigned int memtotal;
-unsigned int memtest(unsigned int start, unsigned int end);
-void memory_init(struct MEMMAN *man);
-unsigned int memory_total(struct MEMMAN *man);
-unsigned int memory_alloc(struct MEMMAN *man, unsigned int size);
-int memory_free(struct MEMMAN *man, unsigned int addr, unsigned int size);
-unsigned int memory_alloc_4k(struct MEMMAN *man, unsigned int size);
-int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
-char *read_vram(char *vram, short scrnx, int x1, int x2, int y);
-void write_vram(char *vram, char *new_vram, short scrnx, int x1, int x2, int y);
+inline char kitoa(i8_t num)
+{
+        return num + 0x30;
+}
 
 //timer.c
 
@@ -105,6 +114,8 @@ struct TIMER *timer_alloc(void);
 void timer_free(struct TIMER *timer);
 void timer_init(struct TIMER *timer, struct QUEUE *queue, unsigned char data);
 extern struct TIMER_MASTER timer_master;
+
+
 
 //mtask.c
 
@@ -121,17 +132,11 @@ u32_t issue_pid();
 void task_add(struct Process *task);
 
 
-extern short input_y;
-void shell_master(void);
-void shell_init(void);
-extern int length, indent;
-extern short enter_flag;
-extern struct Process *ylsh_cursor_timer;
-void scroll(int height);
-struct FileInfo *file_search(char *name, struct FileInfo *finfo, int max);
-int do_shell_app(int *fat, char *command);
-int exec_elf_app(int *fat, char *command);
-void multi_shellscroll(struct BOOTINFO *binfo, int height, int top, int under);
+struct yksh_controler {
+        u16_t cp_x;
+        u16_t cp_y;
+};
+
 
 //history.c
 i32_t history_init(void);

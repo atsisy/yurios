@@ -111,5 +111,5 @@ i32_t write_ata_sector(struct ATA_DEVICE *device, u32_t lba, void *buffer, i32_t
 
 	prepare_wr(device, lba, count);
 
-	return dout_pio(__ATA_CMD_WRITE_SECTORS__, device, buffer, count, TRUE);
+	return dout_pio(__ATA_CMD_WRITE_SECTORS__, device, buffer, count, true);
 }

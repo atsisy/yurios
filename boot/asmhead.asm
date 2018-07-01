@@ -1,12 +1,4 @@
 
-VBEMODE	EQU		0x107			;1024 x  768 x 8bitカラー
-; （画面モード一覧）
-;	0x100 :  640 x  400 x 8bitカラー
-;	0x101 :  640 x  480 x 8bitカラー
-;	0x103 :  800 x  600 x 8bitカラー
-;	0x105 : 1024 x  768 x 8bitカラー
-;	0x107 : 1280 x 1024 x 8bitカラー
-
 BOTPAK	EQU		0x00280000		; bootpackのロード先
 DSKCAC	EQU		0x00100000		; ディスクキャッシュの場所
 DSKCAC0	EQU		0x00008000		; ディスクキャッシュの場所（リアルモード）
@@ -21,68 +13,6 @@ VRAM	EQU		0x0ff8			; グラフィックバッファの開始番地
 
 		org		0xc200			; このプログラムがどこに読み込まれるのか
 
-; VBE存在確認
-
-		mov		AX,0x9000
-		mov		ES,AX
-		mov		DI,0
-		mov		AX,0x4f00
-		int		0x10
-		cmp		AX,0x004f
-		jne		scrn320
-
-; VBEのバージョンチェック
-
-		mov		AX,[ES:DI+4]
-		cmp		AX,0x0200
-		jb		scrn320			; if (AX < 0x0200) goto scrn320
-
-
-; 画面モード情報を得る
-
-		mov		CX,VBEMODE
-		mov		AX,0x4f01
-		int		0x10
-		cmp		AX,0x004f
-		jne		scrn320
-
-; 画面モード情報の確認
-
-		cmp		BYTE [ES:DI+0x19],8
-		jne		scrn320
-		cmp		BYTE [ES:DI+0x1b],4
-		jne		scrn320
-		mov		AX,[ES:DI+0x00]
-		and		AX,0x0080
-		jz		scrn320			; モード属性のbit7が0だったのであきらめる
-
-
-
-; 画面モードの切り替え
-
-		mov		BX,VBEMODE+0x4000
-		mov		AX,0x4f02
-		int		0x10
-		mov		BYTE [VMODE],8	; 画面モードをメモする（C言語が参照する）
-		mov		AX,[ES:DI+0x12]
-		mov		[SCRNX],AX
-		mov		AX,[ES:DI+0x14]
-		mov		[SCRNY],AX
-		mov		EAX,[ES:DI+0x28]
-		mov		[VRAM],EAX
-		jmp		keystatus
-
-
-
-; 画面モードを設定
-scrn320:
-		mov		bx, 0x4101			; VGAグラフィックス、320x200x8bitカラー
-		mov		ax, 0x4f02
-		int		0x10
-		mov		BYTE [VMODE],8	; 画面モードをメモする（C言語が参照する）
-		mov		WORD [SCRNX],640
-		mov		WORD [SCRNY],480
-		mov		DWORD [VRAM],0xe0000000
 
 ; キーボードのLED状態をBIOSに教えてもらう
 

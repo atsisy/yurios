@@ -1,6 +1,6 @@
 #include "../../include/yrfs.h"
 #include "../../include/sysc.h"
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/string.h"
 #include "../../include/sh.h"
 #include "../../include/yrfs.h"

@@ -34,7 +34,6 @@ off_t do_seek(int fd, off_t offset, int whence) {
 		 *現在のオフセットからシーク
 		 */
 		inode.seek_address.offset += offset;
-		print_value(inode.seek_address.offset, 500, 100+(inode.seek_address.offset << 1));
 		break;
 	case __SEEK_END__:
 		/*

@@ -119,5 +119,5 @@ i32_t read_ata_sector(struct ATA_DEVICE *device, u32_t lba, void *buffer, i32_t 
 
 	prepare_wr(device, lba, count);
 
-	return din_pio(__ATA_CMD_READ_SECTORS__, device, buffer, count, TRUE);
+	return din_pio(__ATA_CMD_READ_SECTORS__, device, buffer, count, true);
 }

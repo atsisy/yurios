@@ -1,6 +1,6 @@
 #include "../../include/yrfs.h"
 #include "../../include/sysc.h"
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/string.h"
 #include "../../include/sh.h"
 
@@ -47,7 +47,7 @@ i32_t do_mkdir(char *pathname, u32_t flags){
 
 		}
 	}else{
-		pError("mkdir: cannot create directory : File exists");
+		puts("mkdir: cannot create directory : File exists");
 	}
 
 	do_close(fd);

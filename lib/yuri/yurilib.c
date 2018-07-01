@@ -1,4 +1,4 @@
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/sh.h"
 #include "../../include/elf.h"
 #include "../../include/string.h"
@@ -38,216 +38,6 @@ void loadfile(int clustno, int size, char *buf, int *fat, char *img){
 
 	return;
 }
-
-int sprintf(char *str, const char *format, ...){
-	int *argv = (int *)(&str+2);	//可変個引数の配列
-	int count, i, argc = 0;			//生成した文字数
-	char buf[40];		     //変換した文字列を格納するバッファ
-	const char *p = format;      //コピー元フォーマットを走査する
-
-	/*
-	 *バッファをゼロクリア
-	 */
-	zero_str(str);
-	zero_str(buf);
-
-	/*
-	 *ヌル文字になるまで
-	 */
-	for(count = 0; *p != '\0'; p++) {
-		switch(*p) {
-		case '%':
-			//フォーマット指定子かどうか判定し、引数の数値を文字列へ変換
-			switch(p[1]) {
-			case 'd':    //10進数
-				int2dec(buf, argv[argc++]);
-				break;
-			case 'c':    //文字
-				int2char(buf, argv[argc++]);
-				break;
-			case 'x':    //16進数 小文字
-				int2hex(buf, argv[argc++]);
-				break;
-			case 's':    //文字列
-				int2str(buf, argv[argc++]);
-				break;
-			}
-
-			/*
-			 *変換結果をコピー
-			 */
-			for(i = 0;buf[i] != '\0';i++,count++) {
-				*str++ = buf[i];
-			}
-			p++; //一個前にすすめる
-			break;
-
-		default:
-			// フォーマット指定子以外はそのままコピー
-			*str++ = *p;
-			count++;
-		}
-	}
-
-	str[count] = '\0';
-
-	return count;
-}
-
-/*
- *=======================================================================================
- *zero_str関数
- *文字列を\0で埋める関数
- *=======================================================================================
- */
-void zero_str(char *str){
-	while(*str != '\0')
-		*str++ = 0;
-}
-
-/*
- *=======================================================================================
- *zeroclear_8array関数
- *配列をゼロクリアする関数
- *=======================================================================================
- */
-void zeroclear_8array(i8_t *array, u32_t length){
-	u32_t i;
-	for(i = 0;i < length;i++)
-		array[i] = 0;
-}
-
-/*
- *=======================================================================================
- *zeroclear_short_array関数
- *配列をゼロクリアする関数
- *=======================================================================================
- */
-void zeroclear_16array(i16_t *array, u32_t length){
-	u32_t i;
-	for(i = 0;i < length;i++)
-		array[i] = 0;
-}
-
-/*
- *=======================================================================================
- *zeroclear_short_array関数
- *配列をゼロクリアする関数
- *=======================================================================================
- */
-void zeroclear_32array(i32_t *array, u32_t length){
-	u32_t i;
-	for(i = 0;i < length;i++)
-		array[i] = 0;
-}
-/*
- *=======================================================================================
- *int2char関数
- *文字コードを文字に変換する
- *=======================================================================================
- */
-void int2char(char *str, int value){
-	str[0] = (char)value;
-	str[1] = '\0';
-}
-
-//数値を16進数文字列に変換する
-//flag: 大文字なら1, 小文字なら0
-void int2hex(char *str, int value) {
-
-	int i, n, zero = 0, mask = 0x0f;
-	char charctor = 'a';
-
-	for(i = 0; i < 8; i++) {
-		n = value >> (7-i)*4;
-
-		if(!zero && n != 0){
-			/*
-			 *0以外が初めて来た
-			 */
-			zero = 1;
-		}else if(!zero){
-			/*
-			 *0ではない
-			 */
-			continue;
-		}
-
-		if((n & mask) >= 10) {
-			/*
-			 *文字に変換
-			 */
-			*str++ = charctor + (n & mask)-10;
-		}else{
-			/*
-			 *数字に変換
-			 */
-			*str++ = '0' + (n & mask);
-		}
-	}
-
-	/*
-	 *最後にヌル文字
-	 */
-	*str = '\0';
-}
-
-/*
- *=======================================================================================
- *10進数の指定された桁を返す関数
- *=======================================================================================
- */
-int dec_digit(int value, int n){
-	int i;
-	for(i = 0; i < n-1; i++){
-		value /= 10;
-	}
-	return value % 10;
-}
-
-/*
- *=======================================================================================
- *int2dec関数
- *普通に10進数を文字列にする関数
- *=======================================================================================
- */
-void int2dec(char *str, int value) {
-	int i;
-	char zero = 1;
-
-	if(!value){
-		str[0] = '0';
-		str[1] = '\0';
-		return;
-	}
-
-	if(value < 0){
-		str[0] = '-';
-		str += 1;
-		value = -value;
-	}
-
-	for(i = 0;i < 10;i++){
-		if(zero && dec_digit(value, 10-i) != 0)
-			zero = 0;
-		if(!zero)
-			*str++ = '0' + dec_digit(value, 10-i);
-	}
-
-	*str = '\0';
-}
-
-/*
- *=======================================================================================
- *int2str関数
- *普通に数字を文字列にする関数
- *=======================================================================================
- */
-void int2str(char *str, int value) {
-	char *p = (char *)value;
-	strcpy(str, p);
-}
-
 
 int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int eax) {
 
@@ -313,7 +103,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 			 */
 			return &(me->tss.esp0);
 		}else{
-			pError("A non-zero value was returned by application.");
+			puts("A non-zero value was returned by application.");
 			return &(me->tss.esp0);
 		}
 		
@@ -412,25 +202,6 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		//struct FIFO32 *before = now_keybuf();
 		//ch_keybuf(&(me->irq));
 
-		for(;;){
-			io_cli();
-			if(IS_FAILURE(queue_size(me->irq))){
-				if(eax != 0){
-					task_sleep(me);	/* FIFOが空なので寝て待つ */
-				}else{
-					io_sti();
-					registers[7] = -1;
-					return 0;
-				}
-			}else{
-				i = queue_pop(me->irq);
-				io_sti();
-				if('A' <= keys1[i-256] && 'Z' >= keys1[0-511]){ /* キーボードデータ（タスクA経由） */
-					registers[7] = keys1[i - 256];
-					return 0;
-				}
-			}
-		}
 		break;
 	case 10:
 	      /*
@@ -447,7 +218,10 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 		 *newlineシステムコール
 		 *=======================================================================================
 		 */
-		indent_shell();
+                /*
+                 * FIXME
+                 */
+		//indent_shell();
 		break;
       case 12:
 		/*

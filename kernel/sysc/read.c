@@ -28,7 +28,6 @@ size_t do_read(int fd, char *buf, int count){
 		/*
 		 *標準入力から読み込む
 		 */
-		type_prompt(buf+1, count);
 		break;
 
 	default:

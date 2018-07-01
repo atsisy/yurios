@@ -1,10 +1,12 @@
 /* メモリ関係 */
-#include "../include/kernel.h"
+#include <mm.h>
+#include <string.h>
 #include "../include/value.h"
 #include "../include/sh.h"
 
 unsigned int memtotal;
 struct MEMMAN *memman;
+page_directory current_page_directory;
 
 unsigned int memtest(unsigned int start, unsigned int end){
 	char flg486 = 0;
@@ -201,4 +203,198 @@ int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size){
 	size = (size + 0xfff) & 0xfffff000;
 	i = memory_free(man, addr, size);
 	return i;
+}
+
+void *kmalloc(u32_t size)
+{
+        if(size >= 4096){
+                return (void *)memory_alloc_4k(memman, size);
+        }else{
+                return (void *)memory_alloc(memman, size);
+        }
+}
+
+void kfree(const void *addr, u32_t size)
+{
+        if(size >= 4096){
+                memory_free_4k(memman, (u32_t)addr, size);
+        }else{
+                memory_free(memman, (u32_t)addr, size);
+        }
+}
+
+page_table_entry_t *alloc_page32(page_table_entry_t *entry)
+{
+        void *physical_address;
+
+        /*
+         * 1ページ分確保
+         */
+        physical_address = memory_alloc_4k(memman, MM_PAGE_SIZE);
+        if(physical_address == FAILURE)
+                return (page_table_entry_t *)NULL;
+
+        /*
+         * アドレスを設定、pフラグを立ててreturn
+         */
+        pte32_set_addr(entry, (u32_t)physical_address);
+        pte32_set_flags(entry, PTE32_PRESENT);
+        
+        return entry;
+}
+
+void free_page32(page_table_entry_t *entry)
+{
+        void *physical_address;
+
+        physical_address = (void *)pte32_get_addr((u32_t)entry);
+
+        if(physical_address == NULL)
+                return;
+
+        memory_free_4k(memman, (u32_t)physical_address, MM_PAGE_SIZE);
+
+        // メモリ上から削除されているため、pフラグを下ろす
+        pte32_clear_flags(entry, PTE32_PRESENT);
+}
+
+
+page_table_entry_t *pt32_get_pte(page_table table, virtual_address32 address)
+{
+        if(table == NULL)
+                return (page_table_entry_t *)NULL;
+
+        return (page_table_entry_t *)table + vaddr32_get_pte_index(address);
+}
+
+page_directory_entry_t *pd32_get_pde(page_directory dir, virtual_address32 address)
+{
+        if(dir == NULL)
+                return (page_directory_entry_t *)NULL;
+
+        return (page_directory_entry_t *)dir + vaddr32_get_pde_index(address);
+}
+
+/*** 
+ * map_page関数
+ * 物理アドレスと仮想アドレスの対応を取る
+ ***/
+u8_t map_page(void *physical_address, virtual_address32 virtual_address)
+{
+        page_directory pd;
+        page_directory_entry_t *pde;
+        page_table page_table;
+        page_table_entry_t *pte;
+
+        pd = current_page_directory;
+
+        // そもそも、ページディレクトリがない場合、エラーで終了
+        if(!pd){
+                return MM_ERROR;
+        }
+
+        // ページディレクトリから、仮想アドレスでpdeを特定
+        pde = pd32_get_pde(pd, virtual_address);
+
+        if(!pde32_is_present(*pde)){
+                /*
+                 * 取得したpdeがメモリ上にない場合、確保し、物理アドレスと対応付け
+                 */
+                page_table = (page_table_entry_t *)memory_alloc(memman, MM_PAGE_SIZE);
+                
+                if(page_table)
+                        return MM_ERROR;
+                memset((void *)page_table, 0x00, MM_PAGE_SIZE);
+                pde32_set_pt_addr(pde, (u32_t)page_table);
+                pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+        }else{
+                /*
+                 * ページディレクトリエントリから、ページテーブルを取得
+                 */
+                page_table = (page_table_entry_t *)pde32_get_pt_addr(pde);
+        }
+
+        // 物理アドレスを設定
+        pte = pt32_get_pte(page_table, virtual_address);
+
+        pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
+        pte32_set_addr(pte, (u32_t)physical_address);
+
+        return MM_OK;
+}
+
+
+static void go_paging32(page_directory directory)
+{
+        store_cr3((unsigned long)directory);
+        paging_on();
+}
+
+u8_t init_virtual_memory_management()
+{
+        //0x00000000~用
+        page_table low_table;
+        //0xc0000000~用
+        page_table high_table;
+        
+        page_table_entry_t *pte;
+
+        page_directory directory;
+        page_directory_entry_t *pde;
+
+        int i;
+        unsigned long physical_address;
+        virtual_address32 virtual_address;
+
+        /*
+         * 0x00000000~
+         */
+        low_table = (page_table)memory_alloc_4k(memman, MM_PAGE_SIZE);
+        if(low_table == FAILURE)
+                return MM_ERROR;
+
+        /*
+         * 0xc0000000~
+         */
+        high_table = (page_table)memory_alloc_4k(memman, MM_PAGE_SIZE);
+        if(high_table == FAILURE)
+                return MM_ERROR;
+
+        // ゼロクリア
+        memset((void *)low_table, 0x00, MM_PAGE_SIZE);
+        memset((void *)high_table, 0x00, MM_PAGE_SIZE);
+
+        //0x00000000 ~ 0x003ff000
+        for(i = 0, physical_address = 0x00, virtual_address = 0x00;
+            i < MM_NUM_PTE;
+            i++, physical_address += MM_PAGE_SIZE, virtual_address += MM_PAGE_SIZE){
+                pte = pt32_get_pte(low_table, virtual_address);
+                pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
+                pte32_set_addr(pte, physical_address);
+        }
+
+        //0xc0000000 ~ 0xc03ff000
+        for(i = 0, physical_address = 0x00100000, virtual_address = 0xc0000000;
+            i < MM_NUM_PTE;
+            i++, physical_address += MM_PAGE_SIZE, virtual_address += MM_PAGE_SIZE){
+                pte = pt32_get_pte(high_table, virtual_address);
+                pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
+                pte32_set_addr(pte, physical_address);
+        }
+
+        directory = (page_directory)memory_alloc_4k(memman, MM_PAGE_SIZE);
+        if(directory == (void *)FAILURE)
+                return MM_ERROR;
+
+        pde = pd32_get_pde(directory, 0x00000000);
+        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+        pde32_set_pt_addr(pde, (u32_t)low_table);
+
+        pde = pd32_get_pde(directory, 0xc0000000);
+        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+        pde32_set_pt_addr(pde, (u32_t)high_table);
+
+        go_paging32(directory);
+
+        return MM_OK;
 }

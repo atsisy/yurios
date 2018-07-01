@@ -1,5 +1,7 @@
-OBJS = start.o graphic.o dsctbl.o int.o fifo.o memory.o analy_elf.o \
-	sys_call.o default_font.o core.o cpuinfo.o timer_int.o register.o stream.o
+OBJS = start.o dsctbl.o int.o fifo.o memory.o analy_elf.o \
+	sys_call.o default_font.o core.o cpuinfo.o timer_int.o register.o stream.o \
+	yksh.o
+INCLUDE = ../include
 
 all: $(OBJS) Makefile
 	@echo 'BUILD KERNEL DIRECTORY'
@@ -8,11 +10,10 @@ all: $(OBJS) Makefile
 	cd sysc && make all
 	cd time && make all
 	cd proc && make all
-	cd cxx && make all
 	rm -f *.o
 
 %.o: %.c
-	@$(CC) $*.c $(BINOPT) -o $*.o
+	@$(CC) $*.c -I$(INCLUDE) $(BINOPT) -o $*.o
 
 %.o: %.asm
 	@nasm -f elf $*.asm -o $*.o

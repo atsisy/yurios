@@ -1,4 +1,4 @@
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 
 extern struct PROCESS_MASTER *process_master;
 extern struct TIMER *task_timer;

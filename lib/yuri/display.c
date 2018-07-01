@@ -39,22 +39,6 @@ void print(char *str){
  *=>表示したい文字列
  *=======================================================================================
  */
-int puts(char *str){
-	/*
-	 *一回クリア
-	 */
-	boxfill8(binfo->vram, binfo->scrnx, BLACK,
-		 length << 3, input_y + (indent << 4), (length << 3)+(strlen(str) << 3), (input_y + (indent << 4)+16));
-
-	/*
-	 *実際に表示する
-	 */
-	putfonts8_asc(binfo->vram, binfo->scrnx, length << 3, input_y + (indent << 4), COL8_FFFFFF, str);
-
-	indent_shell();
-
-	return 1;
-}
 /*
  *=======================================================================================
  *put_char関数
@@ -64,34 +48,6 @@ int puts(char *str){
  *=>表示したい文字
  *=======================================================================================
  */
-void put_char(char ch){
-
-	/*
-	*改行文字が来たら改行する
-	*/
-	if(ch == 0x0a){
-		indent_shell();
-		return;
-	}
-
-	extern char dfont[__DFONT_ELEMENTS__];	//フォントデータ
-
-	boxfill8(binfo->vram, binfo->scrnx, BLACK,
-		   length << 3, input_y + (indent << 4), (length << 3)+8, (input_y + (indent << 4)+16));
-
-	/*
-	 *一文字だけ表示
-	 */
-	putfont8(binfo->vram, binfo->scrnx, length << 3, input_y+(indent << 4), COL8_FFFFFF, dfont + ch * 16);
-
-	/*
-	 *シェルの内部変数をインクリメント
-	 */
-	length++;
-
-	return;
-}
-
 /*
  *=======================================================================================
  *print_value関数

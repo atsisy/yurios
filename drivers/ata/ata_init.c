@@ -55,7 +55,7 @@ void INITIALIZE_ATA_DEVICE(void) {
 	puts("Start device initialization");
 
 	puts("Clearing...");
-	software_reset(&ATA_DEVICE0, TRUE);
+	software_reset(&ATA_DEVICE0, true);
 
 	puts("Start initializing device0...");
 	initialize_ata_device_sub(&ATA_DEVICE0);
@@ -231,14 +231,14 @@ u32_t issue_identify_device_command(struct ATA_DEVICE *device) {
 	__SELECT_DEVICE_MACRO(device);
 
 	u32_t cmd = 0;
-	u8_t check_ready = FALSE;
+	u8_t check_ready = false;
 
 	if (device->dv_type == __ATA_TYPE_PATA__) {
 
 		cmd = __ATA_CMD_IDENTIFY_DEVICE__;
 
 		if (device->dv_type != __ATA_TYPE_UNKNOWN__)
-			check_ready = TRUE;
+			check_ready = true;
 
 	} else if (device->dv_type == __ATA_TYPE_PATAPI__) {
 		cmd = __ATAPI_CMD_IDENTIFY_PACKET_DEVICE__;
@@ -264,7 +264,7 @@ i32_t initialize_device_parameters(struct ATA_DEVICE *device) {
 
 	io_out8(__ATA_PORT_SECTOR_CNT(device), device->information->establish_sector_num);
 
-	return send_non_data(__ATA_CMD_INITIALIZE_DEVICE_PARAMETERS__, device, FALSE);
+	return send_non_data(__ATA_CMD_INITIALIZE_DEVICE_PARAMETERS__, device, false);
 }
 
 /*
@@ -327,5 +327,5 @@ i32_t issue_idle_command(struct ATA_DEVICE *device) {
 		return -1;
 	}
 
-	return send_non_data(cmd, device, TRUE);
+	return send_non_data(cmd, device, true);
 }

@@ -1,4 +1,4 @@
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/yrfs.h"
 #include "../../include/ata.h"
 

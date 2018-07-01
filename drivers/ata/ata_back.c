@@ -1,4 +1,4 @@
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/ata.h"
 #include "../../include/sh.h"
 #include "../../include/sysc.h"
@@ -68,12 +68,12 @@ void analyze_identify_data(struct ATA_DEVICE *device) {
 		/*
 		 *可能
 		 */
-		info->is_support_lba = TRUE;
+		info->is_support_lba = true;
 	} else {
 		/*
 		 *無理
 		 */
-		info->is_support_lba = FALSE;
+		info->is_support_lba = false;
 	}
 
 	info->is_support_pow_manage = identify[82] & 8;
@@ -179,7 +179,7 @@ i32_t command_set_features(struct ATA_DEVICE *device, u8_t sub_cmd, u8_t mode) {
     io_out8(__ATA_PORT_FEATURES(device), sub_cmd);
     io_out8(__ATA_PORT_SECTOR_CNT(device), mode);
 
-    return send_non_data(__ATA_CMD_SET_FEATURES__, device, TRUE);
+    return send_non_data(__ATA_CMD_SET_FEATURES__, device, true);
 }
 
 /*

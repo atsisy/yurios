@@ -1,9 +1,8 @@
-#include "../include/kernel.h"
+#include <mm.h>
 #include "../include/value.h"
 #include "../include/sh.h"
 #include "../include/string.h"
 #include "../include/ata.h"
-#include "../include/yrws.h"
 #include "../include/util_macro.h"
 
 void init_yrfs();
@@ -35,30 +34,10 @@ void Main(void) {
 	
 	i32_t fifobuf[128], keycmd_buf[32], *kernel_buf = (i32_t *)memory_alloc(memman, sizeof(i32_t) << 8);
 
-	static char keytable0[0x80] = {
-		0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '^', 0, 0,
-		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '@', '[', 0, 0, 'A', 'S',
-		'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', ':', 0, 0, ']', 'Z', 'X', 'C', 'V',
-		'B', 'N', 'M', ',', '.', '/', 0, '*', 0, ' ', 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, '7', '8', '9', '-', '4', '5', '6', '+', '1',
-		'2', '3', '0', '.', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0x5c, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x5c, 0, 0
-	};
-	static char keytable1[0x80] = {
-		0, 0, '!', 0x22, '#', '$', '%', '&', 0x27, '(', ')', '~', '=', '~', 0, 0,
-		'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '`', '{', 0, 0, 'A', 'S',
-		'D', 'F', 'G', 'H', 'J', 'K', 'L', '+', '*', 0, 0, '}', 'Z', 'X', 'C', 'V',
-		'B', 'N', 'M', '<', '>', '?', 0, '*', 0, ' ', 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, '7', '8', '9', '-', '4', '5', '6', '+', '1',
-		'2', '3', '0', '.', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, '_', 0, 0, 0, 0, 0, 0, 0, 0, 0, '|', 0, 0
-	};
-
+/*
 	keys0 = keytable0;
 	keys1 = keytable1;
-
+*/
 	struct Process *yuri_kernel, *ylsh;
 
 	init_gdtidt();
@@ -91,13 +70,29 @@ void Main(void) {
 
 
 	init_keyboard(&fifo, 256);
-	init_palette();
 
 	memory_init(memman);
 	memtotal = memtest(0x00400000, 0xbfffffff);
 	memory_free(memman, 0x00001000, 0x0009e000);
-	memory_free(memman, 0x00400000, memtotal-0x00400000);
+	memory_free(memman, 0x00400000, memtotal-0x00400000);        
 
+        u8_t result = init_virtual_memory_management();
+        char *p = (char *)(0xc0000000);
+        p += ((4096 * 1024));
+        *p = 0;
+        while(1)
+                io_hlt();
+
+        if(result == MM_OK){
+                put_character('s', 0x07, 0, 0, 0);
+        }else{
+                put_character('f', 0x07, 0, 0, 0);
+                while(1)
+                        io_hlt();
+        }
+        
+        yksh_init();
+        
 	yuri_kernel = task_init(memman, "yuri kernel");
 	yuri_kernel->irq = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
 	queue_init(yuri_kernel->irq, 256, kernel_buf, yuri_kernel);
@@ -112,19 +107,6 @@ void Main(void) {
 	 */
 	puts("Welcome to Yuri.");
 	puts("Enjoy hacking on Yuri!!");
-
-	ylsh          = task_alloc("shell");
-	ylsh->tss.eip = (int) shell_master;
-	ylsh->tss.esp = memory_alloc_4k(memman, 64 * 1024) + 64 * 1024 - 8;
-	ylsh->tss.es  = 1 * 8;
-	ylsh->tss.cs  = 2 * 8;
-	ylsh->tss.ss  = 1 * 8;
-	ylsh->tss.ds  = 1 * 8;
-	ylsh->tss.fs  = 1 * 8;
-	ylsh->tss.gs  = 1 * 8;
-	//*((int *) (ylsh->tss.esp + 4)) = 0;
-
-	shell_master();
 
 	for(;;){
 		task_sleep(task_now());
@@ -148,9 +130,7 @@ void task_b_main(void){
 	while(1){
 		count++;
 		if((count % 100) == 0){
-			boxfill8(binfo->vram, binfo->scrnx, BLACK, 950, 600, 1024, 800);
 			sprintf(s, "%01d", count/100);
-			putfonts8_asc(binfo->vram, binfo->scrnx, 950, 600, COL8_FFFFFF, s);
 		}
 		io_cli();
 		if(IS_FAILURE(queue_size(&fifo))){
@@ -163,7 +143,6 @@ void task_b_main(void){
 }
 
 static void init(){
-	shell_init();
 	InitStreams();
 	INITIALIZE_ATA_DEVICE();
 	init_yrfs();

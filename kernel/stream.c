@@ -1,4 +1,4 @@
-#include "../include/kernel.h"
+#include <mm.h>
 #include "../include/sh.h"
 #include "../include/string.h"
 
