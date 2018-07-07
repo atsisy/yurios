@@ -21,8 +21,8 @@ struct QUEUE fifo;
 unsigned int memtotal;
 char *keys0, *keys1;
 
-void Main(void) {
-
+void Main(void)
+{
 	//以下のメモリ番地はasmhead.nasで記述済み
 	//cyls...0xff0 leds...0x0ff1 vmode...0x0ff2 reserve...0x0ff3
 	//scrnx...0x0ff4 scrny...0x0ff6 vram.自動..0x0ff8
@@ -54,11 +54,9 @@ void Main(void) {
 	timer_init(timer, &fifo, 10);
 	timer_settime(timer, 1000);
 
-
 	timer2   = timer_alloc();
 	timer_init(timer2, &fifo, 3);
 	timer_settime(timer2, 300);
-
 
 	timer3   = timer_alloc();
 	timer_init(timer3, &fifo, 1);
@@ -68,18 +66,17 @@ void Main(void) {
 	timer_init(timer_ts, &fifo, 2);
 	timer_settime(timer_ts, 2);
 
-
 	init_keyboard(&fifo, 256);
 
 	memory_init(memman);
 	memtotal = memtest(0x00400000, 0xbfffffff);
 	memory_free(memman, 0x00001000, 0x0009e000);
 	memory_free(memman, 0x00400000, memtotal-0x00400000);        
-
+        
         u8_t result = init_virtual_memory_management();
-        char *p = (char *)(0xc0000000);
-        p += ((4096 * 1024));
+        char *p = (char *)(0x10000000);
         *p = 0;
+        
         while(1)
                 io_hlt();
 
@@ -87,8 +84,6 @@ void Main(void) {
                 put_character('s', 0x07, 0, 0, 0);
         }else{
                 put_character('f', 0x07, 0, 0, 0);
-                while(1)
-                        io_hlt();
         }
         
         yksh_init();
@@ -122,7 +117,7 @@ void task_b_main(void){
 	int i = 0, fifo_buf[128], count = 0;
 	char s[11];
 
-	queue_init(&fifo, 128, fifo_buf, 0);
+        queue_init(&fifo, 128, fifo_buf, 0);
 	timer_ts = timer_alloc();
 	timer_init(timer_ts, &fifo, 1);
 	timer_settime(timer_ts, 2);

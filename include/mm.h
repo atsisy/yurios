@@ -136,6 +136,24 @@ inline void *pde32_get_pt_addr(page_directory_entry_t pde)
 #define MM_OK 0
 #define MM_ERROR (-1)
 
+#define MM_4KIB_ALIGN (0xfffff000)
+
+#define MM_KERNEL_LAND_MEMORY 0x00000000
+#define MM_KERNEL_LAND_SIZE   0x40000000
+#define MM_USER_LAND_MEMORY   0x40000000
+#define MM_USER_LAND_SIZE     0xc0000000
+
+#define VIRT_KERNEL_HEAP 0x30000000
+
+#define MM_1MIB 0x00100000
+#define MM_4MIB 0x00400000
+
+#define MM_USER_PT (MM_USER_LAND_MEMORY - (3 * MM_1MIB))
+#define MM_KERNEL_PT (MM_USER_PT - (MM_1MIB))
+#define MM_PDT (MM_KERNEL_PT - MM_4MIB)
+
+#define MM_KERNEL_HEAP_ADDR (MM_PDT - MM_4MIB)
+#define MM_KERNEL_STACK_BASE_ADDR MM_KERNEL_HELP_ADDR
 
 inline unsigned long vaddr32_get_pte_index(virtual_address32 address)
 {
@@ -157,6 +175,7 @@ inline void pd32_set_pd_address(page_directory dir)
 void paging_on(void);
 u8_t init_virtual_memory_management();
 page_table_entry_t *alloc_page32(page_table_entry_t *entry);
+void kpage_fault_resolver(virtual_address32 virt_addr);
 
 extern page_directory current_page_directory;
 

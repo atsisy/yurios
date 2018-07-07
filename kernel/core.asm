@@ -10,7 +10,7 @@ global	io_hlt, io_cli, io_sti, io_stihlt
 global	io_in8, io_in16, io_in32
 global	io_out8, io_out16, io_out32
 global	io_load_eflags, io_store_eflags
-global	load_gdtr, load_idtr
+global	load_gdtr, load_idtr, load_esp
   global	load_cr0, store_cr0, load_cr2
   global  load_cr3, store_cr3
   global flush_tlb, paging_on
@@ -131,12 +131,15 @@ load_idtr:
 	lidt	[esp+6]
 	ret
 
+load_esp:
+  mov eax, esp
+  ret
+
   ;; cr0を見るアセンブリ関数
 load_cr0:		; int load_cr0(void);
 	mov		eax, cr0
 	ret
 
-  	
 load_cr2:
 	mov eax, cr2
 	ret
@@ -239,6 +242,7 @@ asm_inthandler0d:
 	iretd
 
 asm_inthandler0e:
+  pop eax
   push	es
 	push	ds
 	pushad

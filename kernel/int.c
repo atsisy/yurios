@@ -1,7 +1,9 @@
 /* 割り込み関係 */
-#include "../include/kernel.h"
+#include <mm.h>
 #include "../include/sh.h"
 #include "../include/value.h"
+
+int load_esp();
 
 /*
  *=======================================================================================
@@ -102,10 +104,16 @@ int *stack_exp_handler(int *esp){
 
 int *page_fault_handler(int *esp)
 {
-	puts("Page Fault.");
-        printk("address:0x%x", load_cr2());
-
-        struct Process *proc = task_now();
+        virtual_address32 virt_addr = load_cr2();
         
-	return &(proc->tss.esp0);      //異常終了実行
+	puts("Page Fault.");
+        printk("address:0x%x\n", virt_addr);
+
+        if(virt_addr < (MM_KERNEL_LAND_MEMORY + MM_KERNEL_LAND_SIZE)){
+                kpage_fault_resolver(virt_addr);
+        }else{
+                puts("Kernel Panic: page mapping error.");
+        }
+
+        return 0;
 }

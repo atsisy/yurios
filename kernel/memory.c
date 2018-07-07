@@ -330,71 +330,125 @@ static void go_paging32(page_directory directory)
         paging_on();
 }
 
+inline void create_pt32(page_table table, u32_t physical_addr, u32_t virtual_addr)
+{
+        int i;
+        page_table_entry_t *pte;
+        
+        for(i = 0;
+            i < MM_NUM_PTE;
+            i++, physical_addr += MM_PAGE_SIZE, virtual_addr += MM_PAGE_SIZE){
+                pte = pt32_get_pte(table, virtual_addr);
+                pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
+                pte32_set_addr(pte, physical_addr);
+        }
+}
+
+virtual_address32 where_kernel_virtual_address_is(u32_t physical_addr)
+{
+        return physical_addr;
+}
+
 u8_t init_virtual_memory_management()
 {
         //0x00000000~用
-        page_table low_table;
+        page_table kernel_table;
         //0xc0000000~用
-        page_table high_table;
-        
-        page_table_entry_t *pte;
+        page_table user_table;
+        page_table paging_info_table;
+        page_table pdt_region;
 
         page_directory directory;
         page_directory_entry_t *pde;
 
-        int i;
         unsigned long physical_address;
         virtual_address32 virtual_address;
 
+        printk("MM_USER_PT:0x%x\n", MM_USER_PT);
+        printk("MM_KERNEL_PT:0x%x\n", MM_KERNEL_PT);
+        printk("MM_PDT:0x%x\n", MM_PDT);
+        
         /*
          * 0x00000000~
          */
-        low_table = (page_table)memory_alloc_4k(memman, MM_PAGE_SIZE);
-        if(low_table == FAILURE)
-                return MM_ERROR;
-
+        kernel_table = MM_KERNEL_PT;
+        
         /*
          * 0xc0000000~
          */
-        high_table = (page_table)memory_alloc_4k(memman, MM_PAGE_SIZE);
-        if(high_table == FAILURE)
-                return MM_ERROR;
+        user_table = MM_USER_PT;
+
+        paging_info_table = ((page_table)kernel_table + (MM_NUM_PTE * (MM_KERNEL_PT / MM_4MIB)));
+        pdt_region = ((page_table)kernel_table + (MM_NUM_PTE * (MM_PDT / MM_4MIB)));
+
+        printk("paging_info_table:0x%x\n", paging_info_table);
 
         // ゼロクリア
-        memset((void *)low_table, 0x00, MM_PAGE_SIZE);
-        memset((void *)high_table, 0x00, MM_PAGE_SIZE);
-
+        memset((void *)kernel_table, 0x00, MM_PAGE_SIZE);
+        memset((void *)user_table, 0x00, MM_PAGE_SIZE);
+        memset((void *)paging_info_table, 0x00, MM_PAGE_SIZE);
+        memset((void *)pdt_region, 0x00, MM_PAGE_SIZE);
+        
         //0x00000000 ~ 0x003ff000
-        for(i = 0, physical_address = 0x00, virtual_address = 0x00;
-            i < MM_NUM_PTE;
-            i++, physical_address += MM_PAGE_SIZE, virtual_address += MM_PAGE_SIZE){
-                pte = pt32_get_pte(low_table, virtual_address);
-                pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
-                pte32_set_addr(pte, physical_address);
-        }
-
+        create_pt32(kernel_table, MM_KERNEL_LAND_MEMORY, 0x00000000);
+        
         //0xc0000000 ~ 0xc03ff000
-        for(i = 0, physical_address = 0x00100000, virtual_address = 0xc0000000;
-            i < MM_NUM_PTE;
-            i++, physical_address += MM_PAGE_SIZE, virtual_address += MM_PAGE_SIZE){
-                pte = pt32_get_pte(high_table, virtual_address);
-                pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
-                pte32_set_addr(pte, physical_address);
-        }
-
-        directory = (page_directory)memory_alloc_4k(memman, MM_PAGE_SIZE);
-        if(directory == (void *)FAILURE)
-                return MM_ERROR;
+        create_pt32(user_table, MM_USER_LAND_MEMORY, 0xc0000000);
+        
+        create_pt32(paging_info_table, MM_KERNEL_PT, MM_KERNEL_PT);
+        create_pt32(pdt_region, MM_PDT, MM_PDT);
+        
+        current_page_directory = directory = MM_PDT;
+        memset(MM_PDT, 0x00, MM_4MIB);
 
         pde = pd32_get_pde(directory, 0x00000000);
         pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        pde32_set_pt_addr(pde, (u32_t)low_table);
+        pde32_set_pt_addr(pde, (u32_t)kernel_table);
 
+        
+        pde = pd32_get_pde(directory, MM_KERNEL_PT);
+        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+        pde32_set_pt_addr(pde, (u32_t)paging_info_table);
+        
+        pde = pd32_get_pde(directory, MM_PDT);
+        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+        pde32_set_pt_addr(pde, (u32_t)pdt_region);
+        
         pde = pd32_get_pde(directory, 0xc0000000);
         pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        pde32_set_pt_addr(pde, (u32_t)high_table);
-
+        pde32_set_pt_addr(pde, (u32_t)user_table);
+        
         go_paging32(directory);
 
         return MM_OK;
+}
+
+ void kpage_fault_resolver(virtual_address32 virt_addr)
+{
+        page_directory_entry_t *pde;
+        page_table_entry_t *pte;
+        page_table pt;
+
+        virtual_address32 masked_virtaddr = virt_addr & MM_4KIB_ALIGN;
+        
+        pt = MM_KERNEL_PT + (MM_NUM_PTE * (virt_addr / MM_4MIB));
+        
+        puts("-------\nresolver process");
+        printk("required virtual address:0x%x\n", virt_addr);
+        printk("new page_table addr:0x%x\n", pt);
+        printk("masked addr:0x%x\n", masked_virtaddr);
+
+        pte = pt32_get_pte(pt, masked_virtaddr);
+
+        printk("head pte addr:0x%x\n", pte);
+        
+        memset((void *)pt, 0x00, MM_PAGE_SIZE);
+        create_pt32(pt, masked_virtaddr, masked_virtaddr);
+
+        // ページディレクトリから、仮想アドレスでpdeを特定
+        pde = pd32_get_pde(current_page_directory, masked_virtaddr);
+        
+        pde32_set_pt_addr(pde, (u32_t)pt);
+        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+
 }
