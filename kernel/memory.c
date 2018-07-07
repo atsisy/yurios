@@ -279,47 +279,16 @@ page_directory_entry_t *pd32_get_pde(page_directory dir, virtual_address32 addre
  * map_page関数
  * 物理アドレスと仮想アドレスの対応を取る
  ***/
-u8_t map_page(void *physical_address, virtual_address32 virtual_address)
+u8_t map_page(page_directory directory, page_table ptable, void *physical_address, virtual_address32 virtual_address, u32_t flags)
 {
-        page_directory pd;
-        page_directory_entry_t *pde;
-        page_table page_table;
-        page_table_entry_t *pte;
-
-        pd = current_page_directory;
-
-        // そもそも、ページディレクトリがない場合、エラーで終了
-        if(!pd){
-                return MM_ERROR;
-        }
-
-        // ページディレクトリから、仮想アドレスでpdeを特定
-        pde = pd32_get_pde(pd, virtual_address);
-
-        if(!pde32_is_present(*pde)){
-                /*
-                 * 取得したpdeがメモリ上にない場合、確保し、物理アドレスと対応付け
-                 */
-                page_table = (page_table_entry_t *)memory_alloc(memman, MM_PAGE_SIZE);
-                
-                if(page_table)
-                        return MM_ERROR;
-                memset((void *)page_table, 0x00, MM_PAGE_SIZE);
-                pde32_set_pt_addr(pde, (u32_t)page_table);
-                pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        }else{
-                /*
-                 * ページディレクトリエントリから、ページテーブルを取得
-                 */
-                page_table = (page_table_entry_t *)pde32_get_pt_addr(pde);
-        }
-
-        // 物理アドレスを設定
-        pte = pt32_get_pte(page_table, virtual_address);
-
-        pte32_set_flags(pte, PTE32_PRESENT | PTE32_WRITABLE);
-        pte32_set_addr(pte, (u32_t)physical_address);
-
+        page_directory_entry_t pde;
+        
+        memset((void *)ptable, 0x00, MM_PAGE_SIZE);
+        create_pt32(ptable, physical_address, virtual_address);
+        pde = pd32_get_pde(directory, virtual_address);
+        pde32_set_flags(pde, flags);
+        pde32_set_pt_addr(pde, (u32_t)ptable);
+        
         return MM_OK;
 }
 
@@ -359,14 +328,14 @@ u8_t init_virtual_memory_management()
         page_table pdt_region;
 
         page_directory directory;
-        page_directory_entry_t *pde;
-
-        unsigned long physical_address;
-        virtual_address32 virtual_address;
 
         printk("MM_USER_PT:0x%x\n", MM_USER_PT);
         printk("MM_KERNEL_PT:0x%x\n", MM_KERNEL_PT);
         printk("MM_PDT:0x%x\n", MM_PDT);
+        printk("paging_info_table:0x%x\n", paging_info_table);
+
+        current_page_directory = directory = MM_PDT;
+        memset(MM_PDT, 0x00, MM_4MIB);
         
         /*
          * 0x00000000~
@@ -377,55 +346,21 @@ u8_t init_virtual_memory_management()
          * 0xc0000000~
          */
         user_table = MM_USER_PT;
-
         paging_info_table = ((page_table)kernel_table + (MM_NUM_PTE * (MM_KERNEL_PT / MM_4MIB)));
         pdt_region = ((page_table)kernel_table + (MM_NUM_PTE * (MM_PDT / MM_4MIB)));
 
-        printk("paging_info_table:0x%x\n", paging_info_table);
+        map_page(directory, kernel_table, MM_KERNEL_LAND_MEMORY, 0x00000000, PDE32_PRESENT | PDE32_WRITABLE);
+        map_page(directory, user_table, MM_USER_LAND_MEMORY, 0xc0000000, PDE32_PRESENT | PDE32_WRITABLE);
+        map_page(directory, paging_info_table, MM_KERNEL_PT, MM_KERNEL_PT, PDE32_PRESENT | PDE32_WRITABLE);
+        map_page(directory, pdt_region, MM_PDT, MM_PDT, PDE32_PRESENT | PDE32_WRITABLE);   
 
-        // ゼロクリア
-        memset((void *)kernel_table, 0x00, MM_PAGE_SIZE);
-        memset((void *)user_table, 0x00, MM_PAGE_SIZE);
-        memset((void *)paging_info_table, 0x00, MM_PAGE_SIZE);
-        memset((void *)pdt_region, 0x00, MM_PAGE_SIZE);
-        
-        //0x00000000 ~ 0x003ff000
-        create_pt32(kernel_table, MM_KERNEL_LAND_MEMORY, 0x00000000);
-        
-        //0xc0000000 ~ 0xc03ff000
-        create_pt32(user_table, MM_USER_LAND_MEMORY, 0xc0000000);
-        
-        create_pt32(paging_info_table, MM_KERNEL_PT, MM_KERNEL_PT);
-        create_pt32(pdt_region, MM_PDT, MM_PDT);
-        
-        current_page_directory = directory = MM_PDT;
-        memset(MM_PDT, 0x00, MM_4MIB);
-
-        pde = pd32_get_pde(directory, 0x00000000);
-        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        pde32_set_pt_addr(pde, (u32_t)kernel_table);
-
-        
-        pde = pd32_get_pde(directory, MM_KERNEL_PT);
-        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        pde32_set_pt_addr(pde, (u32_t)paging_info_table);
-        
-        pde = pd32_get_pde(directory, MM_PDT);
-        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        pde32_set_pt_addr(pde, (u32_t)pdt_region);
-        
-        pde = pd32_get_pde(directory, 0xc0000000);
-        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
-        pde32_set_pt_addr(pde, (u32_t)user_table);
-        
         go_paging32(directory);
 
         return MM_OK;
 }
 
- void kpage_fault_resolver(virtual_address32 virt_addr)
+void resolve_kpage_fault(virtual_address32 virt_addr)
 {
-        page_directory_entry_t *pde;
         page_table_entry_t *pte;
         page_table pt;
 
@@ -441,14 +376,7 @@ u8_t init_virtual_memory_management()
         pte = pt32_get_pte(pt, masked_virtaddr);
 
         printk("head pte addr:0x%x\n", pte);
-        
-        memset((void *)pt, 0x00, MM_PAGE_SIZE);
-        create_pt32(pt, masked_virtaddr, masked_virtaddr);
 
-        // ページディレクトリから、仮想アドレスでpdeを特定
-        pde = pd32_get_pde(current_page_directory, masked_virtaddr);
-        
-        pde32_set_pt_addr(pde, (u32_t)pt);
-        pde32_set_flags(pde, PDE32_PRESENT | PDE32_WRITABLE);
+        map_page(current_page_directory, pt, masked_virtaddr, masked_virtaddr, PDE32_PRESENT | PDE32_WRITABLE);
 
 }

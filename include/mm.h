@@ -175,7 +175,7 @@ inline void pd32_set_pd_address(page_directory dir)
 void paging_on(void);
 u8_t init_virtual_memory_management();
 page_table_entry_t *alloc_page32(page_table_entry_t *entry);
-void kpage_fault_resolver(virtual_address32 virt_addr);
+void resolve_kpage_fault(virtual_address32 virt_addr);
 
 extern page_directory current_page_directory;
 

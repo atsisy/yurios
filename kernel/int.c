@@ -110,7 +110,7 @@ int *page_fault_handler(int *esp)
         printk("address:0x%x\n", virt_addr);
 
         if(virt_addr < (MM_KERNEL_LAND_MEMORY + MM_KERNEL_LAND_SIZE)){
-                kpage_fault_resolver(virt_addr);
+                resolve_kpage_fault(virt_addr);
         }else{
                 puts("Kernel Panic: page mapping error.");
         }

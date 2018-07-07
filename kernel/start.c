@@ -76,7 +76,8 @@ void Main(void)
         u8_t result = init_virtual_memory_management();
         char *p = (char *)(0x10000000);
         *p = 0;
-        
+        for(int n = 0;n < 10000;n++)
+                puts("I'm back!");
         while(1)
                 io_hlt();
 
