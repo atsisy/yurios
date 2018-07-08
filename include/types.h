@@ -21,7 +21,8 @@ typedef int   i32_t;
 
 typedef unsigned int off_t;
 
-typedef char bool;
+
+typedef _Bool bool;
 
 #define true  1
 #define false 0
@@ -254,5 +255,237 @@ struct Directory {
 	char *AbsPath;
 	u32_t OwnFD;
 };
+
+struct list_head;
+typedef struct list_head _list_head;
+
+struct list_head {
+        _list_head *next;
+        _list_head *prev;
+};
+
+typedef struct list_head list_head;
+
+#define container_of(pointer, type, member) \
+        ({ \
+                const typeof(((type *)0)->member) *__m_ptr = (pointer); \
+                (type *)((char *)__m_ptr - offsetof(type, member));     \
+        }) 
+
+#define list_get_mother(listp, type, member) \
+        (container_of(listp, type, member))
+
+#define list_get_next(listp, type, member) \
+        (container_of((listp)->next, type, member))
+
+#define list_get_prev(listp, type, member)              \
+        (container_of((listp)->prev, type, member))
+
+
+/*
+ * list_init関数
+ * 引数で渡されたリストを初期化する。
+ * 自分のnextとprevに自分をセットする。
+ */
+inline void list_init(list_head *listp)
+{
+        listp->prev = listp;
+        listp->next = listp;
+}
+
+/*
+ * list_insert関数
+ * 第二引数と第三引数の間に第一引数のノードを挿入する
+ */
+inline void list_insert(list_head *new, list_head *prev, list_head *next)
+{
+        new->prev = prev;
+        new->next = next;
+        prev->next = new;
+        next->prev = new;
+}
+
+/*
+ * list_isnert_next_to関数
+ * 第一引数のノードを第二引数のnextに挿入する関数
+ */
+inline void list_insert_next_to(list_head *new, list_head *target)
+{
+        list_insert(new, target, target->next);
+}
+
+/*
+ * list_insert_back_to関数
+ * 第一引数のノードを第二引数のprevに挿入する関数
+ */
+inline void list_insert_back_to(list_head *new, list_head *target)
+{
+        list_insert(new, target->prev, target);
+}
+
+/*
+ * list_remove関数
+ * 第一引数に渡したノードを所属するリストから取り除く関数
+ */
+inline void list_remove(list_head *listp)
+{
+        list_head *prev, *next;
+
+        prev = listp->prev;
+        next = listp->next;
+
+        prev->next = next;
+        next->prev = prev;
+
+        // 初期化
+        list_init(listp);
+}
+
+/*
+ * list_replace関数
+ * 第一引数のノードを第二引数のノードで置換する関数
+ */
+inline void list_replace(list_head *old, list_head *new)
+{
+        new->prev = old->prev;
+        new->next = old->next;
+        new->next->prev = new;
+        new->prev->next = new;
+}
+
+/*
+ * list_move_next_to関数
+ * 第一引数で受け取ったノードを第二引数のノードのnextに移動する関数
+ */
+inline void list_move_next_to(list_head *listp, list_head *new_place)
+{
+        list_remove(listp);
+        list_insert_next_to(listp, new_place);
+}
+
+/*
+ * list_move_back_to関数
+ * 第一引数で受け取ったノードを第二引数のノードのprevに移動する関数
+ */
+inline void list_move_back_to(list_head *listp, list_head *new_place)
+{
+        list_remove(listp);
+        list_insert_back_to(listp, new_place);
+}
+
+/*
+ * list_empty関数
+ * 渡されたノードがダミーノードのみで、そのリストが空であるかどうかを判定する関数
+ */
+inline bool list_empty(list_head *listp)
+{
+        return listp->next == listp;
+}
+
+/*
+ * list_is_singular関数
+ * 渡されたノードが属するリストには、
+ * ダミーノードと有効なノードの２つ
+ * （実質的なデータとしては１つ）であることを判定する関数
+ */
+inline bool list_is_singular(list_head *listp)
+{
+        return (!list_empty(listp) && (listp->next == listp->prev));
+}
+
+/*
+ * list_rotate_left関数
+ * 渡されたリストを一個分左向きに回転させる関数
+ */
+inline void list_rotate_left(list_head *listp)
+{
+        list_head *first;
+
+        if(!list_empty(listp)){
+                first = listp->next;
+                list_move_back_to(first, listp);
+        }
+}
+
+/*
+ * list_insert_list関数
+ * 第二引数と第三引数の間に第一引数のリストを挿入する関数
+ */
+inline void list_insert_list(list_head *other_list, list_head *prev, list_head *next)
+{
+        list_head *first;
+        list_head *last;
+        
+        if(!list_empty(other_list)){
+                first = other_list->next;
+                last = other_list->prev;
+
+                first->prev = prev;
+                last->next = next;
+
+                prev->next = first;
+                next->prev = last;
+        }
+}
+
+/*
+ * list_cat関数
+ * 第一引数のリストの後に、第二引数のリストを連結し、処理後の先頭の先頭を返す関数
+ */
+inline list_head *list_cat(list_head *first, list_head *second)
+{
+        if(!list_empty(second)){
+                list_insert_list(second, first->prev, first);
+                list_init(second);
+        }
+
+        return first;
+}
+
+#define list_for_each(_pos, list) \
+        for(_pos = (list)->next;_pos != (list);_pos = (pos)->next)
+
+#define list_for_each_reverse(_pos, list)                                       \
+        for(_pos = (list)->prev;_pos != (list);_pos = (pos)->prev)
+
+#define list_for_each_safe(_pos, _tmp, list)                              \
+        for(_pos = (list)->next, _tmp = (_pos)->next; \
+            _pos != (list); \
+            _pos = _tmp, _tmp = (pos)->next)
+
+#define list_for_each_reverse_safe(_pos, _tmp, list)            \
+        for(_pos = (list)->prev, _tmp = (_pos)->prev;   \
+            _pos != (list);                             \
+            _pos = _tmp, _tmp = (pos)->prev)
+
+#define list_for_each_entry(_pos, list, member) \
+        for(_pos = list_get_mother((list)->next, typeof(*_pos), member); \
+            (&_pos)->member != (list); \
+            _pos = list_get_mother(_pos->member.next, typeof(*_pos), member))
+
+#define list_for_each_entry_reverse(_pos, list, member)                         \
+        for(_pos = list_get_mother((list)->prev, typeof(*_pos), member); \
+            (&_pos)->member != (list);                                  \
+            _pos = list_get_mother(_pos->member.prev, typeof(*_pos), member))
+
+#define list_for_each_entry_from(_pos, list, member) \
+        for(; \
+            (&_pos)->member != (list);                                  \
+            _pos = list_get_mother(_pos->member.next, typeof(*_pos), member))
+
+#define list_for_each_entry_safe(_pos, _tmp, list, member)               \
+        for(_pos = list_get_mother((list)->next, typeof(*_pos), member), \
+                    _tmp = list_get_mother((_pos)->member.next, typeof(*_pos), member)); \ \
+        (&_pos)->member != (list);                                      \
+        _pos = _tmp,                                                    \
+                _tmp = list_get_mother((_pos)->member.next, typeof(*_pos), member))
+
+#define list_for_each_entry_reverse_safe(_pos, _tmp, list, member)              \
+        for(_pos = list_get_mother((list)->prev, typeof(*_pos), member), \
+                    _tmp = list_get_mother((_pos)->member.prev, typeof(*_pos), member)); \ \
+        (&_pos)->member != (list);                                      \
+        _pos = _tmp,                                                    \
+                _tmp = list_get_mother((_pos)->member.prev, typeof(*_pos), member))
+
 
 #endif
