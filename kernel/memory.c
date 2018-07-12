@@ -359,6 +359,7 @@ u8_t init_virtual_memory_management()
         return MM_OK;
 }
 
+
 void resolve_kpage_fault(virtual_address32 virt_addr)
 {
         page_table_entry_t *pte;

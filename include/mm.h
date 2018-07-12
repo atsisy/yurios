@@ -179,4 +179,13 @@ void resolve_kpage_fault(virtual_address32 virt_addr);
 
 extern page_directory current_page_directory;
 
+union heap_header {
+        struct {
+                union header *ptr;
+                size_t size;
+        } s;
+};
+
+typedef union heap_header heap_header;
+
 #endif
