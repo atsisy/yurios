@@ -15,8 +15,8 @@ extern struct Directory CurrentDirectory;
  */
 i32_t do_chdir(char *pathname){
 	i32_t fd = CurrentDirectory.OwnFD, next_file_fd;
-	char *line = (char *)memory_alloc(memman, 11);
-	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
+	char *line = (char *)kmalloc(11);
+	struct i_node *inode = (struct i_node *)kmalloc(sizeof(struct i_node));
 
 	do_close(fd);
 

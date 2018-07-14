@@ -7,10 +7,10 @@ extern unsigned int memtotal;
 unsigned int memtest(unsigned int start, unsigned int end);
 void memory_init(struct MEMMAN *man);
 unsigned int memory_total(struct MEMMAN *man);
-unsigned int memory_alloc(struct MEMMAN *man, unsigned int size);
-int memory_free(struct MEMMAN *man, unsigned int addr, unsigned int size);
-unsigned int memory_alloc_4k(struct MEMMAN *man, unsigned int size);
-int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
+//unsigned int memory_alloc(struct MEMMAN *man, unsigned int size);
+//int memory_free(struct MEMMAN *man, unsigned int addr, unsigned int size);
+//unsigned int memory_alloc_4k(struct MEMMAN *man, unsigned int size);
+//int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size);
 char *read_vram(char *vram, short scrnx, int x1, int x2, int y);
 void write_vram(char *vram, char *new_vram, short scrnx, int x1, int x2, int y);
 
@@ -19,12 +19,9 @@ void write_vram(char *vram, char *new_vram, short scrnx, int x1, int x2, int y);
 /*
  * メモリ管理関数
  */
-void *kmalloc(u32_t size);
-void kfree(const void *addr, u32_t size);
-
 void heap_init(void *begin_addr, size_t heap_size);
-void *kr_kmalloc(size_t size);
-void kr_kfree(const void *addr);
+void *kmalloc(size_t size);
+void kfree(const void *addr);
 
 
 /****

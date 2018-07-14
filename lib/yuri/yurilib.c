@@ -171,7 +171,7 @@ int *sys_call(int edi, int esi, int ebp, int esp, int ebx, int edx, int ecx, int
 			memman = (struct MEMMAN *)(ebx + ds_base);
 
 		//結果を返す
-		registers[7] = memory_alloc(memman, ecx);
+		registers[7] = kmalloc(ecx);
 		break;
 	case 8:
 	      /*

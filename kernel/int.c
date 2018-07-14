@@ -105,9 +105,13 @@ int *stack_exp_handler(int *esp){
 int *page_fault_handler(int *esp)
 {
         virtual_address32 virt_addr = load_cr2();
+
+        char addr_msg[32];
+        memset(addr_msg, 0, 32);
         
-	puts("Page Fault.");
-        printk("address:0x%x\n", virt_addr);
+	puts("Page Fault!");
+        sprintf(addr_msg, "address:0x%x", virt_addr);
+        puts(addr_msg);
 
         if(virt_addr < (MM_KERNEL_LAND_MEMORY + MM_KERNEL_LAND_SIZE)){
                 resolve_kpage_fault(virt_addr);

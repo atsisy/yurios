@@ -310,5 +310,5 @@ void printk(const char *format, ...)
         memset(buf, 0, 4096);
         _sprintf(buf, format, argv);
         print_no_indent(buf);
-        kfree(buf, 4096);
+        kfree(buf);
 }

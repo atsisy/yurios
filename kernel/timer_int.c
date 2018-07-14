@@ -15,10 +15,10 @@
  */
 struct Timer_Interrupt *alloc_TimerIntr(struct Process *proc, i32_t identifier){
 	//Timer_Interrupt構造体を確保
-	struct Timer_Interrupt *timer_intr = (struct Timer_Interrupt *)memory_alloc(memman, sizeof(struct Timer_Interrupt));
+	struct Timer_Interrupt *timer_intr = (struct Timer_Interrupt *)kmalloc(sizeof(struct Timer_Interrupt));
 
 	//キューを初期化
-	timer_intr->queue = (struct QUEUE *)memory_alloc(memman, sizeof(struct QUEUE));
+	timer_intr->queue = (struct QUEUE *)kmalloc(sizeof(struct QUEUE));
 	queue_init(timer_intr->queue, __TIMER_INTERRUPT_BUFFER_SIZE__, timer_intr->intr_buf, proc);
 
 	//タイマのセットアップ
@@ -40,13 +40,13 @@ struct Timer_Interrupt *alloc_TimerIntr(struct Process *proc, i32_t identifier){
 void free_TimerIntr(struct Timer_Interrupt *timer_intr){
 
 	//キューを開放
-	memory_free(memman, (u32_t)timer_intr->queue, sizeof(struct QUEUE));
+	kfree((void *)timer_intr->queue);
 
 	//タイマを開放
 	timer_free(timer_intr->timer);
 
 	//Timer_Interruptを開放
-	memory_free(memman, (u32_t)timer_intr, sizeof(struct Timer_Interrupt));
+	kfree((void *)timer_intr);
 
 }
 

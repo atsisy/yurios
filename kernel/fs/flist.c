@@ -15,8 +15,8 @@ extern struct Directory CurrentDirectory;
  */
 void file_list(char *option) {
 	u32_t i;
-	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
-	char *str = (char *)memory_alloc(memman, 270);
+	struct i_node *inode = (struct i_node *)kmalloc(sizeof(struct i_node));
+	char *str = (char *)kmalloc(270);
 	
 	for(i = 0;i < __INODE_LIMIT__;i++){
 		if(blocks_info[i].exist == __USED_BLOCK__){
@@ -26,8 +26,8 @@ void file_list(char *option) {
 		}
 	}
 
-	memory_free(memman, (u32_t)str, 270);
-	memory_free(memman, (u32_t)inode, sizeof(struct i_node));
+	kfree((u32_t)str);
+	kfree((u32_t)inode);
 }
 
 
@@ -40,8 +40,8 @@ void file_list(char *option) {
 void gline(int fd, char *line) {
 
 	u32_t  i, p;
-	u32_t *box = (u32_t *)memory_alloc(memman, sizeof(u32_t) * 128);
-	char *buffer = (char *)memory_alloc(memman, 1024);
+	u32_t *box = (u32_t *)kmalloc(sizeof(u32_t) * 128);
+	char *buffer = (char *)kmalloc(1024);
 
 	p = 0;
 
@@ -58,8 +58,8 @@ void gline(int fd, char *line) {
 				line[p] = '\0';
 				do_seek(fd, i+1, __SEEK_SET__);
 
-				memory_free(memman, (u32_t)box, sizeof(u32_t) * 128);
-				memory_free(memman, (u32_t)buffer, 1024);
+				kfree((u32_t)box);
+				kfree((u32_t)buffer);
 				return;
 			default:
 				line[p] = buffer[i];
@@ -72,8 +72,8 @@ void gline(int fd, char *line) {
 
 void nFileList(char *option) {
         i32_t fd = CurrentDirectory.OwnFD;
-	char *line = (char *)memory_alloc(memman, 11);
-	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
+	char *line = (char *)kmalloc(11);
+	struct i_node *inode = (struct i_node *)kmalloc(sizeof(struct i_node));
 
 	do_close(fd);
 

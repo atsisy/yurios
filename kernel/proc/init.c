@@ -19,7 +19,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	/*
 	 *プロセスマスター（マンション本体兼管理人（笑））を確保
 	 */
-	process_master = (struct PROCESS_MASTER *)memory_alloc_4k(memman, sizeof(struct PROCESS_MASTER));
+	process_master = (struct PROCESS_MASTER *)kmalloc(sizeof(struct PROCESS_MASTER));
 	process_master->top_pid = 0;
 
 	/*
@@ -59,7 +59,7 @@ struct Process *task_init(struct MEMMAN *memman, char *p_name){
 	 *アイドルタスク（番兵役）を確保
 	 */
 	idle = task_alloc("idle process");
-	idle->tss.esp = memory_alloc_4k(memman, 64*1024) + 64 * 1024;
+	idle->tss.esp = kmalloc( 64*1024) + 64 * 1024;
 	idle->tss.eip = (int)&task_idle;
 	idle->tss.es = 1 * 8;
 	idle->tss.cs = 2 * 8;

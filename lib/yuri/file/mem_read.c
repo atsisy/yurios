@@ -9,7 +9,7 @@
  *=======================================================================================
  */
 size_t read_mem2hd(char *file_name, char *buffer, u32_t length){
-	int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
+	int *fat = (int *)kmalloc(4 * 2880);
 	readfat(fat, (unsigned char *)(ADR_DISKIMG + 0x0000200));
 
 	int x, y;
@@ -49,7 +49,7 @@ type_next_file:
 	}
 	if(x < 224 && finfo[x].name[0] != 0x00){
 		//ファイルが見つかった時
-		p = (char *)memory_alloc_4k(memman, finfo[x].size);
+		p = (char *)kmalloc(finfo[x].size);
 		loadfile(finfo[x].clustno, finfo[x].size, p, fat, (char *)(ADR_DISKIMG + 0x003e00));
 
 		for(y = 0;y < finfo[x].size;y++){
@@ -58,7 +58,7 @@ type_next_file:
 		}
 
 
-		memory_free_4k(memman, (int)p, finfo[x].size);
+		kfree((int)p);
 	}else{
 		//ファイルが見つからなかった場合
 		printk("File not found.");
@@ -68,7 +68,7 @@ type_next_file:
 }
 
 u8_t *read_yim(char *file_name, u8_t *buffer, u32_t length){
-	int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
+	int *fat = (int *)kmalloc(4 * 2880);
 	readfat(fat, (unsigned char *)(ADR_DISKIMG + 0x0000200));
 
 	u32_t x, y;
@@ -152,7 +152,7 @@ type_next_file:
 }
 
 u8_t *read_elf(char *file_name, u8_t *buffer, u32_t length){
-	int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
+	int *fat = (int *)kmalloc(4 * 2880);
 	readfat(fat, (unsigned char *)(ADR_DISKIMG + 0x0000200));
 
 	u32_t x, y;

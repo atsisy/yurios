@@ -41,7 +41,7 @@ i32_t wait_set_drdy(struct ATA_DEVICE *device){
 void analyze_identify_data(struct ATA_DEVICE *device) {
 
 	u16_t *identify = device->identify_data;
-	struct ATA_DEVICE_INFORMATION *info = (struct ATA_DEVICE_INFORMATION *)memory_alloc(memman, sizeof(struct ATA_DEVICE_INFORMATION));
+	struct ATA_DEVICE_INFORMATION *info = (struct ATA_DEVICE_INFORMATION *)kmalloc(sizeof(struct ATA_DEVICE_INFORMATION));
 
 	device->information = info;
 

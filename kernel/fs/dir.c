@@ -66,7 +66,7 @@ static void InitDir(struct i_node inode){
 	int size;
 
 	//絶対パス用のバッファを確保
-	char *ndir_name = (char *)memory_alloc(memman, (size = (strlen(CurrentDirectory.AbsPath) * strlen(inode.file_name)) + 3));
+	char *ndir_name = (char *)kmalloc((size = (strlen(CurrentDirectory.AbsPath) * strlen(inode.file_name)) + 3));
 	zeroclear_8array(ndir_name, size);
 
 	//絶対パスを生成
@@ -85,7 +85,7 @@ static void InitDir(struct i_node inode){
 	write_current_dir_info(inode.id, CurrentDirectory.OwnFD);
 
 	//メモリ解放
-	memory_free(memman, (u32_t)ndir_name, size);
+	kfree((u32_t)ndir_name);
 }
 
 /*

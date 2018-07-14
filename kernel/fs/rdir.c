@@ -55,7 +55,7 @@ u8_t CreateRootDir(void){
  */
 void MountRootDir(void){
 	//カレントディレクトリ名を初期化
-	CurrentDirectory.AbsPath = (char *)memory_alloc(memman, __CURRENT_DIR_STR_SIZE__);
+	CurrentDirectory.AbsPath = (char *)kmalloc(__CURRENT_DIR_STR_SIZE__);
 	zeroclear_8array(CurrentDirectory.AbsPath, __CURRENT_DIR_STR_SIZE__);
 
 	//初期値をルートディレクトリからロード

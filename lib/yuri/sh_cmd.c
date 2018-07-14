@@ -95,7 +95,7 @@ void command_cat(char *inputed_command){
 	/*
 	*メモリ確保
 	*/
-	char *src = (char *)memory_alloc(memman, 200000);
+	char *src = (char *)kmalloc(200000);
 	
 	/*
 	*読み込み
@@ -107,7 +107,7 @@ void command_cat(char *inputed_command){
 	/*
 	*開放
 	*/
-	memory_free(memman, (u32_t)src, 256);
+	kfree((void *)src);
 
 }
 
@@ -202,7 +202,7 @@ void command_show(char *inputed_command) {
 void command_writeyim(char *file_name){
 	
 	u32_t size = fat_getsize(file_name);
-	char *src = (char *)memory_alloc_4k(memman, size);
+	char *src = (char *)kmalloc(size);
 	char *p = src;
 	
 	/*
@@ -221,7 +221,7 @@ void command_writeyim(char *file_name){
 		src += 512;
 	}
 
-	memory_free_4k(memman, (u32_t)p, size);
+	kfree((void *)p);
 			
 }
 
@@ -269,7 +269,7 @@ void command_cp(int argc, char **argv){
 	/*
 	 *ファイル用のバッファを確保
 	 */
-	char *buffer = (char *)memory_alloc(memman, 512);
+	char *buffer = (char *)kmalloc(512);
 
 	//オープン
 	int fd = do_open(argv[1], __O_RDONLY__);
@@ -310,10 +310,10 @@ i32_t fae(i32_t function, u32_t argc, char *command, u32_t flag){
 
 	struct Process *child;
 	child = task_alloc(parent->proc_name);
-	i32_t *buf = (i32_t *)memory_alloc(memman, 40);
+	i32_t *buf = (i32_t *)kmalloc(40);
 	queue_init(child->irq, 10, buf, NULL);
 
-	child->tss.esp = memory_alloc_4k(memman, 64 * 1024) + 64 * 1024 - 8;
+	child->tss.esp = kmalloc(64 * 1024) + 64 * 1024 - 8;
 	child->tss.es = 1 * 8;
 	child->tss.cs = 2 * 8;
 	child->tss.ss = 1 * 8;
@@ -383,13 +383,13 @@ char **extend(char *line){
 
 	words_count = count_arguments(line);
 
-	argv = (char **)memory_alloc(memman, sizeof(char *) * words_count);
+	argv = (char **)kmalloc(sizeof(char *) * words_count);
 
 	for(n = 0;n < words_count;n++){
 		for(i = 0;line[i] != ' ';){
 			i++;
 		}
-		argv[n] = (char *)memory_alloc(memman, i+1);
+		argv[n] = (char *)kmalloc(i+1);
 		
 		string_getNext(line, argv[n]);
 		line += i+1;

@@ -10,7 +10,7 @@
  *=======================================================================================
  */
 u32_t fat_getsize(char *file_name){
-	int *fat = (int *)memory_alloc_4k(memman, 4 * 2880);
+	int *fat = (int *)kmalloc( 4 * 2880);
 	readfat(fat, (unsigned char *)(ADR_DISKIMG + 0x0000200));
 
 	u32_t x, y;

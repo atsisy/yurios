@@ -9,7 +9,7 @@
  */
 void new_wrdata(struct writable_data *data, u32_t size) {
 	data->size = size;
-	data->data = (u32_t *)memory_alloc(memman, size * sizeof(u32_t));
+	data->data = (u32_t *)kmalloc(size * sizeof(u32_t));
 }
 
 
@@ -20,7 +20,7 @@ void new_wrdata(struct writable_data *data, u32_t size) {
  *=======================================================================================
  */
 void delete_wrdata(struct writable_data *data) {
-	memory_free(memman, (u32_t)data->data, data->size * sizeof(u32_t));
+	kfree((u32_t)data->data);
 }
 
 /*

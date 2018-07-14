@@ -1,5 +1,5 @@
 #include "../../include/types.h"
-#include "../../include/kernel.h"
+#include "../../include/mm.h"
 #include "../../include/util_macro.h"
 
 /*
@@ -246,7 +246,7 @@ i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index){
 	char *p, *before_str = *str_pointer;
 
       //新しくメモリを確保
-	p = (char *)memory_alloc(memman, (length = strlen(*str_pointer) + insert_length) + 1);
+	p = (char *)kmalloc((length = strlen(*str_pointer) + insert_length) + 1);
 
       if(IS_NULLPO(p)) return FAILURE;
 
@@ -263,7 +263,7 @@ i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index){
             p[i + j] = before_str[i];
 
       //もともとのメモリを開放
-      memory_free(memman ,(u32_t)before_str, length - insert_length);
+      kfree((u32_t)before_str);
 
       //挿入済みの文字列へのポインタを代入
       *str_pointer = p;
@@ -292,15 +292,14 @@ i8_t ystring_insert(char **str_pointer, const char *insert_str, u32_t index){
  *=======================================================================================
  */
 i8_t y_shrink_loop_char(char **str_pointer, char target_char){
-      char *new_str = (char *)memory_alloc(memman, get_shrink_length(*str_pointer, target_char) + 1);
+      char *new_str = (char *)kmalloc(get_shrink_length(*str_pointer, target_char) + 1);
 
       if(IS_NULLPO(new_str))
             return FAILURE;
 
       copy_shrink_string(new_str, *str_pointer, target_char);
 
-      if(IS_FAILURE(memory_free(memman, (u32_t)(*str_pointer), strlen(*str_pointer))))
-         return FAILURE;
+      kfree((u32_t)(*str_pointer));
 
       *str_pointer = new_str;
 
@@ -486,7 +485,7 @@ i32_t limited_strlen(char *str, char key_char){
  */
 char **split_string(char *str, char key_word){
       u32_t i, words, length;
-      char **str_vector = (char **)memory_alloc(memman, (words = hm_contains_string(str, key_word) + 1));
+      char **str_vector = (char **)kmalloc((words = hm_contains_string(str, key_word) + 1));
 
       if(IS_NULLPO(str_vector))
             return NULL;
@@ -494,7 +493,7 @@ char **split_string(char *str, char key_word){
       for(i = 0;i < words; i++, length = 0){
 
             length = limited_strlen(str, key_word);
-            str_vector[i] = (char *)memory_alloc(memman, length + 1);
+            str_vector[i] = (char *)kmalloc(length + 1);
 
             if(IS_NULLPO(str_vector[i]))
                   return NULL;

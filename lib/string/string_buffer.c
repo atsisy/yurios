@@ -11,7 +11,7 @@
  *=======================================================================================
  */
 struct StringBuffer *create_string_buffer(const char *init_str){
-	struct StringBuffer *new_buffer = (struct StringBuffer *)memory_alloc(memman, sizeof(struct StringBuffer));
+	struct StringBuffer *new_buffer = (struct StringBuffer *)kmalloc(sizeof(struct StringBuffer));
 	StringBuffer_Append(new_buffer, init_str);
 	return new_buffer;
 }
@@ -36,7 +36,7 @@ struct StringBuffer *create_string_buffer(const char *init_str){
  */
 i8_t StringBuffer_Append(struct StringBuffer *str_buf, const char *str){
 
-	if(IS_FAILURE((int)(str_buf->buffer = (char *)memory_alloc(memman, strlen(str) + 1))))
+	if(IS_FAILURE((int)(str_buf->buffer = (char *)kmalloc(strlen(str) + 1))))
 		return FAILURE;
 
 	zeroclear_8array(str_buf->buffer, strlen(str));
@@ -92,7 +92,7 @@ i8_t StringBuffer_Clean(struct StringBuffer *str_buf){
 	if(IS_NULLPO(str_buf->buffer))
 		return FAILURE;
 
-	memory_free(memman, (u32_t)(str_buf->buffer), strlen(str_buf->buffer));
+	kfree((u32_t)(str_buf->buffer));
 	return SUCCESS;
 }
 
@@ -120,9 +120,7 @@ i8_t StringBuffer_Free(struct StringBuffer *str_buf){
 		}
 	}
 
-	if(IS_FAILURE(memory_free(memman, (u32_t)str_buf, sizeof(struct StringBuffer)))){
-		return FAILURE;
-	}
+        kfree((void *)str_buf);
 
 	return SUCCESS;
 }

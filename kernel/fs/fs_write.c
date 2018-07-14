@@ -13,7 +13,7 @@ u32_t yrfs_write(u32_t fd, char *buffer, u32_t bytes){
 	/*
 	 *作業用のinodeを確保
 	 */
-	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
+	struct i_node *inode = (struct i_node *)kmalloc(sizeof(struct i_node));
 
 	/*
 	 *書き込むファイルのinodeを読み込む
@@ -39,7 +39,7 @@ u32_t yrfs_write(u32_t fd, char *buffer, u32_t bytes){
 	/*
 	 *メモリを開放
 	 */
-	memory_free(memman, (u32_t)inode, sizeof(struct i_node));
+	kfree((u32_t)inode);
 
 	return byte2sectors(bytes);
 }

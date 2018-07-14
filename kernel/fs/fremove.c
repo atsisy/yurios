@@ -14,7 +14,7 @@
  *=======================================================================================
  */
 u8_t RemoveFile(char *file_name){
-	struct i_node *inode = (struct i_node *)memory_alloc(memman, sizeof(struct i_node));
+	struct i_node *inode = (struct i_node *)kmalloc(sizeof(struct i_node));
 
 	i32_t fd = do_open(file_name, __O_RDONLY__);
 	iread(inode, fd);
@@ -25,7 +25,7 @@ u8_t RemoveFile(char *file_name){
 	write_ata_sector(&ATA_DEVICE0, fd, zero, 1);
 	blocks_info[fd].exist = __UNUSED_BLOCK__;
 
-	memory_free(memman, (u32_t)inode, sizeof(struct i_node));
+	kfree((u32_t)inode);
 
 	return 0;
 }

@@ -65,42 +65,6 @@ unsigned int memory_total(struct MEMMAN *man){
 
 /*
  *=======================================================================================
- *memory_alloc関数
- *メモリを確保する関数
- *引数
- *struct MEMMAN *man
- *=>メモリマネージャ構造体
- *unsigned int size
- *確保したいメモリ容量
- *=======================================================================================
- */
-unsigned int memory_alloc(struct MEMMAN *man, unsigned int size){
-	unsigned int i, a;
-	for (i = 0; i < man->frees; i++){
-		if (man->free[i].size >= size){
-			/* 十分な広さのあきを発見 */
-			a = man->free[i].addr;
-			man->free[i].addr += size;
-			man->free[i].size -= size;
-			if (man->free[i].size == 0) {
-				/* free[i]がなくなったので前へつめる */
-				man->frees--;
-				for (; i < man->frees; i++) {
-					man->free[i] = man->free[i + 1]; /* 構造体の代入 */
-				}
-			}
-			return a;
-		}
-	}
-
-	/*
-	 *もう空きが無いため失敗
-	 */
-	return (u32_t)NULL;
-}
-
-/*
- *=======================================================================================
  *memory_free関数
  *確保されたメモリを開放する関数
  *引数
@@ -179,85 +143,18 @@ int memory_free(struct MEMMAN *man, unsigned int addr, unsigned int size){
 
 /*
  *=======================================================================================
- *memory_alloc_4k関数
- *一度に4KB分のメモリを確保する関数
- *詳しい説明はmemory_alloc関数を見ればええよ
- *=======================================================================================
- */
-unsigned int memory_alloc_4k(struct MEMMAN *man, unsigned int size){
-	unsigned int alloc_memory;
-	size = (size + 0xfff) & 0xfffff000;
-	alloc_memory = memory_alloc(man, size);
-	return alloc_memory;
-}
-
-/*
- *=======================================================================================
  *memory_free_4k関数
  *メモリを4KB単位で開放する関数
  *詳しい説明はmemory_free関数を見れえばええよ
  *=======================================================================================
  */
+
 int memory_free_4k(struct MEMMAN *man, unsigned int addr, unsigned int size){
 	int i;
 	size = (size + 0xfff) & 0xfffff000;
 	i = memory_free(man, addr, size);
 	return i;
 }
-
-void *kmalloc(u32_t size)
-{
-        if(size >= 4096){
-                return (void *)memory_alloc_4k(memman, size);
-        }else{
-                return (void *)memory_alloc(memman, size);
-        }
-}
-
-void kfree(const void *addr, u32_t size)
-{
-        if(size >= 4096){
-                memory_free_4k(memman, (u32_t)addr, size);
-        }else{
-                memory_free(memman, (u32_t)addr, size);
-        }
-}
-
-page_table_entry_t *alloc_page32(page_table_entry_t *entry)
-{
-        void *physical_address;
-
-        /*
-         * 1ページ分確保
-         */
-        physical_address = memory_alloc_4k(memman, MM_PAGE_SIZE);
-        if(physical_address == FAILURE)
-                return (page_table_entry_t *)NULL;
-
-        /*
-         * アドレスを設定、pフラグを立ててreturn
-         */
-        pte32_set_addr(entry, (u32_t)physical_address);
-        pte32_set_flags(entry, PTE32_PRESENT);
-        
-        return entry;
-}
-
-void free_page32(page_table_entry_t *entry)
-{
-        void *physical_address;
-
-        physical_address = (void *)pte32_get_addr((u32_t)entry);
-
-        if(physical_address == NULL)
-                return;
-
-        memory_free_4k(memman, (u32_t)physical_address, MM_PAGE_SIZE);
-
-        // メモリ上から削除されているため、pフラグを下ろす
-        pte32_clear_flags(entry, PTE32_PRESENT);
-}
-
 
 page_table_entry_t *pt32_get_pte(page_table table, virtual_address32 address)
 {
@@ -329,11 +226,6 @@ u8_t init_virtual_memory_management()
 
         page_directory directory;
 
-        printk("MM_USER_PT:0x%x\n", MM_USER_PT);
-        printk("MM_KERNEL_PT:0x%x\n", MM_KERNEL_PT);
-        printk("MM_PDT:0x%x\n", MM_PDT);
-        printk("paging_info_table:0x%x\n", paging_info_table);
-
         current_page_directory = directory = MM_PDT;
         memset(MM_PDT, 0x00, MM_4MIB);
         
@@ -355,6 +247,11 @@ u8_t init_virtual_memory_management()
         map_page(directory, pdt_region, MM_PDT, MM_PDT, PDE32_PRESENT | PDE32_WRITABLE);   
 
         go_paging32(directory);
+        
+        printk("MM_USER_PT:0x%x\n", MM_USER_PT);
+        printk("MM_KERNEL_PT:0x%x\n", MM_KERNEL_PT);
+        printk("MM_PDT:0x%x\n", MM_PDT);
+        printk("paging_info_table:0x%x\n", paging_info_table);
 
         return MM_OK;
 }
@@ -369,15 +266,16 @@ void resolve_kpage_fault(virtual_address32 virt_addr)
         
         pt = MM_KERNEL_PT + (MM_NUM_PTE * (virt_addr / MM_4MIB));
         
-        puts("-------\nresolver process");
-        printk("required virtual address:0x%x\n", virt_addr);
-        printk("new page_table addr:0x%x\n", pt);
-        printk("masked addr:0x%x\n", masked_virtaddr);
+        puts("-------\npage resolver start");
 
         pte = pt32_get_pte(pt, masked_virtaddr);
 
-        printk("head pte addr:0x%x\n", pte);
-
         map_page(current_page_directory, pt, masked_virtaddr, masked_virtaddr, PDE32_PRESENT | PDE32_WRITABLE);
+
+        puts("-------\npage resolver result");
+        printk("required virtual address:0x%x\n", virt_addr);
+        printk("new page_table addr:0x%x\n", pt);
+        printk("masked addr:0x%x\n", masked_virtaddr);
+        printk("head pte addr:0x%x\n", pte);
 
 }
