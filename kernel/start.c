@@ -76,8 +76,22 @@ void Main(void)
         u8_t result = init_virtual_memory_management();
         char *p = (char *)(0x10000000);
         *p = 0;
-        for(int n = 0;n < 10000;n++)
-                puts("I'm back!");
+        puts("I'm back!");
+
+        memcpy(p, "unko", 3);
+        p[4] = 0;
+
+        puts(p);
+
+        heap_init(0x11000000, MM_PAGE_SIZE << 6);
+        char *buf = (char *)kr_kmalloc(10);
+        printk("returned addr: 0x%x\n", (u32_t)buf);
+        memcpy(buf, "unko", 3);
+        buf[4] = 0;
+        puts(buf);
+        kr_kfree(buf);
+        puts("fin");
+        
         while(1)
                 io_hlt();
 

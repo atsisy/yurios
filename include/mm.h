@@ -22,6 +22,10 @@ void write_vram(char *vram, char *new_vram, short scrnx, int x1, int x2, int y);
 void *kmalloc(u32_t size);
 void kfree(const void *addr, u32_t size);
 
+void heap_init(void *begin_addr, size_t heap_size);
+void *kr_kmalloc(size_t size);
+void kr_kfree(const void *addr);
+
 
 /****
  * ページング関係

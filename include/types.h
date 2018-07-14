@@ -9,7 +9,7 @@
   型定義
   ====================================================================
 */
-typedef unsigned int size_t;
+typedef unsigned long size_t;
 
 typedef unsigned char  u8_t;
 typedef unsigned short u16_t;

@@ -4,12 +4,14 @@ static heap_header *heap_list_header;
 
 void heap_init(void *begin_addr, size_t heap_size)
 {
+        printk("init kernel heap ");
         heap_list_header = begin_addr;
         heap_list_header->s.ptr = heap_list_header;
         heap_list_header->s.size = heap_size;
+        printk("done\n");
 }
 
-static void *kr_kmalloc(size_t size)
+void *kr_kmalloc(size_t size)
 {
         heap_header *tmp, *prev = heap_list_header;
         void *addr;
@@ -35,14 +37,16 @@ static void *kr_kmalloc(size_t size)
         return NULL;
 }
 
-static void kr_kfree(void *addr)
+void kr_kfree(const void *addr)
 {
         heap_header *base_p, *p;
 
         base_p = (heap_header *)addr - sizeof(heap_header);
         for(p = heap_list_header;!(base_p > p && base_p < p->s.ptr);p = p->s.ptr)
-                if(p > p->s.ptr && ((base_p > p || base_p < p->s.ptr)))
+                if(p >= p->s.ptr && ((base_p > p || base_p < p->s.ptr)))
                         break;
+
+        puts("hello");
 
         if(base_p + base_p->s.size == p->s.ptr){
                 base_p->s.size += ((heap_header *)p->s.ptr)->s.size;
